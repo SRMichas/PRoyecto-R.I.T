@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'resgistro.dart';
+import 'inicio.dart';
 
 //void main() => runApp(Root());
 
@@ -14,6 +15,11 @@ class Root extends StatelessWidget{
             body: new LoginPndj(),
             backgroundColor: Color.fromRGBO(97, 164, 241, 1.0),
           ),
+          routes: <String,WidgetBuilder>{
+            '/login': (BuildContext context) => new Root(),
+            '/registro': (BuildContext context) => new Resgistro(),
+            '/inicio': (BuildContext context) => new Inicio()
+          },
     );
   }
 
@@ -37,6 +43,8 @@ class LoginPndj extends StatelessWidget{
   etiqueta = TextStyle(
         color: Colors.white
   );
+
+  BuildContext contexto;
 
   Column contenedorCorreo(){
     return Column(
@@ -118,45 +126,13 @@ class LoginPndj extends StatelessWidget{
     );
   }
 
-  /*@override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new Center(
-      child: new Text(
-        "Aparentement Funciono!!!",
-        style: new TextStyle(
-            fontSize: 20.0),),
-    );
-  }*/
-
-  @override
-  Widget build(BuildContext context) {
-    return /*Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  title: Text(
-                      "Bienvenido de Nuevo",
-                      style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold
-                      ),
-                  ),
-                  subtitle: Text(
-                      "Usuario",
-                      style: TextStyle(fontSize: 24.0),
-                  ),
-                )
-              ],
-            ),
-      );*/
-    Container(
-      margin: EdgeInsets.only(
-        top: 150.0,
-        left: margenHorizontal,
-        right: margenHorizontal,
-      ),
+  Container contenedorMaestro(){
+    return Container(
+        margin: EdgeInsets.only(
+          top: 150.0,
+          left: margenHorizontal,
+          right: margenHorizontal,
+        ),
         child: Form(
           key: _formulario,
           child: Column(
@@ -194,7 +170,15 @@ class LoginPndj extends StatelessWidget{
                       // If the form is valid, display a Snackbar.
                       /*Scaffold.of(context)
                         .showSnackBar(SnackBar(content: Text('Processing Data')));*/
-                      _showDialog(context);
+                      //_showDialog(contexto);
+                      //Navigator.of(contexto).pushReplacementNamed('/inicio');
+                      //and
+                      Navigator.pushReplacementNamed(contexto, "/inicio");
+                      /*Navigator.pop(contexto);
+                      Navigator.push(contexto,
+                          MaterialPageRoute(
+                            builder: (context) => Inicio(),
+                          ));*/
                     }
                   },
                   elevation: 5.0,
@@ -216,7 +200,7 @@ class LoginPndj extends StatelessWidget{
                 children: <Widget>[
                   Text("¿No tiene cuenta?"),
                   FlatButton(
-                      onPressed: () => iniciaRegistro(context),
+                      onPressed: () => iniciaRegistro(contexto),
                       child: Text(
                           "Creala Aqui",
                           style: etiqueta
@@ -232,6 +216,53 @@ class LoginPndj extends StatelessWidget{
             ],
           ),
         )
+    );
+  }
+  /*@override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return new Center(
+      child: new Text(
+        "Aparentement Funciono!!!",
+        style: new TextStyle(
+            fontSize: 20.0),),
+    );
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    contexto = context;
+    return /*Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const ListTile(
+                  title: Text(
+                      "Bienvenido de Nuevo",
+                      style: TextStyle(
+                                fontSize: 32.0,
+                                fontWeight: FontWeight.bold
+                      ),
+                  ),
+                  subtitle: Text(
+                      "Usuario",
+                      style: TextStyle(fontSize: 24.0),
+                  ),
+                )
+              ],
+            ),
+      );*/
+    LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints viewportConstraints){
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: viewportConstraints.maxHeight
+            ),
+            child: contenedorMaestro(),
+          ),
+        );
+      },
     );
 
   }

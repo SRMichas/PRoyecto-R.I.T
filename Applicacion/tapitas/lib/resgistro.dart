@@ -32,6 +32,7 @@ class CuerpoPrincipal extends StatelessWidget {
   String nom, apeP, apeM, correo, Cont1, Cont2;
   List<TextEditingController> escritores = [];
   List<String> strings = [];
+  BuildContext context;
 
   Container contenedor(int id,String hintT, int tipo, IconData icono) {
     TextEditingController controlador = new TextEditingController();
@@ -195,10 +196,44 @@ class CuerpoPrincipal extends StatelessWidget {
                   //side: BorderSide(color: Colors.white)
                 ),
               ),
-            )
+            ),
+            SizedBox(height: 30,)
           ],
         ),
       ),
+    );
+  }
+
+  Stack contendorMaestro(){
+    return Stack(
+      children: <Widget>[
+        /* Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    //alignment:Alignment.topLeft,
+                    width: MediaQuery.of(context).size.width/divisor,
+                    height: ancho,
+                    margin: EdgeInsets.only(top: 70),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))
+                    ),
+                ),
+            ),*/
+        Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+            margin: EdgeInsets.only(top: 30),
+            child: FlutterLogo(
+              size: 120,
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: formulario(context),
+        ),
+      ],
     );
   }
 
@@ -254,35 +289,18 @@ class CuerpoPrincipal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Stack(
-      children: <Widget>[
-        /* Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    //alignment:Alignment.topLeft,
-                    width: MediaQuery.of(context).size.width/divisor,
-                    height: ancho,
-                    margin: EdgeInsets.only(top: 70),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))
-                    ),
-                ),
-            ),*/
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: EdgeInsets.only(top: 30),
-            child: FlutterLogo(
-              size: 120,
+    this.context = context;
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints viewportConstraints){
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight
             ),
+            child: contendorMaestro(),
           ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: formulario(context),
-        ),
-      ],
+        );
+      },
     );
   }
 }
