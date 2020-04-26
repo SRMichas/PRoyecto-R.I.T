@@ -19,7 +19,7 @@ class _startScreenState extends State<startScreen>{
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     super.initState();
     /*Future.delayed(Duration(
         seconds: 2,
@@ -80,7 +80,7 @@ class _startScreenState extends State<startScreen>{
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return Scaffold(
       body: new Center(
           child: new Column(

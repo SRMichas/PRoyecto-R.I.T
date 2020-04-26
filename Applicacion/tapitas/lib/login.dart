@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'resgistro.dart';
 import 'inicio.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 //void main() => runApp(Root());
 
@@ -125,6 +127,23 @@ class LoginPndj extends StatelessWidget{
       ],
     );
   }
+  String email,pass;
+  void getData() async{
+    var url = 'http://192.168.1.64/RIT/Select/C-Usuario.php?correo=$email&contra=$pass';
+    //var url = 'http://192.168.1.64/hola.php';
+    http.Response response = await http.get(url); 
+    var data = jsonDecode(response.body);
+    if( !data["fallo"] ){
+      guarda(data["usuario"]);
+      Navigator.pushReplacementNamed(contexto, "/inicio");
+    }else{
+      _showDialog2(data["mensaje"].toString());
+    }
+    /*String dato = data["mensaje"].toString();
+    print(data);
+    print(dato);
+    _showDialog2(dato);*/
+  }
 
   Container contenedorMaestro(){
     return Container(
@@ -173,7 +192,15 @@ class LoginPndj extends StatelessWidget{
                       //_showDialog(contexto);
                       //Navigator.of(contexto).pushReplacementNamed('/inicio');
                       //and
-                      Navigator.pushReplacementNamed(contexto, "/inicio");
+
+                      email = controladores[0].text;
+                      pass = controladores[1].text;
+                      getData();
+                      //Navigator.pushReplacementNamed(contexto, "/inicio");
+                      
+                      
+                      
+                      
                       /*Navigator.pop(contexto);
                       Navigator.push(contexto,
                           MaterialPageRoute(
@@ -210,7 +237,7 @@ class LoginPndj extends StatelessWidget{
               ),
 
               RaisedButton(
-                onPressed: guarda,
+                onPressed: null,
                 child: Text("Cambiar"),
               )
             ],
@@ -218,41 +245,11 @@ class LoginPndj extends StatelessWidget{
         )
     );
   }
-  /*@override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new Center(
-      child: new Text(
-        "Aparentement Funciono!!!",
-        style: new TextStyle(
-            fontSize: 20.0),),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {
     contexto = context;
-    return /*Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const ListTile(
-                  title: Text(
-                      "Bienvenido de Nuevo",
-                      style: TextStyle(
-                                fontSize: 32.0,
-                                fontWeight: FontWeight.bold
-                      ),
-                  ),
-                  subtitle: Text(
-                      "Usuario",
-                      style: TextStyle(fontSize: 24.0),
-                  ),
-                )
-              ],
-            ),
-      );*/
-    LayoutBuilder(
+    return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints){
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -268,9 +265,14 @@ class LoginPndj extends StatelessWidget{
   }
 
 
-  void guarda() async{
+  void guarda(List data) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
+    await prefs.setString("id", data[0]);
+    await prefs.setString("nombre", data[2]);
+    await prefs.setString("apellido", data[3]);
+    await prefs.setString("correo", data[4]);
+    await prefs.setString("contra", data[5]);
     print("Guardado.....");
   }
 
@@ -318,106 +320,28 @@ class LoginPndj extends StatelessWidget{
       },
     );
   }
-}
-
-
-
-
-class MemberProfile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color.fromRGBO(1, 89, 99, 1.0), Colors.grey],
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-              ),
+  void _showDialog2(String msg) {
+    // flutter defined function
+    /*String mensajes = controladores[0].text +" " +
+        controladores[1].text;*/
+    showDialog(
+      context: contexto,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alert Dialog title"),
+          content: new Text(msg),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                    child: Text("Name : Sam Cromes",
-                        style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 19.0)),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Sex : Male",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Age : 42",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Status : Divorced",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Tramatic Event : ",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Motorcycle Accident July 2005, TBI",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      child: Text("Bio :",
-                          style: TextStyle(
-                              color: Colors.white70,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 19.0))),
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: 30.0, top: 100.0, bottom: 30.0, right: 30.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.all(20.0),
-                          child: OutlineButton(
-                            child: Text('Offer support'),
-                            textColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0)),
-                            onPressed: () {
-                              // Navigator.of(context).push( MaterialPageRoute(builder: (BuildContext context) =>  CheckInQ()));
-                            },
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            //here
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 }

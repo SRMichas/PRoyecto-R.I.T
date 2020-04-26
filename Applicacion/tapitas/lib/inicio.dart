@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'lectorQr.dart';
 import 'premios.dart';
 import 'puntuacion.dart';
 import 'historial.dart';
-import 'nestedScroll.dart';
+import 'package:tapitas/Extras/size_config.dart';
+import 'Extras/Constantes.dart';
 
 class Inicio extends StatelessWidget {
 
@@ -12,10 +12,23 @@ class Inicio extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
+        actions: <Widget>[
+            PopupMenuButton<String>(
+              onSelected: accion,
+              itemBuilder: (context){
+                return Constantes.menuInicio.map((String  accion){
+                    return PopupMenuItem<String>(
+                      value: accion,
+                      child: Text(accion),
+                    );
+                }).toList();
+              },
+            )
+        ],
         /*leading: new IconButton(
             icon: Icon(Icons.arrow_back),
             onPressed: (){
@@ -30,6 +43,10 @@ class Inicio extends StatelessWidget {
       body: new Cuerpo(),
     );
   }
+
+  void accion(String accion){
+      print("Le picaste a $accion");
+  }
 }
 
 class Cuerpo extends StatelessWidget {
@@ -41,7 +58,16 @@ class Cuerpo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     contexto = context;
-    // TODO: implement build
+    
+    return LayoutBuilder(
+      builder: (context,constraints){
+        SizeConfig().iniciar(constraints);
+        return contenedorMaestro();
+      },
+    );
+  }
+
+  Widget contenedorMaestro(){
     return Container(
       height: double.infinity,
       //alignment: Alignment.bottomCenter,
@@ -109,7 +135,7 @@ class Cuerpo extends StatelessWidget {
       child: GestureDetector(
         onTap: (){
             Scaffold.of(contexto).showSnackBar(SnackBar(content: Text("Presionaste en: "+id.toString()),duration: Duration(seconds: 1),));
-            var actividad = null;
+            var actividad;
             switch(id){
               case 1:
                 actividad = (contexto) => Historial();

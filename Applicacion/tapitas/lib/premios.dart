@@ -1,21 +1,140 @@
 import 'package:flutter/material.dart';
 import 'ListaPremios.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+import 'package:tapitas/Extras/size_config.dart';
+import 'package:tapitas/Extras/Constantes.dart';
 
 class Premios extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    
     return Scaffold(
       appBar: AppBar(
         title: Text("Premios"),
       ),
-      body: new Cuerpo(),
+      body: new CuerpoE(),
     );
   }
 
 }
 
-class Cuerpo extends StatelessWidget{
+class CuerpoE extends StatefulWidget {
+  @override
+  _CuerpoEState createState() => _CuerpoEState();
+}
+
+class _CuerpoEState extends State<CuerpoE> {
+
+  List categorias;
+  int size = 0;
+  BuildContext context;
+
+@override
+  void initState() {
+    super.initState();
+    //getCategorias();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    this.context = context;
+    return LayoutBuilder(
+      builder: (context,constraints){
+        SizeConfig().iniciar(constraints);
+        return cuerpoPrincipal2();
+      },
+    );
+  }
+
+  Widget controladorTab(){
+    
+  }
+
+  Future getCategorias() async{
+    var url = 'http://${Constantes.HOST}/RIT/Select/C-Categorias.php';
+    http.Response response = await http.get(url);
+    var data = jsonDecode(response.body);
+    //print(data.toString());
+    if( !data["fallo"] ){
+      categorias = data["categorias"];
+      size = categorias.length;
+      print(size);
+    }else{
+    }
+  }
+
+  Future<List> _getCategorias() async{
+    var url = 'http://${Constantes.HOST}/RIT/Select/C-Categorias.php';
+    http.Response response = await http.get(url);
+    var data = jsonDecode(response.body);
+    //print(data.toString());
+    if( !data["fallo"] ){
+      categorias = data["categorias"];
+      size = categorias.length;
+      print(size);
+    }
+
+    return data["categorias"];
+  }
+
+  
+
+  CustomScrollView cuerpoPrincipal(var snapshot,int longitud){
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverGrid(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              //crossAxisSpacing: 20,
+              mainAxisSpacing: 2.07 * SizeConfig.heightMultiplier, //16
+              //childAspectRatio: 0.15 * SizeConfig.heightMultiplier //1.15
+          ),
+          delegate: SliverChildBuilderDelegate((BuildContext context,int idx){
+              var nombre = snapshot[idx]["nombre"],url = snapshot[idx]["icono"];
+              int categoria = int.parse(snapshot[idx]["id_categoria"]);
+              return ModeloCategoria(nombre,url,categoria);
+
+
+          },childCount: longitud,),
+        )
+      ],
+    );
+  }
+
+  Container cuerpoPrincipal2(){
+    return Container(
+      child: FutureBuilder(
+          future: _getCategorias(),
+          builder:(BuildContext context,AsyncSnapshot snapshot){
+              if( snapshot.data == null){
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: Center(
+                    child: SizedBox(
+                      width: 42 * SizeConfig.widthMultiplier,
+                      height: 42 * SizeConfig.widthMultiplier,
+                      child: CircularProgressIndicator(strokeWidth: 4 * SizeConfig.widthMultiplier/*18*/,),
+                    ),
+                  ),
+                );
+              }else{
+                return cuerpoPrincipal(snapshot.data,snapshot.data.length);
+              }
+          }
+      ),
+    );
+  }
+}
+
+class Categoria{
+
+}
+
+
+/*class Cuerpo extends StatelessWidget{
 
   BuildContext context;
   @override
@@ -46,45 +165,63 @@ class Cuerpo extends StatelessWidget{
       ],
     );
   }
-}
+}*/
 
 class ModeloCategoria extends StatelessWidget {
 
-  final String nombre;
+  final String nombre,url;
+  final int categoria;
 
-  ModeloCategoria(this.nombre);
+  ModeloCategoria(this.nombre,this.url,this.categoria);
 
   TextStyle estilo = TextStyle(
-    fontSize: 28
+    fontSize: 3.7 * SizeConfig.textMultiplier,//28
   );
+
+  double margen = 2.5 * SizeConfig.widthMultiplier,// ~~> 12
+          tamano = 12.95 * SizeConfig.heightMultiplier, //100
+          tamanoCache = 129.37 * SizeConfig.heightMultiplier, //1000
+          espaciado = 1.95 * SizeConfig.heightMultiplier; //15;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 10,
-      margin: EdgeInsets.only(left: 20,right: 20),
+      //width: 10,
+      margin: EdgeInsets.only(left: margen,right: margen),//EdgeInsets.only(left: 20,right: 20)
       child:GestureDetector(
         onTap: (){
-          print(nombre);
+          //print(nombre);
           Navigator.push(context,
               MaterialPageRoute(
-                builder: (context) => ListaPremios(nombre),
+                builder: (context) => ListaPremios(nombre,categoria),
               ));
         },
         child: Card(
-            elevation: 2.5,
-            child:Column(
-              children: <Widget>[
-                Icon(
+            elevation: 0.33 * SizeConfig.heightMultiplier,// 2.5
+            child:Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  /*Icon(
                   Icons.add,
                   size: 100,
-                ),
-                Text(
-                  nombre,
-                  style: estilo,
-
-                )
-              ],
+                ),*/
+                  Image.network(
+                    url,
+                    width: tamano, //100
+                    height: tamano,
+                    cacheWidth: tamanoCache.toInt(), //1000
+                    cacheHeight: tamanoCache.toInt(),
+                  ),
+                  SizedBox(height:espaciado), //15
+                  Text(
+                    nombre,
+                    style: estilo,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  )
+                ],
+              ),
             )
         ),
       )

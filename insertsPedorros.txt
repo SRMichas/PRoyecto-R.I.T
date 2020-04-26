@@ -1,0 +1,34 @@
+insert into categoriaPremio values 
+(1,'Netflix','https://i.ya-webdesign.com/images/netflix-app-icon-png-2.png'),
+(2,'Google Play','https://s3.us-east-2.amazonaws.com/upload-icon/uploads/icons/png/17999863221579519634-512.png'),
+(3,'Tiempo Aire','https://ulinkremit.com/wp-content/uploads/2018/11/mobile-reloads-icon.png'),
+(4,'Xbox','https://i.pinimg.com/originals/71/fe/82/71fe82ae95593cb9977cc4cd0305089d.png'),
+(5,'Play Station','https://cdn3.iconfinder.com/data/icons/popular-services-brands-vol-2/512/playstation-512.png'),
+(6,'Spotify','https://developer.spotify.com/assets/branding-guidelines/icon4@2x.png'),
+(7,'Steam','https://i7.pngguru.com/preview/140/114/505/steam-computer-icons-video-game-computer-software-tips.jpg');
+
+
+insert into premio values 
+(1,1,'Tarjeta de $150','Tarjeta Prepagada de 150',1500),
+(2,1,'Tarjeta de $300','Tarjeta Prepagada de 300',3000),
+(3,1,'Tarjeta de $500','Tarjeta Prepagada de 500',5000),
+(4,1,'Tarjeta de $1000','Tarjeta Prepagada de 1000',9000),
+(5,2,'Tarjeta de $100','Tarjeta Prepagada de 100',15490),
+(6,2,'Tarjeta de $200','Tarjeta Prepagada de 200',14890),
+(7,2,'Tarjeta de $300','Tarjeta Prepagada de 300',10680),
+(8,3,'Telcel','Saldo de $10',1030),
+(9,3,'AT&T','Saldo de $10',1030),
+(10,3,'Movistar','Saldo de $10',1030),
+(11,4,'Xbox $150','Tarjeta Pregada de 150',1549),
+(12,4,'Xbox $300','Tarjeta Pregada de 300',17940),
+(13,4,'Xbox $600','Tarjeta Pregada de 600',18019),
+(14,5,'Tarjeta de $10','Tarjeta Prepagada de 10',155470),
+(15,5,'Tarjeta de $20','Tarjeta Prepagada de 20',479810),
+(16,5,'Tarjeta de $30','Tarjeta Prepagada de 30',134690),
+(17,6,'Tarjeta de $100','Tarjeta Prepagada de 100',15490),
+(18,6,'Tarjeta de $200','Tarjeta Prepagada de 200',148960),
+(19,6,'Tarjeta de $300','Tarjeta Prepagada de 300',21780),
+(20,7,'Tarjeta de $100','Tarjeta Prepagada de 100',87460),
+(21,7,'Tarjeta de $200','Tarjeta Prepagada de 200',74230),
+(22,7,'Tarjeta de $300','Tarjeta Prepagada de 300',78150),
+(23,7,'Tarjeta de $400','Tarjeta Prepagada de 400',75330);

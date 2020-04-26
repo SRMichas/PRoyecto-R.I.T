@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_code_scanner/qr_scanner_overlay_shape.dart';
+import 'dart:convert';
 
 class LectorQR extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+  
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
@@ -27,7 +28,7 @@ class _Cuerpo extends State<Pagina> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+  
     return Column(
       children: <Widget>[
         Expanded(
@@ -56,6 +57,10 @@ class _Cuerpo extends State<Pagina> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         qrtext = scanData;
+        print(qrtext);
+        Map<String, dynamic> data = jsonDecode(scanData);
+        qrtext += "\nInfo: "+data.length.toString();
+
       });
     });
   }

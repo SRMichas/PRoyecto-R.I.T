@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 class Resgistro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return new MaterialApp(
       title: "Registro",
       home: new Scaffold(
@@ -88,7 +87,7 @@ class CuerpoPrincipal extends StatelessWidget {
   }
 
   TextInputType tipoTexto(int tipo) {
-    TextInputType respuesta = null;
+    TextInputType respuesta;
     switch (tipo) {
       case 1:
         respuesta = TextInputType.text;
@@ -288,7 +287,6 @@ class CuerpoPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     this.context = context;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints){

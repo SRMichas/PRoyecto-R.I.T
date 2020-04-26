@@ -30,7 +30,35 @@ CREATE TABLE IF NOT EXISTS usuarioDetalle(
 	PRIMARY KEY(id_usuario,id_cadena)
 );
 
+CREATE TABLE IF NOT EXISTS categoriaPremio(
+	id_categoria int PRIMARY KEY not null,
+	nombre varchar(30) not null,
+	icono varchar(255) not null
+);
+
+CREATE TABLE IF NOT EXISTS premio(
+	id_premio int not null PRIMARY KEY,
+	id_categoria int not null,
+	id_logo int not null,
+	nombre varchar(50) not null,	
+	descripcion varchar(50) not null,
+	costo int not null
+);
+
+CREATE TABLE IF NOT EXISTS logo(
+	id_logo INT not null PRIMARY KEY,
+	nombreEmp varchar(50) not null,
+	urlIcono varchar(255) not null
+);
+
+
+
 ALTER TABLE usuario ADD CONSTRAINT FK_usuarios_persona FOREIGN KEY(id_persona) REFERENCES persona(id_persona);
 ALTER TABLE cadena_ctrl ADD CONSTRAINT FK_cadena_maquina FOREIGN KEY(id_maquina) REFERENCES maquina(id_maquina);
+ALTER TABLE premio ADD CONSTRAINT FK_premio_categoria FOREIGN KEY(id_categoria) REFERENCES categoriaPremio(id_categoria);
+ALTER TABLE premio ADD CONSTRAINT FK_logo_premio FOREIGN KEY(id_logo) REFERENCES logo(id_logo);
+
+
+
 
 
