@@ -54,20 +54,39 @@ class Cuerpo extends StatefulWidget {
 
 class _CuerpoState extends State<Cuerpo> {
 
-  Future <Map<String, dynamic>> getInfo(int ruta) async {
+  TextStyle estiloNombreMes = TextStyle(
+    fontSize: (20 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier,
+  );
+
+  double tamanoFlecha =
+      (30 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier;
+
+  int _indice = 0,maximo;
+  bool bandera = false;
+
+  List<String> meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+  Future<Map<String, dynamic>> getInfo(int ruta) async {
     var id = 1;
     var url = 'http://${Constantes.HOST}';
-    switch(ruta){
-      case 1: url += '/RIT/Select/C-Estadisticas.php?usId=$id';
+    switch (ruta) {
+      case 1:
+        url += '/RIT/Select/C-Estadisticas.php?usId=$id';
         break;
-      case 2: url += '/RIT/Select/C-EstadisticasMes.php?usId=$id&mes=4';
+      case 2:
+        url += '/RIT/Select/C-EstadisticasMes.php?usId=$id&mes=4';
         break;
-      case 3: url += '/RIT/Select/C-Estadisticas.php?usId=$id';
+      case 3:
+        url += '/RIT/Select/C-EstadisticasAno.php?usId=$id';
         break;
     }
 
     http.Response response = await http.get(url);
     var data = jsonDecode(response.body);
+    if( ruta == 2){
+      /*_indice = data[0].length;
+      print("Este es el indice al principio : $_indice");*/
+    }
     //print(data);
     return data;
   }
@@ -85,18 +104,41 @@ class _CuerpoState extends State<Cuerpo> {
             ));
           },
         ),
-        //contenedorMaestro(),
+        LayoutBuilder(
+          builder: (context, constraint) {
+            return LayoutBuilder(
+              builder: (context, constraint) {
+                return SingleChildScrollView(
+                    child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: (5 * SizeConfig.heightMultiplier) /
+                          SizeConfig.heightMultiplier,
+                    ),
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: constraint.maxHeight),
+                      child: contenedorMaestro2(),
+                    )
+                  ],
+                ));
+              },
+            );
+            /*SingleChildScrollView(
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                  child: contenedorMaestro2(),
+                ));*/
+          },
+        ),
         LayoutBuilder(
           builder: (context, constraint) {
             return SingleChildScrollView(
                 child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraint.maxHeight),
-              child: contenedorMaestro2(),
+              child: vistaAnual(),
             ));
           },
-        ),
-        Center(
-          child: Text("Pestana 3"),
         )
       ],
     );
@@ -118,7 +160,6 @@ class _CuerpoState extends State<Cuerpo> {
                         width: MediaQuery.of(context).size.width,
                         height: 100,
                         child: Column(
-
                           children: <Widget>[
                             Expanded(child: TimeSeriesBar.withSampleData()),
                             SizedBox(
@@ -156,21 +197,92 @@ class _CuerpoState extends State<Cuerpo> {
       child: FutureBuilder(
           future: getInfo(2),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //print("ENTROOOOOOOOOOOOOO");
             if (snapshot.data != null) {
+              //_indice = snapshot.data["puntos"].length - 1;
+              if( !bandera){
+                maximo = snapshot.data["puntos"].length - 1;
+                _indice = maximo;
+                bandera = true;
+              }
+
               return Column(
                 children: <Widget>[
                   Container(
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          child: GestureDetector(
+                            onTap: () {
+                              /*print("IZQUIERDA");
+                              indice--;
+                              if( indice < 0 ){
+                                indice = maximo;
+                              }
+                              print("Valor del Indice: $indice");*/
+                              setState(() {
+                                _indice--;
+                                if( _indice < 0 ){
+                                  _indice = maximo;
+                                }
+                                print("Valor del Indice: $_indice");
+                              });
+                            },
+                            child: Icon(
+                              Icons.chevron_left,
+                              size: tamanoFlecha,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            "${meses[_indice]}",
+                            textAlign: TextAlign.center,
+                            style: estiloNombreMes,
+                          ),
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          height: tamanoFlecha,
+                          alignment: Alignment.center,
+                        ),
+                        Container(
+                          alignment: Alignment.center,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          child: GestureDetector(
+                            onTap: () {
+                              //print("DERECHA");
+                              setState(() {
+                                _indice++;
+                                if( _indice > maximo){
+                                  _indice = 0;
+                                }
+                              });
+                              //print("Valor del Indice: $_indice");
+                            },
+                            child: Icon(
+                              Icons.chevron_right,
+                              size: tamanoFlecha,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
                     height: MediaQuery.of(context).size.height * 0.5,
-                    child: charts.TimeSeriesChart( //TimeSeriesBar.withSampleData(),
-                      _infoMensual(snapshot.data["puntos"]),
+                    child: charts.TimeSeriesChart(
+                      //TimeSeriesBar.withSampleData(),
+                      _infoMensual(
+                          snapshot.data["puntos"][_indice], snapshot.data["puntos"]),
                       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-                      animate:false,
+                      animate: false,
                     ),
                   ),
                   SizedBox(
-                    height: 500,
+                    height: 50,
                   ),
-                  Text("HOLAAAAAAAAAA")
+                  Text("Tapas Acumuladas: ${snapshot.data["total"][_indice]}")
                 ],
               );
             } else {
@@ -233,9 +345,84 @@ class _CuerpoState extends State<Cuerpo> {
     );
   }
 
-  static List<charts.Series<Historico, String>> _infoSemanal(List info) {
+  //
+  Widget vistaAnual() {
+    return Container(
+      child: FutureBuilder(
+          future: getInfo(3),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data != null) {
+              bool error = snapshot.data["fallo"] == "true";
+              int codigo = snapshot.data["codigo"];
+              Widget vista;
 
-    List<Historico> data = info.map((val) =>  Historico.fromJson(val)).toList();
+              if (error) {
+                switch (codigo) {
+                  case 1:
+                    vista = Center(
+                      child: Text(snapshot.data["mensaje"]),
+                    );
+                    break;
+                  case 2:
+                    vista = Center(
+                      child: Text(snapshot.data["mensaje"]),
+                    );
+                    break;
+                  case 3:
+                    vista = Center(
+                      child: Text(snapshot.data["mensaje"]),
+                    );
+                    break;
+                }
+              } else {
+                vista = Column(
+                  children: <Widget>[
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      child: charts.BarChart(
+                        _infoAnual(snapshot.data["puntos"]),
+                        animate: false,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Text("Tapas Acumuladas: ${snapshot.data["total"]}")
+                  ],
+                );
+              }
+
+              return vista;
+            } else {
+              return Container(
+                /*width: double.infinity,
+                    height: double.infinity,*/
+                child: Center(
+                  child: SizedBox(
+                    width: 42 * SizeConfig.widthMultiplier,
+                    height: 42 * SizeConfig.widthMultiplier,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 4 * SizeConfig.widthMultiplier /*18*/,
+                    ),
+                  ),
+                ),
+              );
+            }
+          }),
+    );
+  }
+
+  void _cambiaInfo(){
+    setState(() {
+        _indice--;
+        if( _indice < 0 ){
+          _indice = maximo;
+        }
+    });
+  }
+
+  static List<charts.Series<Historico, String>> _infoSemanal(List info) {
+    List<Historico> data = info.map((val) => Historico.fromJson(val)).toList();
     /*print(info);
     print("!");
     var data = new List<Historico>.from(info);*/
@@ -251,9 +438,12 @@ class _CuerpoState extends State<Cuerpo> {
     ];
   }
 
-  static List<charts.Series<HistoricoMensual, DateTime>> _infoMensual(List info) {
-    print("ENTROOOOOO: $info");
-    List<HistoricoMensual> data = info.map((val) =>  HistoricoMensual.fromJson(val)).toList();
+  List<charts.Series<HistoricoMensual, DateTime>> _infoMensual(
+      List info, List info2) {
+    List<HistoricoMensual> data =
+        info.map((val) => HistoricoMensual.fromJson(val)).toList();
+
+    //manejaMatriz(info, info2);
 
     return [
       new charts.Series<HistoricoMensual, DateTime>(
@@ -266,6 +456,27 @@ class _CuerpoState extends State<Cuerpo> {
     ];
   }
 
+  void manejaMatriz(List meses1, List meses2) {
+    print("===== FORMA 1 =====");
+
+    print("===== FORMA 2 =====");
+    //print("asas${meses2[meses2.length - 1]}asas");
+  }
+
+  static List<charts.Series<HistoricoAnual, String>> _infoAnual(List info) {
+    List<HistoricoAnual> data =
+        info.map((val) => HistoricoAnual.fromJson(val)).toList();
+
+    return [
+      new charts.Series<HistoricoAnual, String>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (HistoricoAnual historico, _) => historico.mes,
+        measureFn: (HistoricoAnual historico, _) => historico.tapas,
+        data: data,
+      )
+    ];
+  }
 }
 
 class SimpleBarChart extends StatelessWidget {
@@ -345,7 +556,7 @@ class TimeSeriesBar extends StatelessWidget {
       animate: animate,
       // Set the default renderer to a bar renderer.
       // This can also be one of the custom renderers of the time series chart.
-      defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+
       // It is recommended that default interactions be turned off if using bar
       // renderer, because the line point highlighter is the default for time
       // series chart.

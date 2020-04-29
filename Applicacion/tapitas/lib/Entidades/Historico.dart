@@ -37,5 +37,15 @@ class HistoricoMensual{
 }
 
 class HistoricoAnual{
+  final String mes;
+  final int tapas;
 
+  HistoricoAnual({this.mes,this.tapas});
+
+  factory HistoricoAnual.fromJson(Map<String, dynamic> parsedJson){
+    return HistoricoAnual(
+        mes: parsedJson['mes'].toString(),
+        tapas : int.parse(parsedJson['puntos'].toString())
+    );
+  }
 }

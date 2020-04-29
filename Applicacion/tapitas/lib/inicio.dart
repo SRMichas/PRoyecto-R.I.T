@@ -134,7 +134,7 @@ class Cuerpo extends StatelessWidget {
       //margin: EdgeInsets.only(left: 5,right: 5),
       child: GestureDetector(
         onTap: (){
-            Scaffold.of(contexto).showSnackBar(SnackBar(content: Text("Presionaste en: "+id.toString()),duration: Duration(seconds: 1),));
+            //Scaffold.of(contexto).showSnackBar(SnackBar(content: Text("Presionaste en: "+id.toString()),duration: Duration(seconds: 1),));
             var actividad;
             switch(id){
               case 1:
