@@ -1,0 +1,18 @@
+body
+{
+    background-color:lightgrey;
+}
+
+#img_nav
+{
+    width: 50px;
+    height: 50px;
+}
+.nav
+{
+    background-color: white;
+}
+.vertical
+{
+    height:100vh;
+}
