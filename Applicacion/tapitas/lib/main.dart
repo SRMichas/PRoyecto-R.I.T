@@ -5,7 +5,6 @@ import 'login.dart';
 import 'resgistro.dart';
 import 'inicio.dart';
 import 'puntuacion.dart';
-import 'historial.dart';
 import 'premios.dart';
 import 'ListaPremios.dart';
 

@@ -7,7 +7,6 @@ $password ="";
 
 $json = array();
 $usuario = $_GET["usId"];
-$mes = $_GET["mes"];
 
 class Respuesta{
     public $puntos;
@@ -59,45 +58,50 @@ $totales = [];
         $meses = rangoMeses($mes,$fecha);
         
 
-        $sql2 =     "SELECT c.tapas_contadas, ud.fecha, month(ud.fecha),day(ud.fecha) 
-                    FROM usuariodetalle ud 
-                    INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
-                    INNER JOIN cadena_ctrl c On c.id_cadena = ud.id_cadena 
-                    WHERE   MONTH(ud.fecha) in {$meses} and ud.id_usuario={$usuario}
-                            and YEAR(ud.fecha) = {$ano} and c.status = 1
-                    ORDER BY ud.fecha";
+        $consultaEstadistica =
+                 "SELECT c.tapas_contadas, ud.fecha, month(ud.fecha),day(ud.fecha) 
+                  FROM usuariodetalle ud 
+                  INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
+                  INNER JOIN cadena_ctrl c On c.id_cadena = ud.id_cadena 
+                  WHERE   MONTH(ud.fecha) in {$meses} and ud.id_usuario = {$usuario}
+                          and YEAR(ud.fecha) = {$ano} and c.status = 1
+                  ORDER BY ud.fecha";
 
-        $resultado2 = mysqli_query($conexion,$sql2);
-        if( $resultado2 ){
+        $estadisticas = mysqli_query($conexion,$consultaEstadistica);
+        if( $estadisticas ){
             $bandera = false;
             $puntosAcumulados = 0;
-            while($us2 = mysqli_fetch_array($resultado2) ){
+            while($renglon = mysqli_fetch_array($estadisticas) ){
                 
-                $todosLosMeses[$us2[2] - 1][$us2[3]-1] = new Historico($us2[1],$us2[0]);
-                $totales[$us2[2] - 1] += $us2[0];
-                $estadistica[] = new Historico($us2[1],$us2[0]);
-                $puntosAcumulados += $us2[0];
+                $todosLosMeses[$renglon[2] - 1][$renglon[3]-1] = new Historico($renglon[1],$renglon[0]);
+                $totales[$renglon[2] - 1] += $renglon[0];
+                $estadistica[] = new Historico($renglon[1],$renglon[0]);
+                $puntosAcumulados += $renglon[0];
                 $res -> fallo = false;
                 $bandera = true;
             }
 
             $res -> puntos = $estadistica;
             $res -> total = $totales;
+
             if( $bandera ){
                 $res -> mensaje = "Se pudo traer las estadisticas";
                 $res -> puntos = $todosLosMeses;
+                $res -> codigo = 0;
             }else{
-                $res -> mensaje = "El usuario no tiene registros";
-
+                $res -> mensaje = "Ups!!! parece que no haz depositado";
                 $res -> fallo = true;
+                $res -> codigo = 1;
             }
         }else{
-            $res -> mensaje = "No se puede Recuperar el historico";
+            $res -> mensaje = "No se puede recuperar las estadisticas";
             $res -> fallo = true;
+            $res -> codigo = 2;
         }
     }else{
-        $res -> mensaje = "No se puede Recuperar la fecha";
+        $res -> mensaje = "No se puede recuperar la fecha";
         $res -> fallo = true;
+        $res -> codigo = 3;
     }
 
     mysqli_close($conexion);

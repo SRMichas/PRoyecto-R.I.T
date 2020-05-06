@@ -1,4 +1,3 @@
-
 <?php
 $hostname ="localhost";
 $database ="proyectorit";
@@ -13,6 +12,7 @@ class Respuesta{
     public $total;
     public $mensaje;
     public $fallo;
+    public $codigo;
 }
 
 class Historico{
@@ -26,7 +26,6 @@ class Historico{
 }
 
 $res = new Respuesta();
-$historico = new Historico("",0);
 $semana = array();
 $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
 
@@ -40,49 +39,57 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
 
 
     $conexion = mysqli_connect($hostname,$username,$password,$database);
-    if($conexion -> connect_error)
-    {
-        die("Coneccion fallida" .$conexion->connect_error);
+
+    if( !$conexion ){
+        die("Coneccion fallida"/*.mysqli_connect_error()*/);
     }
     
-    $consulta = "SELECT week(CONVERT('2020-04-12',DATE)),week(CURRENT_DATE)";
+    $consulta = "SELECT CONVERT('2020-04-12',DATE),CURRENT_DATE";
 
-    $resultado = mysqli_query($conexion,$consulta);
+    $resultadoFecha = mysqli_query($conexion,$consulta);
 
-    if( $resultado ){
-        $fecha = mysqli_fetch_row($resultado)[0];
-        $sql2 = "SELECT c.tapas_contadas, DAYOFWEEK(ud.fecha),DAYNAME(ud.fecha) 
+    if( $resultadoFecha ){
+        $fecha = mysqli_fetch_row($resultadoFecha);
+
+        $consultaEstadisticas = "SELECT c.tapas_contadas, DAYOFWEEK(ud.fecha),DAYNAME(ud.fecha) 
                  FROM usuariodetalle ud 
                  INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
                  INNER JOIN cadena_ctrl c On c.id_cadena = ud.id_cadena 
-                 WHERE week(ud.fecha) = '{$fecha}' and ud.id_usuario='{$usuario}' and c.status = 1";
+                 WHERE week(ud.fecha) = week('{$fecha[0]}') and year(ud.fecha) = year('{$fecha[0]}')
+                 and ud.id_usuario = {$usuario} and c.status = 1";
 
-        $resultado2 = mysqli_query($conexion,$sql2);
-        if( $resultado2 ){
+        $estadisticas = mysqli_query($conexion,$consultaEstadisticas);
+
+        if( $estadisticas ){
             $bandera = false;
             $puntosAcumulados = 0;
-            while($us2 = mysqli_fetch_array($resultado2) ){
-                $semana[$us2[1] - 1] = new Historico($dias[$us2[1] - 1],$us2[0]);
-                $puntosAcumulados += $us2[0];
+            while($renglon = mysqli_fetch_array($estadisticas) ){
+                $semana[$renglon[1] - 1] = new Historico($dias[$renglon[1] - 1],$renglon[0]);
+                $puntosAcumulados += $renglon[0];
                 $res -> fallo = false;
                 $bandera = true;
             }
             $res -> puntos = $semana;
             $res -> total = $puntosAcumulados;
-            if( $bandera ){
-                $res -> mensaje = "Se pudo traer las categogiras";
-            }else{
-                $res -> mensaje = "No se pudo traer las categorias";
-                $res -> fallo = true;
-        }
 
+            if( $bandera ){
+                $res -> mensaje = "Se muestran los datos reales";
+                $res -> fallo = false;
+                $res -> codigo = 0;
+            }else{
+                $res -> mensaje = "Se muestran los datos por defectos";
+                $res -> fallo = false;
+                $res -> codigo = 0;
+            }
         }else{
-            $res -> mensaje = "No se puede Recuperara el historico";
+            $res -> mensaje = "Error al recuperar el historico";
             $res -> fallo = true;
+            $res -> codigo = 1;
         }
     }else{
-        $res -> mensaje = "No se puede Recuperara la fecha";
+        $res -> mensaje = "No se puede Recuperar la fecha";
         $res -> fallo = true;
+        $res -> codigo = 2;
     }
 
     mysqli_close($conexion);

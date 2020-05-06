@@ -55,10 +55,10 @@ class SizeConfig {
 
 
 
-    print("Ancho -> ${_screenWidth}");
+    /*print("Ancho -> ${_screenWidth}");
     print("Ancho -> ${_screenHeight}");
 
     print("Bloc Ancho -> ${_blockWidth}");
-    print("Bloc Alto -> ${_blockHeight}");
+    print("Bloc Alto -> ${_blockHeight}");*/
   }
 }
