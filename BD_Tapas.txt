@@ -9,8 +9,10 @@ CREATE TABLE IF NOT EXISTS persona (
 CREATE TABLE IF NOT EXISTS usuario(
 	id_usuario int PRIMARY KEY AUTO_INCREMENT,
 	id_persona int not null,
-       email varchar(50) NOT null,
-       pass varchar(50) NOT null
+    email varchar(50) NOT null,
+    pass varchar(50) NOT null
+    puntos_actuales int(11) NOT NULL,
+  	puntos_gastados int(11) NOT NULL,
 );
 CREATE TABLE IF NOT EXISTS cadena_ctrl(
 	id_cadena int PRIMARY KEY AUTO_INCREMENT,

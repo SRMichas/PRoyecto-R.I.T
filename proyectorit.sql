@@ -1,331 +1,219 @@
--- phpMyAdmin SQL Dump
--- version 4.9.1
--- https://www.phpmyadmin.net/
---
--- Servidor: 127.0.0.1
--- Tiempo de generación: 26-04-2020 a las 02:07:29
--- Versión del servidor: 10.4.8-MariaDB
--- Versión de PHP: 7.3.11
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+CREATE DATABASE IF NOT EXISTS proyectorit DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE proyectorit;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `sp_compra`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_compra` (IN `id` INT, IN `premio` INT, IN `actuales` INT, IN `gastados` INT)  NO SQL
+BEGIN
+DECLARE gastadosA INT;
+DECLARE servicioB INT;
+SELECT puntos_gastados INTO gastadosA FROM usuario WHERE id_usuario = id;
 
---
--- Base de datos: `proyectorit`
---
+INSERT INTO servicio VALUES (NULL,premio,1);
 
--- --------------------------------------------------------
+SELECT max(id_servicio) INTO servicioB FROM servicio;
 
---
--- Estructura de tabla para la tabla `cadena_ctrl`
---
+INSERT INTO usuarioservicio VALUES (id,servicioB,CURRENT_DATE,1);
 
-CREATE TABLE `cadena_ctrl` (
-  `id_cadena` int(11) NOT NULL,
-  `cadena` varchar(50) NOT NULL,
-  `id_maquina` int(11) NOT NULL,
-  `tapas_contadas` int(11) NOT NULL,
-  `status` bit(1) NOT NULL
+SET gastadosA = gastadosA + gastados;
+
+UPDATE usuario SET puntos_actuales = actuales, puntos_gastados= gastadosA WHERE id_usuario = id;
+
+SELECT puntos_actuales FROM usuario WHERE id_usuario = id;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_creaUsuario`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_creaUsuario` (IN `nombre` VARCHAR(50), IN `apellido` VARCHAR(100), IN `edad` INT(2), IN `codPos` INT, IN `correo` VARCHAR(100), IN `contr` VARCHAR(100))  NO SQL
+BEGIN
+
+DECLARE ultPersona INT;
+DECLARE ultUsuario INT;
+
+INSERT INTO persona VALUES (null,nombre,apellido,edad,codPos);
+
+SELECT max(id_persona) INTO ultPersona FROM persona;
+
+INSERT INTO usuario VALUES (null,ultPersona,correo,contr,0,0);
+
+SELECT u.id_usuario,p.nombre,p.apellido,p.edad,
+u.email,u.pass,u.puntos_actuales 
+FROM usuario u 
+INNER JOIN persona p ON u.id_persona = p.id_persona
+WHERE p.id_persona = ultPersona;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_infoPremios`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_infoPremios` (IN `id` INT)  BEGIN
+  DECLARE cate INTEGER;
+    
+    SELECT 1 as Bandera,puntos_actuales FROM usuario WHERE id_usuario = id;
+    
+    SELECT 2 as Bandera,cp.* FROM categoriapremio cp;
+    
+    SELECT 3 as Bandera,p.id_premio,p.id_categoria,
+    l.urlIcono,p.nombre,p.descripcion,p.costo
+    FROM premio p
+    INNER JOIN logo l ON p.id_logo = l.id_logo;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_manejo_cadena`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_manejo_cadena` (IN `id` INT, IN `cadenaB` VARCHAR(100))  NO SQL
+BEGIN
+   DECLARE id_cad INT;
+   DECLARE conteo INT;
+   DECLARE cadenaR VARCHAR(100);
+
+   SELECT 
+      cc.id_cadena ,
+      cc.cadena,
+      cc.tapas_contadas INTO conteo
+   FROM usuariodetalle ud
+   INNER JOIN cadena_ctrl cc ON ud.id_cadena = cc.id_cadena 
+   WHERE ud.id_usuario = id AND cc.cadena = cadenaB
+   AND cc.status = 0;
+
+  /* SELECT puntos_actuales INTO @actuales 
+   FROM usuario WHERE id_usuario = id;
+
+
+   UPDATE cadena_ctrl set status = 1 WHERE id_cadena = id_cad;
+
+   UPDATE usuario SET puntos_actuales = (conteo + @actuales) WHERE id_usuario = id;*/
+
+END$$
+
+DELIMITER ;
+
+DROP TABLE IF EXISTS cadena_ctrl;
+CREATE TABLE IF NOT EXISTS cadena_ctrl (
+  id_cadena int(11) NOT NULL AUTO_INCREMENT,
+  cadena varchar(150) NOT NULL,
+  id_maquina int(11) NOT NULL,
+  tapas_contadas int(11) NOT NULL,
+  status bit(1) NOT NULL,
+  PRIMARY KEY (id_cadena),
+  KEY FK_cadena_maquina (id_maquina)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+
+DROP TABLE IF EXISTS categoriapremio;
+CREATE TABLE IF NOT EXISTS categoriapremio (
+  id_categoria int(11) NOT NULL,
+  nombre varchar(30) NOT NULL,
+  icono varchar(255) NOT NULL,
+  PRIMARY KEY (id_categoria)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `cadena_ctrl`
---
+DROP TABLE IF EXISTS ciudad;
+CREATE TABLE IF NOT EXISTS ciudad (
+  id_ciudad int(11) NOT NULL AUTO_INCREMENT,
+  nombre varchar(50) NOT NULL,
+  id_estado int(11) NOT NULL,
+  activo bit(1) NOT NULL,
+  PRIMARY KEY (id_ciudad)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `cadena_ctrl` (`id_cadena`, `cadena`, `id_maquina`, `tapas_contadas`, `status`) VALUES
-(1, 'aaaaaa', 1, 352, b'1'),
-(2, 'adasdasasdasda', 1, 80, b'1'),
-(3, 'qwdasdad', 1, 189, b'1'),
-(4, '{\"tapas\":\"152\",\"mensaje\":\"holaaaa\"}', 1, 152, b'1');
+DROP TABLE IF EXISTS estado;
+CREATE TABLE IF NOT EXISTS estado (
+  id_estado int(11) NOT NULL AUTO_INCREMENT,
+  nombre varchar(50) NOT NULL,
+  activo bit(1) NOT NULL,
+  PRIMARY KEY (id_estado)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `categoriapremio`
---
-
-CREATE TABLE `categoriapremio` (
-  `id_categoria` int(11) NOT NULL,
-  `nombre` varchar(30) NOT NULL,
-  `icono` varchar(255) NOT NULL
+DROP TABLE IF EXISTS logo;
+CREATE TABLE IF NOT EXISTS logo (
+  id_logo int(11) NOT NULL,
+  nombreEmp varchar(50) NOT NULL,
+  urlIcono varchar(255) NOT NULL,
+  PRIMARY KEY (id_logo)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `categoriapremio`
---
-
-INSERT INTO `categoriapremio` (`id_categoria`, `nombre`, `icono`) VALUES
-(1, 'Netflix', 'http://192.168.1.111/RIT/img/netflix_icon.png'),
-(2, 'Google Play', 'http://192.168.1.111/RIT/img/google_play_icon.png'),
-(3, 'Tiempo Aire', 'http://192.168.1.111/RIT/img/recarga_icon.png'),
-(4, 'Xbox', 'http://192.168.1.111/RIT/img/xbox_icon.png'),
-(5, 'Play Station', 'http://192.168.1.111/RIT/img/playstation_icon.webp'),
-(6, 'Spotify', 'http://192.168.1.111/RIT/img/spotify_icon.png'),
-(7, 'Steam', 'http://192.168.1.111/RIT/img/steam_icon2.jpg');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `logo`
---
-
-CREATE TABLE `logo` (
-  `id_logo` int(11) NOT NULL,
-  `nombreEmp` varchar(50) NOT NULL,
-  `urlIcono` varchar(255) NOT NULL
+DROP TABLE IF EXISTS maquina;
+CREATE TABLE IF NOT EXISTS maquina (
+  id_maquina int(11) NOT NULL,
+  tapas_contadas int(11) NOT NULL,
+  PRIMARY KEY (id_maquina)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `logo`
---
+DROP TABLE IF EXISTS persona;
+CREATE TABLE IF NOT EXISTS persona (
+  id_persona int(11) NOT NULL AUTO_INCREMENT,
+  nombre varchar(50) NOT NULL,
+  apellido varchar(50) NOT NULL,
+  edad char(3) NOT NULL,
+  codigo_postal varchar(10) NOT NULL,
+  PRIMARY KEY (id_persona)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `logo` (`id_logo`, `nombreEmp`, `urlIcono`) VALUES
-(1, 'netflix', 'http://192.168.1.111/RIT/img/netflix_icon.png'),
-(2, 'google play', 'http://192.168.1.111/RIT/img/google_play_icon.png'),
-(3, 'telcel', 'http://192.168.1.111/RIT/img/telcel_icon.png'),
-(4, 'At&t', 'http://192.168.1.111/RIT/img/at&t_icon.png'),
-(5, 'Movistar', 'http://192.168.1.111/RIT/img/movistar_icon.png'),
-(6, 'Xbox cash', 'http://192.168.1.111/RIT/img/xbox_cash.png'),
-(7, 'Play station cash', 'http://192.168.1.111/RIT/img/playstation_icon.webp'),
-(8, 'Spotify', 'http://192.168.1.111/RIT/img/spotify_icon.png'),
-(9, 'Steam', 'http://192.168.1.111/RIT/img/steam_icon2.jpg');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `maquina`
---
-
-CREATE TABLE `maquina` (
-  `id_maquina` int(11) NOT NULL,
-  `tapas_contadas` int(11) NOT NULL
+DROP TABLE IF EXISTS premio;
+CREATE TABLE IF NOT EXISTS premio (
+  id_premio int(11) NOT NULL,
+  id_categoria int(11) NOT NULL,
+  id_logo int(11) NOT NULL,
+  nombre varchar(50) NOT NULL,
+  descripcion varchar(50) NOT NULL,
+  costo int(11) NOT NULL,
+  PRIMARY KEY (id_premio),
+  KEY FK_premio_categoria (id_categoria)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `maquina`
---
+DROP TABLE IF EXISTS servicio;
+CREATE TABLE IF NOT EXISTS servicio (
+  id_servicio int(11) NOT NULL AUTO_INCREMENT,
+  id_premio int(11) NOT NULL,
+  activo bit(1) NOT NULL,
+  PRIMARY KEY (id_servicio)
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `maquina` (`id_maquina`, `tapas_contadas`) VALUES
-(1, 352);
+DROP TABLE IF EXISTS usuario;
+CREATE TABLE IF NOT EXISTS usuario (
+  id_usuario int(11) NOT NULL AUTO_INCREMENT,
+  id_persona int(11) NOT NULL,
+  email varchar(50) NOT NULL,
+  pass varchar(50) NOT NULL,
+  puntos_actuales int(11) NOT NULL,
+  puntos_gastados int(11) NOT NULL,
+  PRIMARY KEY (id_usuario),
+  KEY FK_usuarios_persona (id_persona)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
 
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `persona`
---
-
-CREATE TABLE `persona` (
-  `id_persona` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `apellido` varchar(50) NOT NULL,
-  `edad` char(3) NOT NULL,
-  `codigo_postal` varchar(10) NOT NULL
+DROP TABLE IF EXISTS usuariodetalle;
+CREATE TABLE IF NOT EXISTS usuariodetalle (
+  id_usuario int(11) NOT NULL,
+  id_cadena int(11) NOT NULL,
+  fecha date NOT NULL,
+  id_maquina int(11) NOT NULL,
+  PRIMARY KEY (id_usuario,id_cadena),
+  KEY FK_detalle_cadena (id_cadena)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `persona`
---
-
-INSERT INTO `persona` (`id_persona`, `nombre`, `apellido`, `edad`, `codigo_postal`) VALUES
-(1, 'Elias', 'Soria', '0', '00000'),
-(2, 'alberto', 'loera', '0', '000000');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `premio`
---
-
-CREATE TABLE `premio` (
-  `id_premio` int(11) NOT NULL,
-  `id_categoria` int(11) NOT NULL,
-  `id_logo` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `descripcion` varchar(50) NOT NULL,
-  `costo` int(11) NOT NULL
+DROP TABLE IF EXISTS usuarioservicio;
+CREATE TABLE IF NOT EXISTS usuarioservicio (
+  id_usuario int(11) NOT NULL,
+  id_servicio int(11) NOT NULL,
+  fecha date NOT NULL,
+  activo bit(1) NOT NULL,
+  PRIMARY KEY (id_usuario,id_servicio)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `premio`
---
 
-INSERT INTO `premio` (`id_premio`, `id_categoria`, `id_logo`, `nombre`, `descripcion`, `costo`) VALUES
-(1, 1, 1, 'Tarjeta de $150', 'Tarjeta Prepagada de 150', 1500),
-(2, 1, 1, 'Tarjeta de $300', 'Tarjeta Prepagada de 300', 3000),
-(3, 1, 1, 'Tarjeta de $500', 'Tarjeta Prepagada de 500', 5000),
-(4, 1, 1, 'Tarjeta de $1000', 'Tarjeta Prepagada de 1000', 9000),
-(5, 2, 2, 'Tarjeta de $100', 'Tarjeta Prepagada de 100', 15490),
-(6, 2, 2, 'Tarjeta de $200', 'Tarjeta Prepagada de 200', 14890),
-(7, 2, 2, 'Tarjeta de $300', 'Tarjeta Prepagada de 300', 10680),
-(8, 3, 3, 'Telcel', 'Saldo de $10', 1030),
-(9, 3, 4, 'AT&T', 'Saldo de $10', 1030),
-(10, 3, 5, 'Movistar', 'Saldo de $10', 1030),
-(11, 4, 6, 'Xbox $150', 'Tarjeta Pregada de 150', 1549),
-(12, 4, 6, 'Xbox $300', 'Tarjeta Pregada de 300', 17940),
-(13, 4, 6, 'Xbox $600', 'Tarjeta Pregada de 600', 18019),
-(14, 5, 7, 'Tarjeta de $10', 'Tarjeta Prepagada de 10', 155470),
-(15, 5, 7, 'Tarjeta de $20', 'Tarjeta Prepagada de 20', 479810),
-(16, 5, 7, 'Tarjeta de $30', 'Tarjeta Prepagada de 30', 134690),
-(17, 6, 8, 'Tarjeta de $100', 'Tarjeta Prepagada de 100', 15490),
-(18, 6, 8, 'Tarjeta de $200', 'Tarjeta Prepagada de 200', 148960),
-(19, 6, 8, 'Tarjeta de $300', 'Tarjeta Prepagada de 300', 21780),
-(20, 7, 9, 'Tarjeta de $100', 'Tarjeta Prepagada de 100', 87460),
-(21, 7, 9, 'Tarjeta de $200', 'Tarjeta Prepagada de 200', 74230),
-(22, 7, 9, 'Tarjeta de $300', 'Tarjeta Prepagada de 300', 78150),
-(23, 7, 9, 'Tarjeta de $400', 'Tarjeta Prepagada de 400', 75330);
+ALTER TABLE cadena_ctrl
+  ADD CONSTRAINT FK_cadena_maquina FOREIGN KEY (id_maquina) REFERENCES maquina (id_maquina);
 
--- --------------------------------------------------------
+ALTER TABLE premio
+  ADD CONSTRAINT FK_premio_categoria FOREIGN KEY (id_categoria) REFERENCES categoriapremio (id_categoria);
 
---
--- Estructura de tabla para la tabla `usuario`
---
+ALTER TABLE usuario
+  ADD CONSTRAINT FK_usuarios_persona FOREIGN KEY (id_persona) REFERENCES persona (id_persona);
 
-CREATE TABLE `usuario` (
-  `id_usuario` int(11) NOT NULL,
-  `id_persona` int(11) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `pass` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id_usuario`, `id_persona`, `email`, `pass`) VALUES
-(1, 1, 'a@', '1234'),
-(2, 2, 'ee@', '123');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `usuariodetalle`
---
-
-CREATE TABLE `usuariodetalle` (
-  `id_usuario` int(11) NOT NULL,
-  `id_cadena` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `id_maquina` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Volcado de datos para la tabla `usuariodetalle`
---
-
-INSERT INTO `usuariodetalle` (`id_usuario`, `id_cadena`, `fecha`, `id_maquina`) VALUES
-(1, 1, '2020-04-12', 1),
-(1, 2, '2020-04-01', 1),
-(1, 3, '2020-03-18', 1),
-(1, 4, '2020-04-16', 1);
-
---
--- Índices para tablas volcadas
---
-
---
--- Indices de la tabla `cadena_ctrl`
---
-ALTER TABLE `cadena_ctrl`
-  ADD PRIMARY KEY (`id_cadena`),
-  ADD KEY `FK_cadena_maquina` (`id_maquina`);
-
---
--- Indices de la tabla `categoriapremio`
---
-ALTER TABLE `categoriapremio`
-  ADD PRIMARY KEY (`id_categoria`);
-
---
--- Indices de la tabla `logo`
---
-ALTER TABLE `logo`
-  ADD PRIMARY KEY (`id_logo`);
-
---
--- Indices de la tabla `maquina`
---
-ALTER TABLE `maquina`
-  ADD PRIMARY KEY (`id_maquina`);
-
---
--- Indices de la tabla `persona`
---
-ALTER TABLE `persona`
-  ADD PRIMARY KEY (`id_persona`);
-
---
--- Indices de la tabla `premio`
---
-ALTER TABLE `premio`
-  ADD PRIMARY KEY (`id_premio`),
-  ADD KEY `FK_premio_categoria` (`id_categoria`);
-
---
--- Indices de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`),
-  ADD KEY `FK_usuarios_persona` (`id_persona`);
-
---
--- Indices de la tabla `usuariodetalle`
---
-ALTER TABLE `usuariodetalle`
-  ADD PRIMARY KEY (`id_usuario`,`id_cadena`);
-
---
--- AUTO_INCREMENT de las tablas volcadas
---
-
---
--- AUTO_INCREMENT de la tabla `cadena_ctrl`
---
-ALTER TABLE `cadena_ctrl`
-  MODIFY `id_cadena` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT de la tabla `persona`
---
-ALTER TABLE `persona`
-  MODIFY `id_persona` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `usuario`
---
-ALTER TABLE `usuario`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `cadena_ctrl`
---
-ALTER TABLE `cadena_ctrl`
-  ADD CONSTRAINT `FK_cadena_maquina` FOREIGN KEY (`id_maquina`) REFERENCES `maquina` (`id_maquina`);
-
---
--- Filtros para la tabla `premio`
---
-ALTER TABLE `premio`
-  ADD CONSTRAINT `FK_premio_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categoriapremio` (`id_categoria`);
-
---
--- Filtros para la tabla `usuario`
---
-ALTER TABLE `usuario`
-  ADD CONSTRAINT `FK_usuarios_persona` FOREIGN KEY (`id_persona`) REFERENCES `persona` (`id_persona`);
+ALTER TABLE usuariodetalle
+  ADD CONSTRAINT FK_detalle_cadena FOREIGN KEY (id_cadena) REFERENCES cadena_ctrl (id_cadena),
+  ADD CONSTRAINT FK_detalle_usuario FOREIGN KEY (id_usuario) REFERENCES usuario (id_usuario);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
