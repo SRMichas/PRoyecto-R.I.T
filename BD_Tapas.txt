@@ -60,12 +60,13 @@ CREATE TABLE IF NOT EXISTS puntuacion (
 );
 
 
-
+ALTER TABLE usuariodetalle ADD CONSTRAINT FK_detalle_usuario FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario);
+ALTER TABLE usuariodetalle ADD CONSTRAINT FK_detalle_cadena FOREIGN KEY(id_cadena) REFERENCES cadena_ctrl(id_cadena);
 ALTER TABLE usuario ADD CONSTRAINT FK_usuarios_persona FOREIGN KEY(id_persona) REFERENCES persona(id_persona);
 ALTER TABLE cadena_ctrl ADD CONSTRAINT FK_cadena_maquina FOREIGN KEY(id_maquina) REFERENCES maquina(id_maquina);
 ALTER TABLE premio ADD CONSTRAINT FK_premio_categoria FOREIGN KEY(id_categoria) REFERENCES categoriaPremio(id_categoria);
 ALTER TABLE premio ADD CONSTRAINT FK_logo_premio FOREIGN KEY(id_logo) REFERENCES logo(id_logo);
-ALTER TABLE puntuacion ADD CONSTRAINT FK_usuario_puntuacion FOREIGN KEY(id_usuario) REFERENCES usuario(id_usuario);
+ALTER TABLE ciudad ADD CONSTRAINT FK_ciudad_estado FOREIGN KEY(id_estado) REFERENCES estado(id_estado);
 
 
 

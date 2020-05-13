@@ -47,7 +47,7 @@ class _VistaAnualState extends State<VistaAnual>
 
       if( _status == 200) {
         var data = jsonDecode(response.body);
-        print(data.toString());
+        //print(data.toString());
         bandera = false;
         return data;
       }else{

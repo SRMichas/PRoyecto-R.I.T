@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:tapitas/Extras/size_config.dart';
 import 'package:tapitas/Extras/Constantes.dart';
+import 'dart:collection';
 
 class MiDialogo extends StatelessWidget {
   final String titulo, descripcion;
   final int tipoTitulo;
   Color fondoTitulo,colorLetra;
+  final Function onRun;
+  final Map<String,dynamic> datos;
 
-  MiDialogo(this.titulo, this.descripcion, this.tipoTitulo);
+  MiDialogo({this.titulo, this.descripcion, this.tipoTitulo,this.datos,this.onRun});
 
   double espaciadoVertical = ( 10 * SizeConfig.heightMultiplier ) / SizeConfig.heightMultiplier,
           redondeado = (20 * SizeConfig.widthMultiplier) / SizeConfig.widthMultiplier;
@@ -79,12 +82,23 @@ class MiDialogo extends StatelessWidget {
                 child: FlatButton(
                     textColor: Color.fromRGBO(61,82,211,1),
                     onPressed: () {
+                      HashMap<String,Object> data = new HashMap<String,Object>();
                       var res;
                       if( tipoTitulo == Constantes.C_EXITOSA)
                         res = true;
-                      else
+                      else if( tipoTitulo == 0 ) {
                         res = false;
-                      Navigator.of(context).pop(res); // To close the dialog
+                        data.putIfAbsent("nuevosPuntos", ()=> int.parse(datos["puntos"].toString()));
+                        //data.putIfAbsent("nuevo", 0);
+                      }else
+                        res = false;
+
+                      /*if( onRun != null){
+                        onRun;
+                      }*/
+                      //data.putIfAbsent("bandera", res);
+                      data.putIfAbsent("bandera",()=> res);
+                      Navigator.of(context).pop(data); // To close the dialog
                     },
                     child: Text(
                       "Cerrar",
@@ -103,7 +117,7 @@ class MiDialogo extends StatelessWidget {
 
   void defineCabezera(){
     switch(tipoTitulo){
-      case Constantes.C_EXITOSA:
+      case Constantes.C_EXITOSA: case 0:
         fondoTitulo = COL_EXITOSA;
         colorLetra = Colors.white;
         break;

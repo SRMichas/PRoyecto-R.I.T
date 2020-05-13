@@ -121,7 +121,9 @@ class _Cuerpo extends State<Pagina> {
                       codigoTitulo = Constantes.C_ERROR;
                       break;
                   }
-                  vista = MiDialogo(titulo, snapshot.data["mensaje"].toString(),codigoTitulo);
+                  vista = MiDialogo(titulo: titulo,
+                    descripcion: snapshot.data["mensaje"].toString(),
+                    tipoTitulo: codigoTitulo,);
                 }else{
                   vista = SimpleDialog(
                     children: <Widget>[
@@ -150,12 +152,13 @@ class _Cuerpo extends State<Pagina> {
   
   void _showDialog(cuerpo,tipo) async{
     dialogoVisible = true;
-    var res = await showDialog(
+    Map<String,dynamic> res = await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => MiDialogo(Constantes.T_ERROR, cuerpo, tipo)
+        builder: (context) => MiDialogo(titulo: Constantes.T_ERROR, descripcion: cuerpo, tipoTitulo:tipo)
     );
-    if( res )
+
+    if( res["bandera"] )
       Navigator.of(context).pop();
     else
       dialogoVisible = false;

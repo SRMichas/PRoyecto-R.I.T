@@ -61,4 +61,27 @@ class SizeConfig {
     print("Bloc Ancho -> ${_blockWidth}");
     print("Bloc Alto -> ${_blockHeight}");*/
   }
+
+  static double ancho(){
+    return _screenWidth;
+  }
+  static double alto(){
+    return _screenHeight;
+  }
+
+  static conversionAncho(double tamano, bool entero){
+    double res = ( tamano * widthMultiplier) / widthMultiplier;
+    if( entero)
+      return res.toInt();
+    else
+        return res;
+  }
+
+  static conversionAlto(double tamano, bool entero){
+    double res = ( tamano * heightMultiplier) / heightMultiplier;
+    if( entero )
+      return res.toInt();
+    else
+      return res;
+  }
 }

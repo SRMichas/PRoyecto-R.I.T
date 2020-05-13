@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:tapitas/Entidades/Categoria.dart';
+import 'package:tapitas/Extras/size_config.dart';
+import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/MiExcepcion.dart';
 import 'ListaPremios.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Premios extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: Text("Premios"),
@@ -17,7 +20,6 @@ class Premios extends StatelessWidget{
       body: new CuerpoE(),
     );
   }
-
 }
 
 class CuerpoE extends StatefulWidget {
@@ -25,154 +27,177 @@ class CuerpoE extends StatefulWidget {
   _CuerpoEState createState() => _CuerpoEState();
 }
 
-class _CuerpoEState extends State<CuerpoE> {
+class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<CuerpoE>{
 
   List categorias;
-  int size = 0;
+  int size = 0,_status,puntos;
   BuildContext context;
+  Future<Map<String, dynamic>> _futuro;
+  bool bandera = false,bandera2 = false;
+  Widget _vista;
 
-@override
+  TextStyle estiloPre1 = TextStyle(
+          fontSize:
+          (22 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier),
+      estiloError = TextStyle(
+          fontSize: (24 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier);
+
+
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   void initState() {
     super.initState();
-    //getCategorias();
+    _futuro = getCategorias();
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     this.context = context;
-    return LayoutBuilder(
-      builder: (context,constraints){
-        SizeConfig().iniciar(constraints);
-        return cuerpoPrincipal2();
-      },
+
+    if( !bandera ){
+      _vista = futureBuilder();
+    }
+
+    return Container(
+      child: _vista,
     );
   }
 
-  Widget controladorTab(){
-    
-  }
+  Future<Map<String, dynamic>> getCategorias() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var id = int.parse(prefs.getString("id"));
+    var url = 'http://${Constantes.HOST+Constantes.RT_SLT}';
+    url += "C-Premios2.php?usId=$id";
 
-  Future getCategorias() async{
-    var url = 'http://${Constantes.HOST}/RIT/Select/C-Categorias.php';
-    http.Response response = await http.get(url);
-    var data = jsonDecode(response.body);
-    //print(data.toString());
-    if( !data["fallo"] ){
-      categorias = data["categorias"];
-      size = categorias.length;
-      print(size);
-    }else{
+    try{
+      http.Response response = await http.get(url);
+      _status = response.statusCode;
+
+      if( _status == 200) {
+        var data = jsonDecode(response.body);
+        //print(data.toString());
+        bandera = false;
+        return data;
+      }else{
+        throw MiExcepcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",0,Icons.print);
+      }
+    } on FormatException catch (e){
+      bandera = false;
+      throw MiExcepcion("Error al conectar con el servidor",2,Icons.info,e);
+    } on Exception catch (e){
+      //el servidor esta apagado -> a rechazado la conexion
+      bandera = false;
+      throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
     }
   }
 
-  Future<List> _getCategorias() async{
-    var url = 'http://${Constantes.HOST}/RIT/Select/C-Categorias.php';
-    http.Response response = await http.get(url);
-    var data = jsonDecode(response.body);
-    //print(data.toString());
-    if( !data["fallo"] ){
-      categorias = data["categorias"];
-      size = categorias.length;
-      print(size);
-    }
-
-    return data["categorias"];
+  void cambiaPuntos(int nuevosP){
+   setState(() {
+      puntos = nuevosP;
+      bandera2 = true;
+    });
   }
 
-  
+  Widget futureBuilder(){
+    return FutureBuilder(
+        future: _futuro,
+        builder:(BuildContext context,AsyncSnapshot snapshot){
+          Widget vista;
 
-  CustomScrollView cuerpoPrincipal(var snapshot,int longitud){
+          if( snapshot.connectionState == ConnectionState.waiting){
+            return Container(
+              child: Center(
+                child: SizedBox(
+                  width: 42 * SizeConfig.widthMultiplier,
+                  height: 42 * SizeConfig.widthMultiplier,
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                    strokeWidth: 4 * SizeConfig.widthMultiplier /*18*/,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          if( snapshot.hasData){
+            bool error = snapshot.data["fallo"].toString() == "true";
+            int codigo = snapshot.data["codigo"];
+
+            if( !error ){
+
+              puntos = bandera2 ? puntos : int.parse(snapshot.data["puntos"].toString());
+              //print("ESTOS SON LOS PUNTOS ====================> ${puntos}");
+              vista = cuerpoPrincipal(snapshot.data["lista"],snapshot.data["lista"].length);
+            }else switch(codigo){
+
+            }
+
+          }else if( snapshot.hasError){
+            MiExcepcion e = snapshot.error;
+
+            vista = Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(e.icono,size:SizeConfig.conversionAlto(100, false),),
+                  Text("${e.mensaje}",style: estiloError,),
+                  SizedBox(height: SizeConfig.conversionAlto(30, false)),
+                  FlatButton(
+                    onPressed: () => setState(() {
+                      bandera = false;
+                      try {
+                        _futuro = getCategorias();
+                      }catch(e){
+                        print("ESTE EST EL ERROR =====> ${e.toString()}");
+                      }
+                    }),
+                    child: Text("Reintentar",style: estiloPre1,),
+                    textColor: Colors.blue,
+                  )
+                ],
+              ),
+            );
+          }
+          return vista;
+        }
+    );
+  }
+
+  Widget cuerpoPrincipal(List snapshot,int longitud){
+    List<Categoria> cates = snapshot.map((valor) => Categoria.fromJson(valor)).toList();
+
     return CustomScrollView(
       slivers: <Widget>[
         SliverGrid(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              //crossAxisSpacing: 20,
-              mainAxisSpacing: 2.07 * SizeConfig.heightMultiplier, //16
-              //childAspectRatio: 0.15 * SizeConfig.heightMultiplier //1.15
+            crossAxisCount: 2,
+            mainAxisSpacing: 2.07 * SizeConfig.heightMultiplier, //16
+            //childAspectRatio: 0.15 * SizeConfig.heightMultiplier //1.15
           ),
           delegate: SliverChildBuilderDelegate((BuildContext context,int idx){
-              var nombre = snapshot[idx]["nombre"],url = snapshot[idx]["icono"];
-              int categoria = int.parse(snapshot[idx]["id_categoria"]);
-              return ModeloCategoria(nombre,url,categoria);
+            Categoria cate = cates[idx];
 
-
+            return ModeloCategoria(categoriaO: cate,puntos: puntos,funcion: cambiaPuntos,);
           },childCount: longitud,),
         )
       ],
     );
   }
-
-  Container cuerpoPrincipal2(){
-    return Container(
-      child: FutureBuilder(
-          future: _getCategorias(),
-          builder:(BuildContext context,AsyncSnapshot snapshot){
-              if( snapshot.data == null){
-                return Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Center(
-                    child: SizedBox(
-                      width: 42 * SizeConfig.widthMultiplier,
-                      height: 42 * SizeConfig.widthMultiplier,
-                      child: CircularProgressIndicator(strokeWidth: 4 * SizeConfig.widthMultiplier/*18*/,),
-                    ),
-                  ),
-                );
-              }else{
-                return cuerpoPrincipal(snapshot.data,snapshot.data.length);
-              }
-          }
-      ),
-    );
-  }
 }
-
-class Categoria{
-
-}
-
-
-/*class Cuerpo extends StatelessWidget{
-
-  BuildContext context;
-  @override
-  Widget build(BuildContext context) {
-    this.context = context;
-    return cuerpoPrincipal();
-  }
-
-  CustomScrollView cuerpoPrincipal(){
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverGrid(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              //crossAxisSpacing: 20,
-              mainAxisSpacing: 35,
-              childAspectRatio: 1.4
-          ),
-          delegate: SliverChildBuilderDelegate((BuildContext context,int idx){
-            /*return Container(
-                color: Colors.red,
-                alignment: Alignment.center,
-                child: Text("Categoria # $idx"),
-            );*/
-            return ModeloCategoria("Titulo #$idx");
-          },childCount: 5),
-        )
-      ],
-    );
-  }
-}*/
 
 class ModeloCategoria extends StatelessWidget {
 
   final String nombre,url;
   final int categoria;
+  int puntos;
+  final Categoria categoriaO;
+  final Function funcion;
 
-  ModeloCategoria(this.nombre,this.url,this.categoria);
+  ModeloCategoria({this.nombre,this.url,this.categoria,this.categoriaO,this.puntos,this.funcion});
 
   TextStyle estilo = TextStyle(
     fontSize: 3.7 * SizeConfig.textMultiplier,//28
@@ -189,12 +214,15 @@ class ModeloCategoria extends StatelessWidget {
       //width: 10,
       margin: EdgeInsets.only(left: margen,right: margen),//EdgeInsets.only(left: 20,right: 20)
       child:GestureDetector(
-        onTap: (){
-          //print(nombre);
-          Navigator.push(context,
+        onTap: ()async{
+          print(puntos);
+          var res = await Navigator.push(context,
               MaterialPageRoute(
-                builder: (context) => ListaPremios(nombre,categoria),
+                builder: (context) => ListaPremios(premios: categoriaO.premios,puntos: puntos,cate: categoriaO.nombre,),
               ));
+          print("ESTE ES EL RESULTADO $res");
+          puntos = res;
+          funcion(puntos);
         },
         child: Card(
             elevation: 0.33 * SizeConfig.heightMultiplier,// 2.5
@@ -202,12 +230,8 @@ class ModeloCategoria extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  /*Icon(
-                  Icons.add,
-                  size: 100,
-                ),*/
                   Image.network(
-                    url,
+                    categoriaO.url,
                     width: tamano, //100
                     height: tamano,
                     cacheWidth: tamanoCache.toInt(), //1000
@@ -215,7 +239,7 @@ class ModeloCategoria extends StatelessWidget {
                   ),
                   SizedBox(height:espaciado), //15
                   Text(
-                    nombre,
+                    categoriaO.nombre,
                     style: estilo,
                     textAlign: TextAlign.center,
                     softWrap: true,
@@ -225,85 +249,6 @@ class ModeloCategoria extends StatelessWidget {
             )
         ),
       )
-    );
-  }
-}
-
-
-class HeaderWidget extends StatelessWidget {
-  final String text;
-
-  HeaderWidget(this.text);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      child: Text(text),
-      color: Colors.grey[200],
-    );
-  }
-}
-
-class BodyWidget extends StatelessWidget {
-  final Color color;
-
-  BodyWidget(this.color);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100.0,
-      color: color,
-      alignment: Alignment.center,
-
-    );
-  }
-}
-
-class Cuerpo2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                HeaderWidget("Header 1"),
-                HeaderWidget("Header 2"),
-                HeaderWidget("Header 3"),
-                HeaderWidget("Header 4"),
-              ],
-            ),
-          ),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              [
-                BodyWidget(Colors.blue),
-                BodyWidget(Colors.red),
-                BodyWidget(Colors.green),
-                BodyWidget(Colors.orange),
-                BodyWidget(Colors.blue),
-                BodyWidget(Colors.red),
-              ],
-            ),
-          ),
-          SliverGrid(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-            delegate: SliverChildListDelegate(
-              [
-                BodyWidget(Colors.blue),
-                BodyWidget(Colors.green),
-                BodyWidget(Colors.yellow),
-                BodyWidget(Colors.orange),
-                BodyWidget(Colors.blue),
-                BodyWidget(Colors.red),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
