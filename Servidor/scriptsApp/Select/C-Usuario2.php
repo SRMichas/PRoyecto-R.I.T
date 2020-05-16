@@ -24,10 +24,7 @@ if( isset($_GET["correo"]) && isset($_GET["contra"]) ){
         die("Coneccion fallida" .$conexion->connect_error);
     }
     
-    $consulta = "SELECT u.id_usuario,p.*,u.email,u.pass,u.puntos_actuales 
-                FROM usuario u 
-                INNER JOIN persona p ON u.id_persona = p.id_persona 
-                WHERE u.email = '{$correo}' and u.pass = '{$contra}'";
+    $consulta = "CALL sp_retUsuario('{$correo}','{$contra}');";
 
     $resultado = mysqli_query($conexion,$consulta);
 

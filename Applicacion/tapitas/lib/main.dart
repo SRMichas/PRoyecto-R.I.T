@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'startScreen.dart';
@@ -41,12 +43,26 @@ class Principal extends StatefulWidget {
 }
 
 class _PrincipalState extends State<Principal> {
+  Timer _timer;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _revisaApp();
+    //_revisaApp();
+  }
+
+  _PrincipalState() {
+    _timer = new Timer(const Duration(seconds: 2), () {
+      setState(() {
+        _revisaApp();
+      });
+    });
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    _timer.cancel();
   }
 
   @override
@@ -59,9 +75,7 @@ class _PrincipalState extends State<Principal> {
                 size: 400,
               ),
               Container(
-                child: CircularProgressIndicator(
-
-                ),
+                child: CircularProgressIndicator(),
                 margin: EdgeInsets.only(top: 25),
               )
             ],

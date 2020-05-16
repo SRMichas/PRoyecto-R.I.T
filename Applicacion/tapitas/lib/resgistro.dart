@@ -1,188 +1,231 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tapitas/CustomViews/InputRegistro.dart';
+import 'package:tapitas/CustomViews/MiDropDown.dart';
+import 'package:tapitas/Extras/size_config.dart';
+import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Entidades/estados.dart';
+import 'package:tapitas/Entidades/Ciudad.dart';
+import 'package:tapitas/MiDialogo.dart';
+import 'package:tapitas/inicio.dart';
+import 'package:tapitas/login.dart';
+
 
 class Resgistro extends StatelessWidget {
+
+  final Function function;
+
+  Resgistro({this.function});
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "Registro",
-      home: new Scaffold(
-        body: new CuerpoPrincipal(),
-      ),
+    return WillPopScope(
+        onWillPop: () => cerrar(context),
+        child: MaterialApp(
+          title: "Registro",
+          home: new Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: IconButton(
+                  icon: Icon(Icons.arrow_back,color: Colors.blueAccent,),
+                  onPressed: () => cerrar(context)
+              ),
+            ),
+            body: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints viewportConstraints) {
+                return SingleChildScrollView(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints( minHeight: viewportConstraints.maxHeight ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(top: 30),
+                          alignment: Alignment.center,
+                          child: FlutterLogo( size: 120, ),
+                        ),
+                        Text(
+                          "Registro",
+                          style: TextStyle(fontSize: 32.0, letterSpacing: 5.0),
+                        ),
+                        Formulario(function: function)
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          routes: <String,WidgetBuilder>{
+            '/inicio': (BuildContext context) => new Inicio(),
+            '/login': (BuildContext context) => new Root(),
+          },
+        )
     );
   }
-
-  void guarda() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("sesion", false);
-    print("Guardado.....");
+  
+  Future<bool> cerrar(context) async{
+    Navigator.pushReplacementNamed(context, "/login");
+    return true;
   }
 }
 
-class CuerpoPrincipal extends StatelessWidget {
-  double margenHorizontal = 35.0,
-      margenHorizontalBoton = 50.0,
-      ancho = 50,
-      divisor = 1,
-  espaciado = 25.0;
+class Formulario extends StatefulWidget {
 
+  final Function function;
+
+  Formulario({this.function});
+
+  @override
+  _FormularioState createState() => _FormularioState();
+}
+
+class _FormularioState extends State<Formulario> {
   final _formulario = GlobalKey<FormState>();
+  double margenHorizontal = SizeConfig.conversionAncho(22, false),
+      margenHorizontalBoton = SizeConfig.conversionAlto(50, false);
 
-  String nom, apeP, apeM, correo, Cont1, Cont2;
-  List<TextEditingController> escritores = [];
-  List<String> strings = [];
   BuildContext context;
+  Estado estado;
+  Ciudad ciudad;
+  var data;
+  String contraUno,_estado = "Estado",_ciudad = "Ciudad";
+  bool _visible = false,_valida = false,dialogoVisible;
 
-  Container contenedor(int id,String hintT, int tipo, IconData icono) {
-    TextEditingController controlador = new TextEditingController();
+  List<String> infoRecolectada = ["","","","","","","",""];
+  List<Object> _estados = [""], _ciudades = [""];
 
-    TextFormField texto = TextFormField(
-      controller: controlador,
-      keyboardType: tipoTexto(tipo),
-      obscureText: contrasena(tipo),
-      //style: TextStyle(color: Colors.white),
-      decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.only(top: 14.0),
-          hintText: hintT,
-          //hintStyle: TextStyle(color: Colors.white),
-          prefixIcon: Icon(
-            icono,
-            //color: Colors.white
-          ),
-        errorStyle: TextStyle(
-          fontSize: 16.0,
-
-        )
-      ),
-      validator: (valor){
-        if( id == 3) return null;
-        else if( valor.isEmpty){
-          return "No puede dejar vacio este campo";
-        }else if( id == 4 && !valor.contains("@")){
-          return "No es un correo valido";
-        }
-        return null;
-      },
-    );
-
-    escritores.add(controlador);
-
-    return Container(
-      alignment: Alignment.centerLeft,
-      decoration: decoracion(),
-      height: 60.0,
-      child: texto,
-    );
+  @override
+  void initState(){
+    algoAsincronico();
+    super.initState();
   }
 
-  BoxDecoration decoracion() {
-    return BoxDecoration(
-      border: Border.all(
-        width: 0.8,
-        //color: Colors.white
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-    );
-  }
-
-  TextInputType tipoTexto(int tipo) {
-    TextInputType respuesta;
-    switch (tipo) {
-      case 1:
-        respuesta = TextInputType.text;
-        break;
-      case 2:
-        respuesta = TextInputType.emailAddress;
-        break;
-      case 3:
-        respuesta = TextInputType.visiblePassword;
-        break;
-    }
-
-    return respuesta;
-  }
-
-  bool contrasena(int tipo) {
-    return tipo == 3 ? true : false;
-  }
-
-  TextStyle titulo() {
-    return TextStyle(fontSize: 32.0, letterSpacing: 5.0);
-  }
-
-  Container formulario(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
+    this.context = context;
     return Container(
       margin: EdgeInsets.only(
-        top: 170.0,
+        top: SizeConfig.conversionAlto(10, false),
         left: margenHorizontal,
         right: margenHorizontal,
       ),
       child: Form(
         key: _formulario,
+        autovalidate: _valida,
         child: Column(
           children: <Widget>[
-            /*Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50.0,
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))
-                      ),
-                    ),*/
-            Text(
-              "Registro",
-              style: titulo(),
+            InputRegistro(inputId: 1,hint: "Nombre", tipoEntrada: TextInputType.text,
+              icono: Icons.person,function: algodata,),
+            InputRegistro(
+              inputId: 2,
+              hint: "Apellido Paterno", tipoEntrada: TextInputType.text,
+              icono: Icons.person,function: algodata,  ),
+            InputRegistro(inputId: 3,
+                hint: "Apellido Materno",
+                tipoEntrada: TextInputType.text,
+                icono: Icons.person,function: algodata,),
+            InputRegistro(inputId: 4,
+                hint: "Correo",
+                tipoEntrada: TextInputType.emailAddress,
+                icono: Icons.email,function: algodata,),
+            InputRegistro(inputId: 5,
+              hint: "Contraseña",
+              ocultarTexto: true,
+              icono: Icons.vpn_key,
+              function: algodata,
+              funcion2: guardaContra,
             ),
-            SizedBox(
-              height: 30.0,
+            InputRegistro(inputId: 6,
+              hint: "Confirmar Contraseña",
+              ocultarTexto: true,
+              icono: Icons.vpn_key,
+              function: algodata,
+              funcion2: recuperaContra,
             ),
-            contenedor(1,"Nombre", 1, Icons.account_circle),
-            SizedBox(
-              height: espaciado,
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: InputRegistro(
+                      inputId: 7,
+                      hint: "Edad",
+                      tipoEntrada: TextInputType.numberWithOptions(
+                        decimal: false),
+                      margenDerecho: 5,
+                    function: algodata,),
+                ),
+                Expanded(
+                  child: InputRegistro(
+                    inputId: 8,
+                    hint: "Codigo Postal",
+                    tipoEntrada: TextInputType.numberWithOptions(
+                        decimal: false, signed: false),
+                    margenIzquierdo: 5,
+                    icono: Icons.local_post_office,
+                    function: algodata,
+                  ),
+                ),
+              ],
             ),
-            contenedor(2,"Apellido Paterno", 1, Icons.account_circle),
-            SizedBox(
-              height: espaciado,
+            FormField(
+                builder: (field) {
+                  return MiDrop(
+                    singleValue: _estado,
+                    listValues: _estados,
+                    hintValue: "Estado",
+                    expandido: true,
+                    route: 1,
+                    function: cambiaDatos,
+                    estado: field,
+                    icono: Icons.location_city,
+                  );
+                },
+                validator: (value){
+                  return value != null ? null : "Por favor seleccione un estado";
+                }
             ),
-            contenedor(3,"Apellido Materno", 1, Icons.account_circle),
-            SizedBox(
-              height: espaciado,
+          SizedBox(height: SizeConfig.conversionAlto(20, false),),
+          Visibility(
+            child: FormField(
+              builder: (field){
+                return MiDrop(
+                  singleValue: _ciudad,
+                  listValues: _ciudades,
+                  hintValue: "Ciudad",
+                  expandido: true,
+                  route: 0,
+                  function: cambiaDatos,
+                  estado: field,
+                  icono: Icons.home,
+                );
+              },
+                validator: (value){
+                  return value != null ? null : "Por favor seleccione una ciudad";
+                }
             ),
-            contenedor(4,"Correo", 2, Icons.email),
-            SizedBox(
-              height: espaciado,
-            ),
-            contenedor(5,"Contraseña", 3, Icons.lock),
-            SizedBox(
-              height: espaciado,
-            ),
-            contenedor(6,"Confirmar Contraseña", 3, Icons.lock),
-            SizedBox(height: 40.0),
+            maintainSize: _visible,
+            maintainAnimation: true,
+            maintainState: true,
+            visible: _visible,
+          ),
+            SizedBox(height: SizeConfig.conversionAlto(40, false)),
             Container(
               width: double.infinity,
-              height: 40.0,
-              margin: EdgeInsets.only(
-                  left: margenHorizontalBoton, right: margenHorizontalBoton),
+              height: SizeConfig.conversionAlto(40, false),
+              margin: EdgeInsets.only( left: margenHorizontalBoton, right: margenHorizontalBoton ),
               child: RaisedButton(
                 elevation: 3.0,
                 color: Colors.blueAccent,
-                onPressed: /*() {
-                return showDialog(
-                  context: context,
-                  builder: (context) {
-                    return muestraDialogo(mensaje());
-                  },
-                );
-              }*/
-                    /*() => _showDialog(context)*/
-                (){
+                onPressed: () {
                   if (_formulario.currentState.validate()) {
-                    // If the form is valid, display a Snackbar.
-                    /*Scaffold.of(context)
-                        .showSnackBar(SnackBar(content: Text('Processing Data')));*/
-                    _showDialog(context);
-                  }
+                    _formulario.currentState.save();
+                    _checkDialog();
+                  }else
+                    setState(() { _valida = true; });
                 },
                 child: Text("Registrame",
                     style: TextStyle(
@@ -192,7 +235,6 @@ class CuerpoPrincipal extends StatelessWidget {
                         letterSpacing: 2.0)),
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(20.0),
-                  //side: BorderSide(color: Colors.white)
                 ),
               ),
             ),
@@ -203,104 +245,145 @@ class CuerpoPrincipal extends StatelessWidget {
     );
   }
 
-  Stack contendorMaestro(){
-    return Stack(
-      children: <Widget>[
-        /* Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    //alignment:Alignment.topLeft,
-                    width: MediaQuery.of(context).size.width/divisor,
-                    height: ancho,
-                    margin: EdgeInsets.only(top: 70),
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(90))
-                    ),
-                ),
-            ),*/
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            margin: EdgeInsets.only(top: 30),
-            child: FlutterLogo(
-              size: 120,
-            ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: formulario(context),
-        ),
-      ],
-    );
+  void algodata(int idx,value){
+    infoRecolectada[idx] = value;
   }
 
-  String mensaje() {
-    String mensaje = "";
-    for (int i = 0; i < escritores.length; i++) {
-      if (i == (escritores.length - 1)) {
-        mensaje += escritores[i].text + ".";
-      } else {
-        mensaje += escritores[i].text + " ";
+  void guardaContra(valor){ contraUno = valor;}
+  String recuperaContra(){ return contraUno; }
+
+  void cambiaDatos(val, int ruta,FormFieldState<Object> edo) {
+    if (ruta == 1) {
+      estado = val;
+      setState(() {
+        edo.didChange(val);
+        _estado = estado.nombre;
+        _ciudades = estado.ciudades;
+        _visible = true;
+      });
+    } else {
+      ciudad = val;
+      setState(() {
+        edo.didChange(val);
+        _ciudad = ciudad.nombre;
+      });
+    }
+  }
+
+  void algoAsincronico() async{
+    data = await getEstados();
+    List lista = data["lista"];
+    _estados = lista.map((valor) => Estado.fromJson(valor)).toList();
+    setState(() {});
+  }
+
+  Future<Map<String,dynamic>> getEstados() async{
+    var url = "http://${Constantes.HOST+Constantes.RT_SLT}";
+    url += "C-Estados.php";
+    http.Response res = await http.get(url);
+    var data = jsonDecode(res.body);
+    return data;
+  }
+
+  Future<Map<String, dynamic>> sube() async{
+    var url = "http://${Constantes.HOST+Constantes.RT_ISR}";
+    url += "I-Usuario2.php";
+
+    Map parametros = {
+      "nombre" : "${infoRecolectada[0]}",
+      "apellido" : "${infoRecolectada[1]} ${infoRecolectada[2]}",
+      "edad" : "${infoRecolectada[6]}",
+      "cod_post" : "${infoRecolectada[7]}",
+      "correo" : "${infoRecolectada[3]}",
+      "contra" : "${infoRecolectada[4]}",
+      "ciudad" : "${ciudad.id}"
+    };
+
+    http.Response response = await http.post(url,body: parametros);
+    var data = jsonDecode(response.body);
+
+    return data;
+  }
+
+  void _checkDialog() async {
+    dialogoVisible = true;
+    Map<String, dynamic> lista;
+    Map<String, Object> res = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return FutureBuilder(
+              future: sube(),
+              builder: (context, snapshot) {
+                Widget vista;
+                if (snapshot.hasData) {
+                  bool fallo = snapshot.data["fallo"].toString() == "true";
+                  int codigoError =
+                  int.parse(snapshot.data["codigo"].toString()),
+                      codigoTitulo;
+                  String titulo;
+
+                  if (!fallo) {
+                    titulo = "Felicidades";
+                    codigoTitulo = Constantes.C_EXITOSA_REGISTRO;
+                    lista = snapshot.data;
+                  } else
+                    switch (codigoError) {
+                      case 1:
+                        titulo = Constantes.T_ERROR;
+                        codigoTitulo = Constantes.C_ERROR;
+                        break;
+                      case 2:
+                        titulo = Constantes.T_ADVERTENCIA;
+                        codigoTitulo = Constantes.C_ADVERTENCIA;
+                        break;
+                    }
+                  vista = MiDialogo(
+                    titulo: titulo,
+                    descripcion: snapshot.data["mensaje"].toString(),
+                    tipoTitulo: codigoTitulo,
+                    datos: snapshot.data,
+                  );
+                } else {
+                  vista = SimpleDialog(
+                    children: <Widget>[
+                      Center(
+                        child: SizedBox(
+                          height: SizeConfig.conversionAlto(100, false),
+                          width: SizeConfig.conversionAncho(100, false),
+                          child: CircularProgressIndicator(
+                            strokeWidth: SizeConfig.conversionAncho(10, false),
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
+
+                return vista;
+              });
+        });
+
+    if (!res["bandera"]) {
+      dialogoVisible = false;
+      if( res["correcto"] ){
+        guarda(lista["usuario"]);
+        Navigator.pushReplacementNamed(context, "/inicio");
       }
     }
-    return mensaje;
   }
 
-  bool valida(){
-
-    return true;
-  }
-
-  AlertDialog muestraDialogo(String mensaje) {
-          return AlertDialog(
-            // Retrieve the text the that user has entered by using the
-            // TextEditingController.
-            content: Text(mensaje),
-          );
-  }
-
-  void _showDialog(BuildContext context) {
-    // flutter defined function
-    String mensajes = mensaje();
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Alert Dialog title"),
-          content: new Text("Se a registrado con exito \n"+mensajes),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Close"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    this.context = context;
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints viewportConstraints){
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-                minHeight: viewportConstraints.maxHeight
-            ),
-            child: contendorMaestro(),
-          ),
-        );
-      },
-    );
+  void guarda(List data) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("sesion", true);
+    await prefs.setString("id", data[1]);
+    await prefs.setString("nombre", data[3]);
+    await prefs.setString("apellido", data[4]);
+    await prefs.setString("edad", data[5]);
+    await prefs.setString("correo", data[7]);
+    await prefs.setString("contra", data[8]);
+    await prefs.setInt("puntos", int.parse(data[9].toString()));
+    await prefs.setString("ciudad", data[10]);
+    await prefs.setString("estado", data[11]);
   }
 }
-
-

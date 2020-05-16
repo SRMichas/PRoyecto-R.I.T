@@ -120,12 +120,6 @@ class _CuerpoEpState extends State<CuerpoEp> {
               );
             }
 
-
-
-
-
-
-
             /*if(snapshot.connectionState == ConnectionState.done) {
               if( snapshot.hasData){
 
@@ -287,7 +281,7 @@ class _CuerpoEpState extends State<CuerpoEp> {
         shape: estiloTarjeta,
         elevation: 0.52 * SizeConfig.heightMultiplier,//4
         child: Image.asset(
-          'assets/apac.jpg',
+          'assets/img/apac.jpg',
           width: 10.41 * SizeConfig.widthMultiplier, //50
           height: imgHeigth,
           cacheHeight: imgHeigth.toInt(),
@@ -305,7 +299,7 @@ class _CuerpoEpState extends State<CuerpoEp> {
         shape: estiloTarjeta,
         elevation: 0.52 * SizeConfig.heightMultiplier,//4
         child: Image.asset(
-          'assets/casa_valentina.png',
+          'assets/img/casa_valentina.png',
           width: MediaQuery.of(context).size.width / 2,
           height: MediaQuery.of(context).size.height / 2,
           cacheHeight: (MediaQuery.of(context).size.height / 2).toInt(),
@@ -327,12 +321,12 @@ class _CuerpoEpState extends State<CuerpoEp> {
           child: Row(
             children: <Widget>[
               Image.asset(
-                'assets/tecmn.png',
+                'assets/img/tecmn.png',
                 width: MediaQuery.of(context).size.width * 0.65,
                 height: image,
               ),
               Image.asset(
-                'assets/teclogo_v2.png',
+                'assets/img/teclogo_v2.png',
                 scale: 4,
                 alignment: AlignmentDirectional.centerEnd,
                 /*width: MediaQuery.of(context).size.width/2,
@@ -464,7 +458,7 @@ class Cuerpo extends StatelessWidget {
       child: Card(
         elevation: 4,
         child: Image.asset(
-          'assets/apac.jpg',
+          'assets/img/apac.jpg',
           width: 50,
           height: 70,
           cacheHeight: 70,
@@ -481,7 +475,7 @@ class Cuerpo extends StatelessWidget {
       child: Card(
         elevation: 4,
         child: Image.asset(
-          'assets/casa_valentina.png',
+          'assets/img/casa_valentina.png',
           width: MediaQuery.of(context).size.width / 2,
           height: MediaQuery.of(context).size.height / 2,
           cacheHeight: (MediaQuery.of(context).size.height / 2).toInt(),
@@ -500,11 +494,11 @@ class Cuerpo extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Image.asset(
-                'assets/tecmn.png',
+                'assets/img/tecmn.png',
                 width: MediaQuery.of(context).size.width / 2,
               ),
               Image.asset(
-                'assets/teclogo_v2.png',
+                'assets/img/teclogo_v2.png',
                 scale: 5,
                 alignment: AlignmentDirectional.centerEnd,
                 /*width: MediaQuery.of(context).size.width/2,

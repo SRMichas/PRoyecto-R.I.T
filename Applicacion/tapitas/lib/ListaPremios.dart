@@ -70,7 +70,7 @@ class _ListaPremiosState extends State<ListaPremios> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
                       Image(
-                        image: AssetImage('assets/coin.png'),
+                        image: AssetImage('assets/img/coin.png'),
                         height: SizeConfig.conversionAlto(25,false),
                         color: Colors.red,
                       ),
@@ -333,7 +333,7 @@ class ModeloProducto extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Image(
-                      image: AssetImage('assets/coin.png'),
+                      image: AssetImage('assets/img/coin.png'),
                       height: SizeConfig.conversionAncho(25,false),
                       color: Colors.pink,
                     ),

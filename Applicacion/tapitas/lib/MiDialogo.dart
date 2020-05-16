@@ -84,14 +84,39 @@ class MiDialogo extends StatelessWidget {
                     onPressed: () {
                       HashMap<String,Object> data = new HashMap<String,Object>();
                       var res;
-                      if( tipoTitulo == Constantes.C_EXITOSA)
+                      switch(tipoTitulo){
+                        case  Constantes.C_EXITOSA:
+                          res = true;
+                          break;
+                        case 0: //premios
+                          res = false;
+                          data.putIfAbsent("nuevosPuntos", ()=> int.parse(datos["puntos"].toString()));
+                          break;
+                        case Constantes.C_EXITOSA_REGISTRO:
+                          res = false;
+                          data.putIfAbsent("correcto", ()=> true);
+                          break;
+                        case Constantes.C_EXITOSA_LOGIN:
+                          break;
+                        case Constantes.C_ERROR:
+                          res = false;
+                          data.putIfAbsent("correcto", ()=> false);
+                          break;
+                        default:
+                          res = false;
+                          break;
+                      }
+
+
+
+                      /*if( tipoTitulo == Constantes.C_EXITOSA)
                         res = true;
                       else if( tipoTitulo == 0 ) {
                         res = false;
                         data.putIfAbsent("nuevosPuntos", ()=> int.parse(datos["puntos"].toString()));
                         //data.putIfAbsent("nuevo", 0);
                       }else
-                        res = false;
+                        res = false;*/
 
                       /*if( onRun != null){
                         onRun;
@@ -117,7 +142,7 @@ class MiDialogo extends StatelessWidget {
 
   void defineCabezera(){
     switch(tipoTitulo){
-      case Constantes.C_EXITOSA: case 0:
+      case Constantes.C_EXITOSA: case 0:case Constantes.C_EXITOSA_REGISTRO:
         fondoTitulo = COL_EXITOSA;
         colorLetra = Colors.white;
         break;

@@ -44,7 +44,7 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
         die("Coneccion fallida"/*.mysqli_connect_error()*/);
     }
     
-    $consulta = "SELECT CONVERT('2020-04-12',DATE),CURRENT_DATE";
+    $consulta = "SELECT CURRENT_DATE";
 
     $resultadoFecha = mysqli_query($conexion,$consulta);
 

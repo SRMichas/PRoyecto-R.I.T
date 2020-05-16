@@ -4,6 +4,8 @@ import 'resgistro.dart';
 import 'inicio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/size_config.dart';
 
 //void main() => runApp(Root());
 
@@ -11,7 +13,7 @@ class Root extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return new MaterialApp(
+    return MaterialApp(
           title: 'Login',
           home: new Scaffold(
             body: new LoginPndj(),
@@ -129,7 +131,8 @@ class LoginPndj extends StatelessWidget{
   }
   String email,pass;
   void getData() async{
-    var url = 'http://192.168.1.64/RIT/Select/C-Usuario.php?correo=$email&contra=$pass';
+    var url = "http://${Constantes.HOST+Constantes.RT_SLT}";
+    url += "C-Usuario2.php?correo=$email&contra=$pass";
     //var url = 'http://192.168.1.64/hola.php';
     http.Response response = await http.get(url); 
     var data = jsonDecode(response.body);
@@ -251,6 +254,7 @@ class LoginPndj extends StatelessWidget{
     contexto = context;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints){
+        SizeConfig().iniciar(viewportConstraints);
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints(
@@ -266,21 +270,36 @@ class LoginPndj extends StatelessWidget{
 
 
   void guarda(List data) async{
+    print(data.toString());
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
     await prefs.setString("id", data[0]);
     await prefs.setString("nombre", data[2]);
     await prefs.setString("apellido", data[3]);
-    await prefs.setString("correo", data[4]);
-    await prefs.setString("contra", data[5]);
+    await prefs.setString("edad", data[4]);
+    await prefs.setString("correo", data[6]);
+    await prefs.setString("contra", data[7]);
+    await prefs.setInt("puntos", int.parse(data[8].toString()));
+    await prefs.setString("ciudad", data[9]);
+    await prefs.setString("estado", data[10]);
     print("Guardado.....");
   }
 
   void iniciaRegistro(BuildContext context){
-    Navigator.push(context,
+    /*Navigator.push(context,
         MaterialPageRoute(
-          builder: (context) => Resgistro(),
-        ));
+          builder: (context) => Resgistro(function: cierra,),
+        ));*/
+    Navigator.pushReplacementNamed(context, "/registro");
+    //Navigator.popAndPushNamed(contexto, "/registro");
+    /*if( res )
+      print("llegaste aqui");*/
+      /*Navigator.pushReplacementNamed(context, "/inicio");
+      Navigator.pushNamed(context, "/inicio");*/
+  }
+
+  void cierra(){
+    Navigator.pop(contexto);
   }
 
   BoxDecoration decoracion(){

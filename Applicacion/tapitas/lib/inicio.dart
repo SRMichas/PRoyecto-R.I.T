@@ -1,51 +1,77 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'lectorQr.dart';
 import 'premios.dart';
 import 'puntuacion.dart';
 import 'historial.dart';
 import 'package:tapitas/Extras/size_config.dart';
 import 'Extras/Constantes.dart';
+import 'package:tapitas/Entidades/item.dart';
+import 'perfil.dart';
+import 'login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Inicio extends StatelessWidget {
 
-
+  BuildContext context;
 
   @override
   Widget build(BuildContext context) {
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-        actions: <Widget>[
-            PopupMenuButton<String>(
-              onSelected: accion,
-              itemBuilder: (context){
-                return Constantes.menuInicio.map((String  accion){
-                    return PopupMenuItem<String>(
-                      value: accion,
-                      child: Text(accion),
-                    );
-                }).toList();
-              },
-            )
-        ],
-        /*leading: new IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: (){
-
-              if (Navigator.canPop(context)) {
-                Navigator.pop(context);
-              } else {
-                SystemNavigator.pop();
-              }
-            }),*/
+    this.context = context;
+    return WillPopScope(
+      onWillPop: () => cierraApp(),
+      child: MaterialApp(
+          home: Scaffold(
+            appBar: AppBar(
+              title: Text("Home"),
+              actions: <Widget>[
+                PopupMenuButton<String>(
+                  onSelected: manejoMenu,
+                  itemBuilder: (context){
+                    return Constantes.menuInicio.map((Item  accion,){
+                      return PopupMenuItem<String>(
+                        value: accion.codigo.toString(),
+                        child: Text(accion.titulo),
+                      );
+                    }).toList();
+                  },
+                )
+              ],
+            ),
+            body: new Cuerpo(),
+          ),routes: <String,WidgetBuilder>{
+        '/login': (BuildContext context) => new Root(),
+      }
       ),
-      body: new Cuerpo(),
     );
   }
 
-  void accion(String accion){
-      print("Le picaste a $accion");
+  void manejoMenu(String accion){
+      switch(accion){
+        case "1":
+          Navigator.push(context,
+              MaterialPageRoute(
+                builder: (contexto) => Perfil(),
+              ));
+          break;
+        default:
+          resetShaPref();
+          Navigator.pushReplacementNamed(context, "/login");
+          break;
+      }
+  }
+
+  void resetShaPref() async{
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    await pref.clear();
+    await pref.setBool("sesion", false);
+  }
+
+  Future<bool> cierraApp() async{
+    //SystemNavigator.pop();
+    return true;
   }
 }
 
