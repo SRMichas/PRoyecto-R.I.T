@@ -13,7 +13,9 @@ Repositorio de los archivos necesarios para el proyecto
 	- Implementar una pantalla (LCD deibido a la contingencia).
 	- Limpiar el código.
 - Terminar la app.
-	- Hacer pruebas en iOS.
+	- [x] Hacer pruebas en iOS.<br>
+		_Se eliminaron las dependencias de Flutter que permitían probar en iOS sin una mac, ahora depende de XCode y por lo tanto se necesita una mac_.
+	* Hacer un logo
 - Comenzar la página web.
 	- Hacer un diseño decente.
 	- Hacer todo básicamente. 
