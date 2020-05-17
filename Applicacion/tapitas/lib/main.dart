@@ -1,39 +1,20 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'startScreen.dart';
 import 'login.dart';
-import 'resgistro.dart';
 import 'inicio.dart';
-import 'puntuacion.dart';
-import 'premios.dart';
-import 'ListaPremios.dart';
 
 //void main() => runApp(MyApp());
 void main(){
   runApp(MaterialApp(
     title: "Algo",
     home: Principal(),
-    //debugShowCheckedModeBanner: false, <----- Descomentar una vez terminada la app
+    debugShowCheckedModeBanner: true,
     routes: <String,WidgetBuilder>{
-      '/login': (BuildContext context) => new Root(),
-      //'/registro': (BuildContext context) => new Resgistro(),
+      '/login': (BuildContext context) => new Login(),
       '/inicio': (BuildContext context) => new Inicio()
     },
   ));
-
-  /*
-
-
-  routes: <String,WidgetBuilder>{
-            '/login': (BuildContext context) => new Root(),
-            '/registro': (BuildContext context) => new Resgistro(),
-            '/inicio': (BuildContext context) => new Inicio()
-          },
-
-
-   */
 }
 
 
@@ -47,18 +28,14 @@ class _PrincipalState extends State<Principal> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //_revisaApp();
-  }
-
-  _PrincipalState() {
     _timer = new Timer(const Duration(seconds: 2), () {
       setState(() {
         _revisaApp();
       });
     });
   }
+
   @override
   void dispose() {
     super.dispose();

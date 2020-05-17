@@ -62,7 +62,7 @@ class Resgistro extends StatelessWidget {
           ),
           routes: <String,WidgetBuilder>{
             '/inicio': (BuildContext context) => new Inicio(),
-            '/login': (BuildContext context) => new Root(),
+            '/login': (BuildContext context) => new Login(),
           },
         )
     );

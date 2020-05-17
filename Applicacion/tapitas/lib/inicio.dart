@@ -42,7 +42,7 @@ class Inicio extends StatelessWidget {
             ),
             body: new Cuerpo(),
           ),routes: <String,WidgetBuilder>{
-        '/login': (BuildContext context) => new Root(),
+        '/login': (BuildContext context) => new Login(),
       }
       ),
     );
@@ -102,7 +102,7 @@ class Cuerpo extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              carta(1,"historial", Icons.history),
+              carta(1,"Estadisticas", Icons.history),
               carta(2,"Lector", Icons.camera_alt),
             ],
           ),
@@ -146,8 +146,9 @@ class Cuerpo extends StatelessWidget {
           ),
           Text(
             nombre,
+
             style: TextStyle(
-              fontSize: tamanoLetra,
+              fontSize: nombre.length < 12 ? tamanoLetra : tamanoLetra - 3,
             ),
           )
         ],

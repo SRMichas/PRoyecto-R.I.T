@@ -9,12 +9,13 @@ class InputRegistro extends StatefulWidget {
   final IconData icono;
   final bool ocultarTexto;
   final double alto,ancho,margenIzquierdo,margenDerecho;
-  final Color color;
+  final Color color,iconColor;
+  final TextStyle estilo;
   Function function,funcion2;
 
   InputRegistro({this.inputId,this.hint,this.tipoEntrada,this.ocultarTexto,
     this.icono,this.alto,this.ancho,this.color,this.margenIzquierdo,
-   this.margenDerecho,this.function,this.funcion2});
+   this.margenDerecho,this.function,this.funcion2,this.estilo,this.iconColor});
 
 
   @override
@@ -33,6 +34,7 @@ class _InputRegistroState extends State<InputRegistro> {
       fontSize: SizeConfig.conversionAlto(letra ?? 12, false),
       fontStyle: cursiva != null?  (cursiva? FontStyle.italic : FontStyle.normal) : FontStyle.normal,
       fontWeight: negrita != null? (negrita? FontWeight.bold : FontWeight.normal) : FontWeight.normal,
+        //height: 0.6
     );
   }
 
@@ -70,21 +72,36 @@ class _InputRegistroState extends State<InputRegistro> {
     return null;
   }
 
+  OutlineInputBorder borde({Color color}){
+    return OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(SizeConfig.conversionAlto(16, false))),
+        borderSide: BorderSide(width: 3,color: color ?? Colors.black),
+        gapPadding: 3
+    );
+  }
+
   Widget contenido(){
     TextFormField texto = TextFormField(
       controller: controlador,
       keyboardType: widget.tipoEntrada ?? TextInputType.text,
       obscureText: widget.ocultarTexto ?? false,
+      style: widget.estilo ?? TextStyle(color: Colors.black,),
       decoration: InputDecoration(
           labelText: widget.hint,
+          filled: true,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(SizeConfig.conversionAlto(16, false)))
           ),
-          hintText: widget.hint,
-          contentPadding: EdgeInsets.only(top: SizeConfig.conversionAlto(30, false)),
-          prefixIcon: Icon(widget.icono ?? Icons.clear,color: Colors.blueAccent,),
+          //hintText: widget.hint,
+          contentPadding: EdgeInsets.symmetric(vertical: SizeConfig.conversionAlto(20, false)),
+          prefixIcon: Icon(widget.icono ?? Icons.clear,color: widget.color ?? Colors.blueAccent,),
+          hintStyle: widget.estilo ?? TextStyle(color: Colors.black),
           errorStyle: estilillo(letra: 16,color: Colors.red),
-          labelStyle: estilillo(letra: 16)
+          labelStyle: estilillo(letra: 21,color: widget.color),
+          enabledBorder: borde(color: widget.color),
+          focusedBorder: borde(color: widget.color),
+          errorBorder: borde(color: Colors.red)
+
       ),
       onSaved: (newValue) => widget.function(widget.inputId-1,newValue.toString()),
       validator: (valor){
@@ -104,7 +121,7 @@ class _InputRegistroState extends State<InputRegistro> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: widget.color ?? Colors.transparent,
+      //color: Colors.green ?? Colors.transparent,
       margin: EdgeInsets.only(
         bottom: SizeConfig.conversionAlto(6, false),
         left: SizeConfig.conversionAncho(widget.margenIzquierdo ?? 0, false),
