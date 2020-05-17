@@ -1,5 +1,8 @@
 body
 {
+    background-image: url("../img/tp.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100vh;
     
 }
 
@@ -7,6 +10,7 @@ body
 {
     width: 50px;
     height: 50px;
+   
 }
 .col-nav
 {
@@ -16,3 +20,37 @@ body
 {
     height:100vh;
 }
+@media (max-width: 990px) {
+    .btn-l
+    {
+        display: none;
+    }
+  }
+.div-c
+{
+    padding: 5px;
+    margin: auto;
+    margin-top: 50px;
+    
+}
+.img-c
+{
+    height: 400px;
+}
+@media (max-width: 370px) {
+    p
+    {
+       font-size: 15px;
+    }
+    .div-c
+    {
+        height: 40vh;
+    }
+    .img-c
+{
+    height: 38vh;
+}
+    
+  }
+
+  

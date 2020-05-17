@@ -1,6 +1,6 @@
 @extends('layout')
 @section('content')
-<div class="card form-container bg-light mb-1 div-p">
+<div class="card form-container bg-light mb-1 div-p ">
     <div class="card-header bg-light mb-1 ">
         
             <p style="font-family:sans-serif;font-size: 24px;">
@@ -9,7 +9,7 @@
         
     </div>
 
-    <div class="card-body"></div>
+    <div class="card-body "></div>
 
     <p>
         La fundacion Gold Rost, <b>nuestro director , Lic. Valentin Elizalde</b>

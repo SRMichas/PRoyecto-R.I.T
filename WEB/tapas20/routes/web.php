@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'homeController@inicio');
 Route::post('login','loginController@acceder')->name('login.index');
 Route::get('cerrar','loginController@cerrar')->name('cerrar.index');
 Route::get('login','loginController@vistaLogin');
