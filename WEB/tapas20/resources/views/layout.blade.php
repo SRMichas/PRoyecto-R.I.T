@@ -31,7 +31,9 @@
         <li class="nav-item nav-i active">
           <a class="nav-link" href="{{route('home.tapaton')}}">Tapaton</a>
         </li>
-
+        <li class="nav-item nav-i active">
+          <a class="nav-link" href="{{route('home.tapaton')}}">Proyecto R.I.T</a>
+        </li>
         @if (session('usuario'))
         <div class="dropdown d-lg-none d-xl-none li-1 d-sm-block">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
@@ -89,7 +91,14 @@
   @if(Session('msj'))
   <div class="alert alert-success">
     <ul>
-      La cadena Se agrego Correctamente
+      {{Session('msj')}}
+    </ul>
+  </div>
+  @endif
+  @if(Session('msjErr'))
+  <div class="alert alert-danger">
+    <ul>
+      {{Session('msjErr')}}
     </ul>
   </div>
   @endif

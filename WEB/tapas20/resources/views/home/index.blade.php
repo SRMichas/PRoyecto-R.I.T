@@ -11,15 +11,15 @@
     </ol>
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img class="d-block w-100 img-c" src="{{asset('img/itctapas.jpg')}}" alt="Third slide">
+        <img class="d-block w-100 img-c" src="{{asset('img/morrita.png')}}" alt="Third slide">
         <div class="carousel-caption  d-md-block">
-            <h3>Tec Apoyando Al Tapaton</h3>
+            <h4>Tec Apoyando Al Tapaton</h3>
             <font size="5px"><p>Con la iniciativa del apoyo, el tecnologico de culiacan decide apoyar de manera altruista</p></font>
           </div>
         
       </div>
       <div class="carousel-item">
-        <img class="d-block w-100 img-c" src="{{asset('img/OP.jpg')}}" alt="First slide">
+        <img class="d-block w-100 img-c" src="{{asset('img/reca.png')}}" alt="First slide">
         <div class="carousel-caption d-md-block">
             <h3>Vamos Apoyando!!</h3>
             <font size="5px"> <p>en distintos sectores se apoya teniendo puntos de recaudacion</p></font>
@@ -27,7 +27,7 @@
         
       </div>
       <div class="carousel-item">
-        <img class="d-block w-100 img-c"src="{{asset('img/tapas.jpg')}}" alt="Second slide">
+        <img class="d-block w-100 img-c"src="{{asset('img/tapas.png')}}" alt="Second slide">
         <div class="carousel-caption d-md-block">
             <h3>Tapas Permitidas</h3>
             <font size="5px"> <p>Tapas permitidas que puedes donas, Juntos hagamos una buena accion</p></font>

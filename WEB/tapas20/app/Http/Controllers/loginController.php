@@ -15,17 +15,17 @@ class loginController extends Controller
     public function acceder(Request $request)
     { 
         $username = $request->username;
+            
+         $users = App\Usuario::where('email',$request->username);
+         if(count($users->get())>0)
+         {
+          $request->session()->put('usuario',$request->username);
+          return redirect()->action('usuariosController@vistaPrincipal');
+         }
+         else{
+             return back()->with('nota','contraseña o usuario incorrecto');
+         }
         
-        $results =  DB::select('select * from usuarios where email =?',[$request->username]);
-        var_dump($results);
-        if(count($results) > 0)
-        {
-            $request->session()->put('usuario',$request->username);
-            return redirect()->action('usuariosController@vistaPrincipal');
-        }
-        else{
-            return back()->with('nota','contraseña o usuario incorrecto');
-        }
     }
     public function cerrar()
     {
