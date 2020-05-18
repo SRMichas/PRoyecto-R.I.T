@@ -2,7 +2,7 @@
 
 @section('content')
 @if (session('usuario'))
-<div class="card form-container bg-light mb-1 div-p">
+<div class="card form-container bg-light mb-0 div-p">
     <div class="card-body">
         <form>
             <div class="form-group row">
@@ -35,10 +35,14 @@
                     <input type="text" class="form-control" id="puntos" disabled value="2500" placeholder="Puntos"/>
                 </div>
             </div>
-            <div class="col-sm-12 col">
-                <input type="button" class="btn btn-primary col-sm-12" 
+            <div class="col-sm-12 col-lg-12">
+                
+                    <input type="button" class="btn btn-primary col-lg-4 col-sm-12" 
                        id="btn_add" value="Actualizar Informacion" />
-            </div>
+                       
+                    <a href="{{route('usuario.historial')}}"><input type="button" class="btn btn-info col-lg-4 col-sm-12" 
+                       id="btn_his" value="Historial de Ingresos"  /></a>
+            </div>            
         </form>
     </div>
 </div>

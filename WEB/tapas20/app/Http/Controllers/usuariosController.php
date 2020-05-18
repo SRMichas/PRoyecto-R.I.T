@@ -20,9 +20,13 @@ class usuariosController extends Controller
     {
         $cadena = $request->cadena;
         $validatedData = $request->validate([
-            'cadena'     => 'required|max:15|min:15'
+            'cadena'     => 'required|max:20|min:20'
             
         ]);
         return redirect()->back()->with('msj','La cadena Se ha guardado correctamente');;
+    }
+    public function historial()
+    {
+        return view('usuario.historial');
     }
 }
