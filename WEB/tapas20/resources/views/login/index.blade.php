@@ -2,10 +2,13 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+@if (session('usuario'))
+<h1>Ya estas Logueado Men sacate a tu perfil prro</h1>
+@else
 <div class="main">
     <div class="item">
       <div class="content">
-        <form action="{{route('login.index')}}" class="form-horizontal" method="POST">
+        <form action="{{route('login.index')}}" czlass="form-horizontal" method="POST">
           @if(session('nota'))
             <div class="alert alert-danger">{{session('nota')}}</div>
           @endif
@@ -29,4 +32,5 @@
       </div>
     </div>
   </div>
+  @endif
 @endsection

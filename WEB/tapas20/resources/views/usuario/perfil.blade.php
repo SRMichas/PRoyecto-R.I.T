@@ -1,6 +1,7 @@
 @extends('layout')
 
 @section('content')
+@if (session('usuario'))
 <div class="card form-container bg-light mb-1 div-p">
     <div class="card-body">
         <form>
@@ -41,4 +42,9 @@
         </form>
     </div>
 </div>
+@else
+<h1>
+    Area Restringida Maldito intruso
+</h1>
+@endif
 @endsection

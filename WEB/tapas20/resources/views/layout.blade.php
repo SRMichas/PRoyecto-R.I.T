@@ -33,14 +33,13 @@
         </li>
         
         @if (session('usuario'))
-        
         <div class="dropdown d-lg-none d-xl-none li-1 d-sm-block">
           <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{session('usuario')}}</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="{{route('cerrar.index')}}">Introducir Codena</a>
             <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
             <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
-            
           </div>
         @else
         <li class="nav-item d-lg-none d-xl-none li-1 d-sm-block">
@@ -57,6 +56,7 @@
                   <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{session('usuario')}}</a>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal" href="{{route('usuario.cadena')}}">Introducir Codena</a>
                     <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
                     <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
                     
@@ -72,14 +72,60 @@
       @endif
     </div>
   </nav>
+  @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+  @if(Session('msj'))
+  <div class="alert alert-success">
+    <ul>
+      La cadena Se agrego Correctamente
+    </ul>
+</div>
+  @endif
+
   <div class="row">
     <div class="col">
     @yield('content')
     
   </div>
   </div>
-
-    <script src="{{ asset('js/jquery.js') }}"></script>
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Codigo Promocional</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="form" action="{{route('usuario.cadena')}}" method="POST">
+            <div>
+              <div class="form-group row">
+                
+                <label for="txt_cadena" class="col-sm-2 col-form-label">Codigo</label>
+                <div class="col">
+                    <input type="text" id="txt_cadena" name="cadena" class="form-control" placeholder="Codigo..." />
+                </div>
+            </div>
+            </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+    <script src="{{asset('js/jquery.js') }}"></script>
     <script src="{{asset('js/bootstrap.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>

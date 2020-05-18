@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'homeController@inicio');
 Route::post('login','loginController@acceder')->name('login.index');
+Route::post('cadena','usuariosController@cadena')->name('usuario.cadena');
 Route::get('cerrar','loginController@cerrar')->name('cerrar.index');
 Route::get('login','loginController@vistaLogin');
 Route::get('user','usuariosController@vistaPrincipal');
