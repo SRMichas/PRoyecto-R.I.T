@@ -1,6 +1,11 @@
 @extends('layoutcuenta')
 
 @section('content')
+@if(Session('usuario'))
+<h1>Deslogueate primero Men no seas gacho con la paginta esa culey :c</h1>
+<a class="btn button-primary" href="{{route('usuario.perfil')}}"><input type="button" class="btn btn-primary" value="Perfil"></a>
+<a class="btn button-primary" href="{{route('cerrar.index')}}"><input type="button" class="btn btn-primary" value="Cerrar Sesion"></a>
+@else
 <input type="text" name="csrfToken" value="{{csrf_token()}} " hidden>
 <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 <div class="main">
@@ -50,4 +55,6 @@
       </div>
     </div>
   </div>
+@endif
+
 @endsection

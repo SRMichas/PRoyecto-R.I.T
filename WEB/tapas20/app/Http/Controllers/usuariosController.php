@@ -13,9 +13,15 @@ class usuariosController extends Controller
     {
         return view('home.index');
     }
-    public function perfil()
+    public function perfil(Request $request)
     {
-        return view('usuario.perfil');
+        $usuario = App\Usuario::where('email',$request->session()->get('usuario'));
+        $persona = App\Persona::find($usuario->get('persona_id'));
+        //return view('usuario.perfil');
+        $array = array();
+        array_push($array,$usuario->get(),$persona);
+        return view('usuario.perfil',compact('array'));
+        //return $array;
     }
     public function cadena(Request $request)
     {

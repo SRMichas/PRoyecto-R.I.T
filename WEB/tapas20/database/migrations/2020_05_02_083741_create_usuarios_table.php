@@ -18,6 +18,8 @@ class CreateUsuariosTable extends Migration
             $table->string('email');
             $table->string('pass');
             $table->foreignId('persona_id')->constrained('personas');
+            $table->integer('tapas');
+            $table->integer('puntos');
             $table->timestamps();
         });
     }

@@ -3,7 +3,7 @@
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/login.css') }}">
 @if (session('usuario'))
-<h1>Ya estas Logueado Men sacate a tu perfil prro</h1>
+<h1>Ya estas Logueado Men sacate a tu <a href="{{route('usuario.perfil')}}">perfil</a> prro</h1>
 @else
 <div class="main">
     <div class="item">

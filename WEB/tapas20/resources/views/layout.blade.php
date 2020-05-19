@@ -9,7 +9,9 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
   <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
-  <link href="{{asset('css/simple-sidebar.css')}}" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+  <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
+  
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
