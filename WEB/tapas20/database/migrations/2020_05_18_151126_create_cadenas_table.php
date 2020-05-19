@@ -6,29 +6,29 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateCadenasTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('cadenas', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('cadena');
-            $table->integer('id_maquina');
-            $table->integer('status');
-            $table->timestamps();
-        });
-    }
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('cadenas', function (Blueprint $table) {
+			$table->bigIncrements('id');
+			$table->string('cadena');
+			$table->integer('id_maquina');
+			$table->boolean('status');
+			$table->timestamps();
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('cadenas');
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('cadenas');
+	}
 }
