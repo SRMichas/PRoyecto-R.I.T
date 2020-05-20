@@ -43,6 +43,8 @@ class registroController extends Controller
         }
         $user->email = $request->email;
         $user->pass = $request->pass;
+        $user->tapas = 0;
+        $user->puntos = 0;
         $user->save();
 
         return redirect()->action('homeController@inicio');       

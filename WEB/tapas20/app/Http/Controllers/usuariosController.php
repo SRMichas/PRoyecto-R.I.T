@@ -27,7 +27,7 @@ class usuariosController extends Controller
     {
         $cadena = $request->cadena;
         $validatedData = $request->validate([
-            'cadena'     => 'required|max:20|min:20'
+            'cadena'     => 'required|max:9|min:9'
             
         ]);
         $results =  DB::select('select * from cadenas where cadena = ? and status = 1 ;',[$request->cadena]);
