@@ -1,4 +1,4 @@
-import 'package:tapitas/Entidades/Premio.dart';
+import 'package:tapitas/Entidades/premio.dart';
 
 class Categoria{
   final int id;

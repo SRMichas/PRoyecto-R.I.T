@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
-import 'package:tapitas/Extras/Utilidades.dart' as util;
-import './Extras/my_flutter_app_icons.dart';
+import 'package:tapitas/Extras/utilidades.dart' as util;
+import 'package:tapitas/Entidades/usuario.dart';
 
 
 class Perfil extends StatefulWidget {
@@ -103,7 +102,9 @@ class _PerfilState extends State<Perfil> {
 
         if( snapshot.hasData){
           SharedPreferences sha = snapshot.data;
-          nombreCompleto = "${sha.getString("nombre")}  ${sha.getString("apellido")}";
+          /*Usuario user = Usuario.transforma(sha.getString("usuario"));
+          print(user.toString());*/
+          nombreCompleto = "${sha.getString("nombre")??"N/A"}  ${sha.getString("apellido")??"N/A"}";
           edad = sha.getString("edad") ?? "0";
           puntos = sha.getInt("puntos") ?? 0;
           correo = sha.getString("correo") ?? "N/A";
@@ -193,7 +194,7 @@ class _PerfilState extends State<Perfil> {
                   children: <Widget>[
                     Text("Puntos",style: txtTarj1,),
                     SizedBox(height: SizeConfig.conversionAlto(15, false),),
-                    Text(util.Impresiones.puntosBonitos(puntos),style: txtTarj2,)
+                    Text(util.Impresiones.puntosBonitos(puntos.toDouble(),240),style: txtTarj2,)
                   ],
                 ),
               ),

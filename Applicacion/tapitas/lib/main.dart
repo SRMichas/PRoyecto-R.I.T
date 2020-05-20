@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
 import 'inicio.dart';
+import 'registro.dart';
+import 'pruebaServicio.dart';
 
 //void main() => runApp(MyApp());
 void main(){
@@ -12,7 +14,8 @@ void main(){
     debugShowCheckedModeBanner: true,
     routes: <String,WidgetBuilder>{
       '/login': (BuildContext context) => new Login(),
-      '/inicio': (BuildContext context) => new Inicio()
+      '/inicio': (BuildContext context) => new Inicio(),
+      '/registro' : (BuildContext context) => new Registro()
     },
   ));
 }

@@ -2,10 +2,16 @@ import 'package:tapitas/Entidades/item.dart';
 
 class Constantes{
 
-  static const String HOST = "192.168.1.111";
+  static const String HOST = "http://192.168.1.111";
   static const String RT_SLT = "/RIT/Select/";
   static const String RT_ISR = "/RIT/Insert/";
   static const String RT_UDT = "/RIT/Update/";
+  static const PruebaCons = "http://10.0.2.2:8000/prueba";
+
+  /*static const String HOST = "https://burronator.000webhostapp.com";
+  static const String RT_SLT = "/RIT/scripts/Select/";
+  static const String RT_ISR = "/RIT/scripts/Insert/";
+  static const String RT_UDT = "/RIT/scripts/Update/";*/
 
   //Menu Inicio
   static const String cerrarSesion = "Cerrar Sesion";

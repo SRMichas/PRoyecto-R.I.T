@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Entidades/Historico.dart';
+import 'package:tapitas/Entidades/historico.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tapitas/MiExcepcion.dart';
+import 'package:tapitas/Entidades/mi_excepcion.dart';
 
 class VistaAnual extends StatefulWidget {
   @override
@@ -47,7 +46,6 @@ class _VistaAnualState extends State<VistaAnual>
 
       if( _status == 200) {
         var data = jsonDecode(response.body);
-        //print(data.toString());
         bandera = false;
         return data;
       }else{
@@ -90,7 +88,6 @@ class _VistaAnualState extends State<VistaAnual>
       } else {
         algoAntes = "Tapas seleccionadas: ";
       }
-      print(algo);
     }
 
     setState(() {

@@ -4,8 +4,8 @@ import 'package:qr_code_scanner/qr_scanner_overlay_shape.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
-import 'package:tapitas/MiDialogo.dart';
+import 'package:tapitas/Extras/constantes.dart';
+import 'package:tapitas/CustomViews/mi_dialogo.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LectorQR extends StatelessWidget {
@@ -123,7 +123,7 @@ class _Cuerpo extends State<Pagina> {
                   }
                   vista = MiDialogo(titulo: titulo,
                     descripcion: snapshot.data["mensaje"].toString(),
-                    tipoTitulo: codigoTitulo,);
+                    tipoTitulo: codigoTitulo,soloCarga: false,);
                 }else{
                   vista = SimpleDialog(
                     children: <Widget>[
@@ -155,7 +155,7 @@ class _Cuerpo extends State<Pagina> {
     Map<String,dynamic> res = await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => MiDialogo(titulo: Constantes.T_ERROR, descripcion: cuerpo, tipoTitulo:tipo)
+        builder: (context) => MiDialogo(titulo: Constantes.T_ERROR, descripcion: cuerpo, tipoTitulo:tipo,soloCarga: false,)
     );
 
     if( res["bandera"] )

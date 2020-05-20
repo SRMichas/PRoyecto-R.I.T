@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'dart:collection';
 import 'dart:async';
 
@@ -10,19 +10,19 @@ class MiDialogo extends StatelessWidget {
   Color fondoTitulo,colorLetra;
   final Function onRun;
   final Map<String,dynamic> datos;
-  final bool algo;
-  Widget _vista;
+  final bool soloCarga;
+  //Widget _vista;
   BuildContext context;
   Timer _timer;
 
-  MiDialogo({this.titulo, this.descripcion, this.tipoTitulo,this.datos,this.onRun,@required this.algo});
+  MiDialogo({this.titulo, this.descripcion, this.tipoTitulo,this.datos,this.onRun,@required this.soloCarga});
 
   double espaciadoVertical = ( 10 * SizeConfig.heightMultiplier ) / SizeConfig.heightMultiplier,
           redondeado = (20 * SizeConfig.widthMultiplier) / SizeConfig.widthMultiplier;
 
-  Color COL_EXITOSA = Color.fromRGBO(25, 191, 48, 1);
-  Color COL_ADVERTENCIA = Color.fromRGBO(243, 172, 30, 1);//Color.fromRGBO(246, 249, 81, 1);
-  Color COL_ERROR = Color.fromRGBO(236, 8, 8, 1);
+  static const Color COL_EXITOSA = Color.fromRGBO(25, 191, 48, 1);
+  static const Color COL_ADVERTENCIA = Color.fromRGBO(243, 172, 30, 1);//Color.fromRGBO(246, 249, 81, 1);
+  static const Color COL_ERROR = Color.fromRGBO(236, 8, 8, 1);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class MiDialogo extends StatelessWidget {
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(redondeado)
       ),
-      child: algo ? cargando() : mensajes(),
+      child: soloCarga ? cargando() : mensajes(),
     );
   }
 

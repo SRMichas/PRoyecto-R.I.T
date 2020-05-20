@@ -2,30 +2,25 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tapitas/CustomViews/InputRegistro.dart';
-import 'package:tapitas/CustomViews/MiDropDown.dart';
+import 'package:tapitas/CustomViews/input_registro.dart';
+import 'package:tapitas/CustomViews/mi_drop_down.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'package:tapitas/Entidades/estados.dart';
-import 'package:tapitas/Entidades/Ciudad.dart';
-import 'package:tapitas/MiDialogo.dart';
-import 'package:tapitas/inicio.dart';
-import 'package:tapitas/login.dart';
+import 'package:tapitas/Entidades/ciudad.dart';
+import 'package:tapitas/CustomViews/mi_dialogo.dart';
 
-
-class Resgistro extends StatelessWidget {
+class Registro extends StatelessWidget {
 
   final Function function;
 
-  Resgistro({this.function});
+  Registro({this.function});
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: () => cerrar(context),
-        child: MaterialApp(
-          title: "Registro",
-          home: new Scaffold(
+        child: Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
@@ -59,12 +54,7 @@ class Resgistro extends StatelessWidget {
                 );
               },
             ),
-          ),
-          routes: <String,WidgetBuilder>{
-            '/inicio': (BuildContext context) => new Inicio(),
-            '/login': (BuildContext context) => new Login(),
-          },
-        )
+          )
     );
   }
   
@@ -343,6 +333,7 @@ class _FormularioState extends State<Formulario> {
                     descripcion: snapshot.data["mensaje"].toString(),
                     tipoTitulo: codigoTitulo,
                     datos: snapshot.data,
+                    soloCarga: false,
                   );
                 } else {
                   vista = SimpleDialog(

@@ -82,6 +82,7 @@ class _InputRegistroState extends State<InputRegistro> {
 
   Widget contenido(){
     TextFormField texto = TextFormField(
+      cursorColor: widget.color ?? Colors.black,
       controller: controlador,
       keyboardType: widget.tipoEntrada ?? TextInputType.text,
       obscureText: widget.ocultarTexto ?? false,

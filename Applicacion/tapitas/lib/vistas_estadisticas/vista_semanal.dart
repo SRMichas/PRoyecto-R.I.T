@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Entidades/Historico.dart';
+import 'package:tapitas/Entidades/historico.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tapitas/MiExcepcion.dart';
+import 'package:tapitas/Entidades/mi_excepcion.dart';
 
 class VistaSemanal extends StatefulWidget {
   @override
@@ -38,7 +37,6 @@ class _VistaSemanalState extends State<VistaSemanal>
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = int.parse(prefs.getString("id"));
-    //var id = 2;
     var url = 'http://${Constantes.HOST + Constantes.RT_SLT}';
     url += 'C-Estadisticas.php?usId=$id';
 
@@ -48,7 +46,6 @@ class _VistaSemanalState extends State<VistaSemanal>
 
       if( _status == 200) {
         var data = jsonDecode(response.body);
-        print(data.toString());
         bandera = false;
         return data;
       }else{
@@ -59,7 +56,6 @@ class _VistaSemanalState extends State<VistaSemanal>
       bandera = false;
       throw MiExcepcion("Error al conectar con el servidor",2,Icons.info,e);
     } on Exception catch (e){
-      //throw Exception("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 1");
       //el servidor esta apagado -> a rechazado la conexion
       bandera = false;
       throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
@@ -237,13 +233,6 @@ class _VistaSemanalState extends State<VistaSemanal>
                   SizedBox(height:(30 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier),
                   FlatButton(
                     onPressed: () => setState(() {
-                      /*_futuroSemanal = Future.delayed(Duration(seconds: 3),(){
-                        setState(() {
-                          bandera = false;
-                        });
-
-                        return getInfo();
-                      });*/
                       bandera = false;
                       try {
                           _futuroSemanal = getInfo();

@@ -11,6 +11,7 @@ class SizeConfig {
   static double imageSizeMultiplier;
   static double heightMultiplier;
   static double widthMultiplier;
+  static double DPI;
   static bool isPortrait = true;
   static bool isMobilePortrait = false;
 
@@ -40,7 +41,7 @@ class SizeConfig {
     print(_screenWidth);
   }
 
-  void iniciar(BoxConstraints constraints){
+  void iniciar(BoxConstraints constraints,MediaQueryData query){
     _screenWidth = constraints.maxWidth;
     _screenHeight = constraints.maxHeight;
 
@@ -52,9 +53,10 @@ class SizeConfig {
     heightMultiplier = _blockHeight;
     widthMultiplier = _blockWidth;
 
-
-
-
+    if( query != null) {
+      DPI = query.devicePixelRatio * 160.0;
+      //print("DPI ==========> ${query.devicePixelRatio * 160.0}");
+    }
     /*print("Ancho -> ${_screenWidth}");
     print("Ancho -> ${_screenHeight}");
 

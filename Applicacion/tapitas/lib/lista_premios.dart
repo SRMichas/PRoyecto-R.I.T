@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
-import 'package:tapitas/Entidades/Premio.dart';
+import 'package:tapitas/Extras/constantes.dart';
+import 'package:tapitas/Entidades/premio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tapitas/MiDialogo.dart';
-import 'package:tapitas/Extras/Utilidades.dart' as util;
+import 'package:tapitas/CustomViews/mi_dialogo.dart';
+import 'package:tapitas/Extras/utilidades.dart' as util;
 
 class ListaPremios extends StatefulWidget {
   final String cate;
@@ -36,8 +36,9 @@ class _ListaPremiosState extends State<ListaPremios> {
     });
   }
 
-  void Sale() {
+  Future<bool> salir() async{
     Navigator.pop(context, puntos);
+    return true;
   }
 
   @override
@@ -48,7 +49,7 @@ class _ListaPremiosState extends State<ListaPremios> {
     premios = widget.premios;
 
     return WillPopScope(
-      onWillPop: () { Sale(); },
+      onWillPop: ()=> salir(),
       child: Scaffold(
         appBar: AppBar(
           title: Container(
@@ -56,9 +57,11 @@ class _ListaPremiosState extends State<ListaPremios> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  width: SizeConfig.ancho() * 0.45,
+                  //color: Colors.red,
+                  width: SizeConfig.ancho() * (SizeConfig.DPI < 320? 0.45 : 0.35),
                   child: Text("$cate"),
                 ),
+                //puntos > 100000 ? Text("simon") : Text("nel")
                 Container(
                   padding: EdgeInsets.symmetric(vertical: SizeConfig.conversionAlto(3, false), horizontal: SizeConfig.conversionAncho(8, false)),
                   decoration: BoxDecoration(
@@ -78,7 +81,7 @@ class _ListaPremiosState extends State<ListaPremios> {
                         width: SizeConfig.conversionAncho(5,false),
                       ),
                       Text(
-                        "${util.Impresiones.puntosBonitos(puntos)}",
+                        "${util.Impresiones.puntosBonitos(puntos.toDouble(),SizeConfig.DPI)}",
                         textAlign: TextAlign.end,
                         style: estilo,
                       ),
@@ -90,7 +93,7 @@ class _ListaPremiosState extends State<ListaPremios> {
           ),
           leading: IconButton(
               icon: Icon(Icons.arrow_back),
-              onPressed: () { Sale(); }),
+              onPressed: () { salir(); }),
         ),
         body: cuerpo(),
       ),
@@ -150,7 +153,7 @@ class ModeloProducto extends StatelessWidget {
   Widget build(BuildContext context) {
     this.context = context;
 
-    display = util.Impresiones.puntosBonitos(premio.costo);
+    display = util.Impresiones.puntosBonitos(premio.costo.toDouble(),240);
 
     return GestureDetector(
       onTap: () {
@@ -191,7 +194,7 @@ class ModeloProducto extends StatelessWidget {
 
   Future<Map<String, dynamic>> _dialogoTransaccion() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var url = 'http://${Constantes.HOST + Constantes.RT_ISR}';
+    var url = '${Constantes.HOST + Constantes.RT_ISR}';
     url += "I-Premio.php";
     int id = int.parse(prefs.getString("id"));
     diferencia = puntos - premio.costo;
@@ -249,6 +252,7 @@ class ModeloProducto extends StatelessWidget {
                     descripcion: snapshot.data["mensaje"].toString(),
                     tipoTitulo: 0,
                     datos: snapshot.data,
+                    soloCarga: false,
                   );
                 } else {
                   vista = SimpleDialog(
@@ -277,10 +281,7 @@ class ModeloProducto extends StatelessWidget {
   }
 
   Container cuerpoModelo() {
-    double margen = MediaQuery.of(context).size.width / 35,
-        porcentajeLogo = 0.2,
-        porcentajeNombre = 0.485,
-        porcentajePuntos = 0.285;
+    double porcentajeLogo = 0.2, porcentajeNombre = 0.485, porcentajePuntos = 0.285;
     return Container(
       width: double.infinity,
       child: Column(

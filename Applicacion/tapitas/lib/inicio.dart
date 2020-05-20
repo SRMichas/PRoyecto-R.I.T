@@ -1,17 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'lectorQr.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tapitas/Extras/size_config.dart';
+import 'package:tapitas/Entidades/item.dart';
+import 'Extras/constantes.dart';
+import 'lector_qr.dart';
 import 'premios.dart';
 import 'puntuacion.dart';
-import 'historial.dart';
-import 'package:tapitas/Extras/size_config.dart';
-import 'Extras/Constantes.dart';
-import 'package:tapitas/Entidades/item.dart';
+import 'estadisticas.dart';
 import 'perfil.dart';
-import 'login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Inicio extends StatelessWidget {
 
@@ -22,8 +18,7 @@ class Inicio extends StatelessWidget {
     this.context = context;
     return WillPopScope(
       onWillPop: () => cierraApp(),
-      child: MaterialApp(
-          home: Scaffold(
+      child: Scaffold(
             appBar: AppBar(
               title: Text("Home"),
               actions: <Widget>[
@@ -41,10 +36,7 @@ class Inicio extends StatelessWidget {
               ],
             ),
             body: new Cuerpo(),
-          ),routes: <String,WidgetBuilder>{
-        '/login': (BuildContext context) => new Login(),
-      }
-      ),
+          ),
     );
   }
 
@@ -87,7 +79,7 @@ class Cuerpo extends StatelessWidget {
     
     return LayoutBuilder(
       builder: (context,constraints){
-        SizeConfig().iniciar(constraints);
+        SizeConfig().iniciar(constraints,MediaQuery.of(context));
         return contenedorMaestro();
       },
     );
@@ -113,23 +105,11 @@ class Cuerpo extends StatelessWidget {
               carta(4,"Premios", Icons.card_giftcard)
             ],
           ),
-
-          /*SizedBox(height: 20.0,),
-        carta("historial", Icons.history),
-        SizedBox(height: 20.0,),
-        carta("Lector", Icons.camera_alt),
-        SizedBox(height: 20.0,),
-        carta("Puntuación", Icons.score),
-        SizedBox(height: 20.0,),
-        carta("Premios", Icons.card_giftcard)*/
         ],
       ),
     );
   }
 
-  Card actividad(){
-    return Card();
-  }
 
   Container carta(int id,String nombre, IconData icono) {
     Card cartilla = new Card(
@@ -141,12 +121,9 @@ class Cuerpo extends StatelessWidget {
             color: Colors.blueAccent,
             size: tamanoIcono,
           ),
-          SizedBox(
-            height: 5.0,
-          ),
+          SizedBox( height: 5.0, ),
           Text(
             nombre,
-
             style: TextStyle(
               fontSize: nombre.length < 12 ? tamanoLetra : tamanoLetra - 3,
             ),
@@ -158,10 +135,8 @@ class Cuerpo extends StatelessWidget {
     return Container(
       width: MediaQuery.of(contexto).size.width / 2,
       height: altoTarjeta,
-      //margin: EdgeInsets.only(left: 5,right: 5),
       child: GestureDetector(
         onTap: (){
-            //Scaffold.of(contexto).showSnackBar(SnackBar(content: Text("Presionaste en: "+id.toString()),duration: Duration(seconds: 1),));
             var actividad;
             switch(id){
               case 1:
@@ -178,18 +153,13 @@ class Cuerpo extends StatelessWidget {
                 break;
             }
 
-            //Navigator.pop(contexto);
             Navigator.push(contexto,
                 MaterialPageRoute(
                   builder: actividad,
                 ));
-
-
           },
         child: cartilla,
       ),
     );
   }
 }
-
-

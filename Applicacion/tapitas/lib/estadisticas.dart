@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/vistas_estadisticas/VistaSemanal.dart';
-import 'package:tapitas/vistas_estadisticas/VistaMensual.dart';
-import 'package:tapitas/vistas_estadisticas/VistaAnual.dart';
+import 'package:tapitas/vistas_estadisticas/vista_semanal.dart';
+import 'package:tapitas/vistas_estadisticas/vista_mensual.dart';
+import 'package:tapitas/vistas_estadisticas/vista_anual.dart';
 
 class Historial extends StatelessWidget {
   TextStyle estilo = TextStyle(

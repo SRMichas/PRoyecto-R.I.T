@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Entidades/Historico.dart';
+import 'package:tapitas/Entidades/historico.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tapitas/MiExcepcion.dart';
+import 'package:tapitas/Entidades/mi_excepcion.dart';
 
 class VistaMensual extends StatefulWidget {
   @override
@@ -46,10 +45,7 @@ class _VistaMensualState extends State<VistaMensual>
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var id = int.parse(prefs.getString("id"));
     var url = 'http://${Constantes.HOST + Constantes.RT_SLT}';
-
     url += 'C-EstadisticasMes.php?usId=$id';
-    /*http.Response response = await http.get(url);
-    var data = jsonDecode(response.body);*/
 
     try{
       http.Response response = await http.get(url);
@@ -57,7 +53,6 @@ class _VistaMensualState extends State<VistaMensual>
 
       if( _status == 200) {
         var data = jsonDecode(response.body);
-        print(data.toString());
         bandera2 = false;
         return data;
       }else{
@@ -68,7 +63,6 @@ class _VistaMensualState extends State<VistaMensual>
       bandera2 = false;
       throw MiExcepcion("Error al conectar con el servidor",2,Icons.info,e);
     } on Exception catch (e){
-      //throw Exception("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa 1");
       //el servidor esta apagado -> a rechazado la conexion
       bandera2 = false;
       throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
@@ -87,7 +81,6 @@ class _VistaMensualState extends State<VistaMensual>
       } else {
         algoAntes = "Tapas seleccionadas: ";
       }
-      print(algo);
     }
 
     // Request a build.
@@ -100,8 +93,6 @@ class _VistaMensualState extends State<VistaMensual>
   List<charts.Series<HistoricoMensual, DateTime>> _infoMensual(List info, List info2) {
     List<HistoricoMensual> data =
     info.map((val) => HistoricoMensual.fromJson(val)).toList();
-
-    //manejaMatriz(info, info2);
 
     return [
       new charts.Series<HistoricoMensual, DateTime>(
@@ -184,7 +175,8 @@ class _VistaMensualState extends State<VistaMensual>
                                 if (_indice < 0) {
                                   _indice = maximo;
                                 }
-                                print("Valor del Indice: $_indice");
+                                _preMensaje = "";
+                                _seleccionado = "";
                               });
                             },
                             child: Icon(
@@ -331,7 +323,6 @@ class _VistaMensualState extends State<VistaMensual>
                  break;
             }
 
-
           }else if( snapshot.hasError){
             MiExcepcion e = snapshot.error;
 
@@ -344,13 +335,6 @@ class _VistaMensualState extends State<VistaMensual>
                   SizedBox(height:(30 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier),
                   FlatButton(
                     onPressed: () => setState(() {
-                      /*_futuroSemanal = Future.delayed(Duration(seconds: 3),(){
-                        setState(() {
-                          bandera = false;
-                        });
-
-                        return getInfo();
-                      });*/
                       bandera = false;
                       try {
                         _futuroMensual = getInfo();
@@ -365,30 +349,6 @@ class _VistaMensualState extends State<VistaMensual>
               ),
             );
           }
-
-
-
-
-
-
-          /*if (snapshot.data != null) {
-
-          } else {
-            return Container(
-              /*width: double.infinity,
-                    height: double.infinity,*/
-              child: Center(
-                child: SizedBox(
-                  width: 42 * SizeConfig.widthMultiplier,
-                  height: 42 * SizeConfig.widthMultiplier,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 4 * SizeConfig.widthMultiplier /*18*/,
-                  ),
-                ),
-              ),
-            );
-          }*/
-
           return vista;
         });
   }

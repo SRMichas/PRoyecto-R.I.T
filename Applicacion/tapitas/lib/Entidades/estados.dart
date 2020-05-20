@@ -1,4 +1,4 @@
-import 'package:tapitas/Entidades/Ciudad.dart';
+import 'package:tapitas/Entidades/ciudad.dart';
 
 class Estado{
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tapitas/Entidades/Categoria.dart';
+import 'package:tapitas/Entidades/categoria.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/Constantes.dart';
-import 'package:tapitas/MiExcepcion.dart';
-import 'ListaPremios.dart';
+import 'package:tapitas/Extras/constantes.dart';
+import 'package:tapitas/Entidades/mi_excepcion.dart';
+import 'lista_premios.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -35,6 +35,7 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
   Future<Map<String, dynamic>> _futuro;
   bool bandera = false,bandera2 = false;
   Widget _vista;
+  SharedPreferences prefs;
 
   TextStyle estiloPre1 = TextStyle(
           fontSize:
@@ -67,9 +68,9 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
   }
 
   Future<Map<String, dynamic>> getCategorias() async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     var id = int.parse(prefs.getString("id"));
-    var url = 'http://${Constantes.HOST+Constantes.RT_SLT}';
+    var url = '${Constantes.HOST+Constantes.RT_SLT}';
     url += "C-Premios2.php?usId=$id";
 
     try{
@@ -94,7 +95,13 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
     }
   }
 
-  void cambiaPuntos(int nuevosP){
+  void cambiaPuntos(int nuevosP)async{
+    prefs = await SharedPreferences.getInstance();
+//    int pre = await prefs.getInt("puntos");
+    if( nuevosP != puntos ) {
+      await prefs.setInt("puntos", nuevosP);
+      prefs.reload();
+    }
    setState(() {
       puntos = nuevosP;
       bandera2 = true;

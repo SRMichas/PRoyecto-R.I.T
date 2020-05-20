@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'resgistro.dart';
-import 'inicio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:tapitas/Extras/Constantes.dart';
+import 'package:tapitas/Extras/constantes.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/CustomViews/InputRegistro.dart';
-import 'MiDialogo.dart';
+import 'package:tapitas/CustomViews/input_registro.dart';
+import 'package:tapitas/CustomViews/mi_dialogo.dart';
 
 class Login extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-          title: 'Login',
-          home: new Scaffold(
+    return Scaffold(
             body: new CuerpoLogin(),
             backgroundColor: Color.fromRGBO(97, 164, 241, 1.0),
-          ),
-          routes: <String,WidgetBuilder>{
-            '/registro': (BuildContext context) => new Resgistro(),
-            '/inicio': (BuildContext context) => new Inicio()
-          },
-    );
+          );
   }
 }
 
@@ -48,7 +39,7 @@ class CuerpoLogin extends StatelessWidget {
       );
 
   Future<Map<String, dynamic>> getData() async {
-    var url = "http://${Constantes.HOST + Constantes.RT_SLT}";
+    var url = "${Constantes.HOST + Constantes.RT_SLT}";
     url += "C-Usuario2.php";
 
     Map parametros = {
@@ -109,7 +100,7 @@ class CuerpoLogin extends StatelessWidget {
                     tipoTitulo: codigoTitulo,
                     datos: snapshot.data,
                     onRun: funcion,
-                    algo: bandera,
+                    soloCarga: bandera,
                   );
                 } else if (snapshot.hasError) {
 
@@ -133,9 +124,9 @@ class CuerpoLogin extends StatelessWidget {
               });
         });
 
-    if (!res["bandera"]) {
+    if (!res["bandera"] ?? false) {
       dialogoVisible = false;
-      if (res["llama"]) {
+      if (res["llama"] ?? false) {
         guarda(lista["usuario"]);
         Navigator.pushReplacementNamed(context, "/inicio");
       }
@@ -243,7 +234,7 @@ class CuerpoLogin extends StatelessWidget {
     this.context = context;
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints viewportConstraints) {
-        SizeConfig().iniciar(viewportConstraints);
+        SizeConfig().iniciar(viewportConstraints,null);
         return SingleChildScrollView(
           child: ConstrainedBox(
             constraints: BoxConstraints( minHeight: viewportConstraints.maxHeight ),
@@ -259,6 +250,16 @@ class CuerpoLogin extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
     await prefs.setString("id", data[0]);
+    /*String user = Usuario(
+      id: int.parse(data[0].toString()),
+      nombre: "${data[2]} ${data[3]}",
+      edad: int.parse(data[4]),
+      correo: data[6],
+      puntos: int.parse(data[8].toString()),
+      ciudad: data[9],
+      estado: data[10]
+    ).toString();
+    await prefs.setString("usuario", user);*/
     await prefs.setString("nombre", data[2]);
     await prefs.setString("apellido", data[3]);
     await prefs.setString("edad", data[4]);
