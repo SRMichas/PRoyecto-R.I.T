@@ -1,36 +1,98 @@
 #include <LiquidCrystal.h>
 
-int conteo = 0;
-LiquidCrystal lcd(7,8,9,10,11,12);
-
-void setup()
-{
-  Serial.begin(9600);
-  lcd.begin(16,2);
-  lcd.print("Kiubo");
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
+int resultadoSensor = 0;
+int boton = 2;
+int conteo;
+String cadena;
+/*
+   - Ingresar tapas
+   - Conteo de tapas
+   - Envío de conteo a ESP8266
+   - Espera de respuesta del ESP8266
+   - Mostrar respuesta de ESP8266
+*/
+void setup() {
+  lcd.begin(16, 2);
+  mostrarMensaje(0);
+  pinMode(2, INPUT);
+  Serial.begin(115200);
 }
-void loop()
-{
-  delay(5000);
-  int ny70 = analogRead(A0);
-  Serial.println(ny70);
-  if(ny70 > 200 && ny70 < 250)
-  {
-    lcd.print("Es naranja creo");
-    conteo++;
+
+void loop() {
+  if (botonPresionado()) {
+    conteoTapas();
+  } else {
+    //Por algún motivo Arduino necesita este else aquí para no volverse loco.
   }
-  if(ny70 >50 && ny70 < 150)
-  {
-    lcd.print("Es negro ue");
-    conteo++;
-  }
-  else if(ny70 > 150)
-  {
-    lcd.print("Es blanco ue");
-    conteo++;
-  }
+}
+
+boolean botonPresionado() {
+  return digitalRead(boton) == LOW;
+}
+
+void conteoTapas() {
+  int lecturaSensor;
+  conteo = 0;
+  Serial.println("Se presionó el botón");
   delay(100);
-  String x = Serial.readString();
-  Serial.print(x);
+  while (!botonPresionado()) {
+    lecturaSensor = analogRead(A0);
+    if (lecturaSensor > 500) {
+      conteo++;
+    }
+    if (conteo == 0) {
+      mostrarMensaje(1);
+    } else {
+      mostrarMensaje(2);
+    }
+    delay(300);
+  }
+  if (conteo > 0) {
+    comunicarResultado();
+  }
+  mostrarMensaje(0);
+}
+
+void mostrarMensaje(int mensaje) {
   lcd.clear();
+  lcd.setCursor(0, 0);
+  switch (mensaje) {
+    case 0:
+      lcd.print("Presione el");
+      lcd.setCursor(0, 1);
+      lcd.print("boton.");
+      break;
+    case 1:
+      lcd.print("Ingrese las");
+      lcd.setCursor(0, 1);
+      lcd.print("tapas.");
+      break;
+    case 2:
+      lcd.print("Tapas ingresadas");
+      lcd.setCursor(0, 1);
+      lcd.print(conteo);
+      break;
+    case 3:
+      lcd.print("Esperando");
+      lcd.setCursor(0, 1);
+      lcd.print("respuesta");
+      break;
+    case 4:
+      lcd.print("Codigo:");
+      lcd.setCursor(0, 1);
+      lcd.print(cadena);
+      break;
+  }
+}
+
+void comunicarResultado() { //Aquí va la comunicación con el ESP8266.
+  mostrarMensaje(3);
+  cadena = "";
+  Serial.println("\"Maquina\": 1,\n\"Conteo\": " + conteo);
+  while (cadena == "")
+    cadena = Serial.readString();
+  Serial.println("Cadena recibida: " + cadena);
+  mostrarMensaje(4);
+  delay(10000);
 }
