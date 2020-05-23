@@ -19,11 +19,11 @@ void loop() {
 }
 
 void esperarArduino() {
-    String mensaje = "";
-    while(mensaje == "") {
-      mensaje = Serial.readString();
-    }
-    Serial.write("Mensaje recibido");
+  String mensaje = "";
+  while (mensaje == "") {
+    mensaje = Serial.readString();
+  }
+  Serial.write("Mensaje recibido");
 }
 
 void conexion() {

@@ -46,7 +46,7 @@ void conteoTapas() {
     } else {
       mostrarMensaje(2);
     }
-    delay(300);
+    delay(350);
   }
   if (conteo > 0) {
     comunicarResultado();
