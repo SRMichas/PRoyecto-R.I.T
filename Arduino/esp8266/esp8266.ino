@@ -15,6 +15,18 @@ void setup() {
 }
 
 void loop() {
+  esperarArduino();
+}
+
+void esperarArduino() {
+    String mensaje = "";
+    while(mensaje == "") {
+      mensaje = Serial.readString();
+    }
+    Serial.write("Mensaje recibido");
+}
+
+void conexion() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin("http://5c9c6c2e.ngrok.io/api/cadena");

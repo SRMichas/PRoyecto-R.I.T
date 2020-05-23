@@ -89,7 +89,7 @@ void mostrarMensaje(int mensaje) {
 void comunicarResultado() { //Aquí va la comunicación con el ESP8266.
   mostrarMensaje(3);
   cadena = "";
-  Serial.println("\"Maquina\": 1,\n\"Conteo\": " + conteo);
+  Serial.write(conteo);
   while (cadena == "")
     cadena = Serial.readString();
   Serial.println("Cadena recibida: " + cadena);
