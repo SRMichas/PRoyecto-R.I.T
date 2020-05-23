@@ -7,13 +7,13 @@ Repositorio de los archivos necesarios para el proyecto
 
 # Pendientes:
 - Máquina.
-	- [ ] Establecer la comunicación por serial entre el ESP8266 y el Arduino.
+	- [x] Establecer la comunicación por serial entre el ESP8266 y el Arduino.
 	- [x] Programar la lectura de datos del CNY70 (Posiblemente por medio de interrupciones).
-		- No se realiza lectora por interrupciones ya que pueden haber falsos positivos, se implementó un botón para interactuar con la máquina y avanzar de una etapa a otra.
+		*No se realiza lectora por interrupciones ya que pueden haber falsos positivos, se implementó un botón para interactuar con la máquina y avanzar de una etapa a otra.*
 	- [ ] Mejorar la forma en que se reciben las respuestas del servidor.
 	- [x] Implementar una pantalla (LCD deibido a la contingencia).
 	- [x] Limpiar el código.
-		- Mejoría con respecto a la versión anterior. Considero que se puede limpiar más.
+		*Mejoría con respecto a la versión anterior. Considero que se puede limpiar más.*
 - Aplicación.
 	- [x] Hacer pruebas en iOS.<br>
 		_Se eliminaron las dependencias de Flutter que permitían probar en iOS sin una mac, ahora depende de XCode y por lo tanto se necesita una mac_.
@@ -36,4 +36,4 @@ La máquina utiliza el sensor óptico CNY70 para la detección de las tapas por 
 
 ---
 ### ¿Por qué no usamos issues de GitHub?
-¯\\_(ツ)_/¯
+¯\\\_(ツ)\_/¯
