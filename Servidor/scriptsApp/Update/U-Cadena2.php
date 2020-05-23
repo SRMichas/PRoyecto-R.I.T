@@ -22,18 +22,31 @@ $password ="Cgh6yIaCCX03eDOFX3Ha";
 
     $res = new Respuesta();
 
-    $consulta = "SELECT cc.id_cadena,cc.cadena 
-                    FROM usuariodetalle ud
-                    INNER JOIN cadena_ctrl cc ON ud.id_cadena = cc.id_cadena 
-                    WHERE ud.id_usuario = {$us} AND cc.cadena = '{$cadena}'
-                    AND cc.status = 0";
+    $consulta = "CALL sp_manejo_cadena({$us},'{$cadena}')";
 
     $resultado = mysqli_query($conexion,$consulta);
 
     if( $resultado ){
         $respuesta = mysqli_fetch_row($resultado);
         
-        if( $respuesta != null){
+        switch ($respuesta[0]) {
+            case 0:
+                $res -> mensaje = "Has obtenido {$respuesta[4]} puntos";
+                $res -> fallo = false;
+                $res -> codigo = $respuesta[0];
+                break;
+            case 1:
+                $res -> mensaje = "{$respuesta[1]}";
+                $res -> fallo = true;
+                $res -> codigo = $respuesta[0];
+                break;
+            case 2:
+                $res -> mensaje = "{$respuesta[1]}";
+                $res -> fallo = true;
+                $res -> codigo = $respuesta[0];
+                break;
+        }
+        /*if( $respuesta != null){
             $sql = "UPDATE cadena_ctrl set status = 1 WHERE id_cadena = {$respuesta[0]}";
 
             $resultado2 = mysqli_query($conexion,$sql);
@@ -54,11 +67,11 @@ $password ="Cgh6yIaCCX03eDOFX3Ha";
             $res -> fallo = true;
             $res -> codigo = 2;
             $res -> algo = $respuesta;
-        }
+        }*/
     }else{
-        $res -> mensaje = "Error al obtener la cadena";
+        $res -> mensaje = "Error al procedimiento";
         $res -> fallo = true;
-        $res -> codigo = 3;
+        $res -> codigo = 1;
         $res -> algo = $respuesta;
     }
     

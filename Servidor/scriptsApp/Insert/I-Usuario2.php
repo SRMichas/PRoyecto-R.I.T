@@ -1,8 +1,8 @@
 <?php
-$hostname ="localhost";
-$database ="proyectorit";
-$username ="root";
-$password ="";
+$hostname ="bimlwt6nabnfzacy9sgn-mysql.services.clever-cloud.com";
+$database ="bimlwt6nabnfzacy9sgn";
+$username ="uxqi36i7rez3yxs2";
+$password ="Cgh6yIaCCX03eDOFX3Ha";
 
 $json = array();
 

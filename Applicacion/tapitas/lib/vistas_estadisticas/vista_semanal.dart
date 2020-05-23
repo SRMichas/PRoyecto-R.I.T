@@ -36,12 +36,13 @@ class _VistaSemanalState extends State<VistaSemanal>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = int.parse(prefs.getString("id"));
-    var url = 'http://${Constantes.HOST + Constantes.RT_SLT}';
-    url += 'C-Estadisticas.php?usId=$id';
+    var id = prefs.getString("id");
+    var url = '${Constantes.HOST + Constantes.RT_SLT}';
+    url += 'C-Estadisticas.php';
 
+    Map parametros = { "usId" : id };
     try{
-      http.Response response = await http.get(url);
+      http.Response response = await http.post(url,body: parametros);
       _status = response.statusCode;
 
       if( _status == 200) {
@@ -129,7 +130,7 @@ class _VistaSemanalState extends State<VistaSemanal>
                   height: 42 * SizeConfig.widthMultiplier,
                   child: CircularProgressIndicator(
                     valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
-                    strokeWidth: 4 * SizeConfig.widthMultiplier /*18*/,
+                    strokeWidth: 4 * SizeConfig.widthMultiplier ,
                   ),
                 ),
               ),
@@ -138,7 +139,6 @@ class _VistaSemanalState extends State<VistaSemanal>
 
           if (snapshot.hasData) {
             bool fallo = snapshot.data["fallo"].toString() == "true";
-            int code = int.parse(snapshot.data["codigo"].toString());
 
             if (!fallo) {
               vista = Column(

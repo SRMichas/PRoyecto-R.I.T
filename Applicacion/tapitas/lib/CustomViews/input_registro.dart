@@ -34,7 +34,6 @@ class _InputRegistroState extends State<InputRegistro> {
       fontSize: SizeConfig.conversionAlto(letra ?? 12, false),
       fontStyle: cursiva != null?  (cursiva? FontStyle.italic : FontStyle.normal) : FontStyle.normal,
       fontWeight: negrita != null? (negrita? FontWeight.bold : FontWeight.normal) : FontWeight.normal,
-        //height: 0.6
     );
   }
 
@@ -89,11 +88,9 @@ class _InputRegistroState extends State<InputRegistro> {
       style: widget.estilo ?? TextStyle(color: Colors.black,),
       decoration: InputDecoration(
           labelText: widget.hint,
-          filled: true,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(SizeConfig.conversionAlto(16, false)))
           ),
-          //hintText: widget.hint,
           contentPadding: EdgeInsets.symmetric(vertical: SizeConfig.conversionAlto(20, false)),
           prefixIcon: Icon(widget.icono ?? Icons.clear,color: widget.color ?? Colors.blueAccent,),
           hintStyle: widget.estilo ?? TextStyle(color: Colors.black),
@@ -122,7 +119,6 @@ class _InputRegistroState extends State<InputRegistro> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //color: Colors.green ?? Colors.transparent,
       margin: EdgeInsets.only(
         bottom: SizeConfig.conversionAlto(6, false),
         left: SizeConfig.conversionAncho(widget.margenIzquierdo ?? 0, false),

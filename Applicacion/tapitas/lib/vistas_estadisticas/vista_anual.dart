@@ -36,12 +36,14 @@ class _VistaAnualState extends State<VistaAnual>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = int.parse(prefs.getString("id"));
-    var url = 'http://${Constantes.HOST + Constantes.RT_SLT}';
-    url += '/C-EstadisticasAno.php?usId=$id';
+    var id = prefs.getString("id");
+    var url = '${Constantes.HOST + Constantes.RT_SLT}';
+    url += 'C-EstadisticasAno.php';
+
+    Map parametros = { "usId" : id };
 
     try{
-      http.Response response = await http.get(url);
+      http.Response response = await http.post(url,body: parametros);
       _status = response.statusCode;
 
       if( _status == 200) {
@@ -58,6 +60,9 @@ class _VistaAnualState extends State<VistaAnual>
       //el servidor esta apagado -> a rechazado la conexion
       bandera = false;
       throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
+    } on TypeError catch (e){
+      bandera = false;
+      throw MiExcepcion(e.toString(),1,Icons.signal_wifi_off,e);
     }
   }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tapitas/Extras/size_config.dart';
 import 'package:tapitas/Extras/utilidades.dart' as util;
-import 'package:tapitas/Entidades/usuario.dart';
 
 
 class Perfil extends StatefulWidget {
@@ -44,8 +43,9 @@ class _PerfilState extends State<Perfil> {
     return preferences;
   }
 
-  void cierra(){
+  Future<bool> cierra() async{
     Navigator.pop(context);
+    return true;
   }
 
   @override
@@ -55,7 +55,7 @@ class _PerfilState extends State<Perfil> {
       _vista = futureBuilder();
 
     return WillPopScope(
-      onWillPop: (){ cierra(); },
+      onWillPop: () => cierra(),
       child: Scaffold(
         appBar: AppBar(
           title: Text("INICIO"),

@@ -1,11 +1,11 @@
 <?php
-$hostname ="localhost";
-$database ="proyectorit";
-$username ="root";
-$password ="";
+$hostname ="bimlwt6nabnfzacy9sgn-mysql.services.clever-cloud.com";
+$database ="bimlwt6nabnfzacy9sgn";
+$username ="uxqi36i7rez3yxs2";
+$password ="Cgh6yIaCCX03eDOFX3Ha";
 
 $json = array();
-$usuario = $_GET["usId"];
+$usuario = $_POST["usId"];
 
 class Respuesta{
     public $puntos;
@@ -56,6 +56,18 @@ $todosLosMeses = [];
         $meses = rangoMeses($mes);
 
         $consultaEstadisticas =     
+                "SELECT 
+                    SUM(CONVERT(SUBSTRING(c.cadena,1,4),UNSIGNED INTEGER)), 
+                    ud.created_at, month(ud.created_at) 
+                FROM usuario_detalles ud 
+                INNER JOIN usuarios u ON u.id = ud.id_usuario 
+                INNER JOIN cadenas c On c.id = ud.id_cadena 
+                WHERE   MONTH(ud.created_at) in {$meses} and ud.id_usuario = {$usuario}
+                        and YEAR(ud.created_at) = {$ano} and c.status = 0
+                GROUP BY MONTH(ud.created_at)
+                ORDER BY ud.created_at";
+
+        /*$consultaEstadisticas =     
                 "SELECT SUM(c.tapas_contadas), ud.fecha, month(ud.fecha) 
                  FROM usuariodetalle ud 
                  INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
@@ -63,7 +75,7 @@ $todosLosMeses = [];
                  WHERE   MONTH(ud.fecha) in {$meses} and ud.id_usuario = {$usuario}
                          and YEAR(ud.fecha) = {$ano} and c.status = 1
                  GROUP BY MONTH(ud.fecha)
-                 ORDER BY ud.fecha";
+                 ORDER BY ud.fecha";*/
 
         $estadisticas = mysqli_query($conexion,$consultaEstadisticas);
 
@@ -117,5 +129,9 @@ $todosLosMeses = [];
         }
         return $cadena;
     }
-
+    
+    function divideCadena($cadena){
+        $lista = explode("T", $cadena);
+        return $lista[0];
+    }
 ?>

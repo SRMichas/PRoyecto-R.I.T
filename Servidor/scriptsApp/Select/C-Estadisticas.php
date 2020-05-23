@@ -1,11 +1,11 @@
 <?php
-$hostname ="localhost";
-$database ="proyectorit";
-$username ="root";
-$password ="";
+$hostname ="bimlwt6nabnfzacy9sgn-mysql.services.clever-cloud.com";
+$database ="bimlwt6nabnfzacy9sgn";
+$username ="uxqi36i7rez3yxs2";
+$password ="Cgh6yIaCCX03eDOFX3Ha";
 
 $json = array();
-$usuario = $_GET["usId"];
+$usuario = $_POST["usId"];
 
 class Respuesta{
     public $puntos;
@@ -51,21 +51,24 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
     if( $resultadoFecha ){
         $fecha = mysqli_fetch_row($resultadoFecha);
 
-        $consultaEstadisticas = "SELECT c.tapas_contadas, DAYOFWEEK(ud.fecha),DAYNAME(ud.fecha) 
-                 FROM usuariodetalle ud 
-                 INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
-                 INNER JOIN cadena_ctrl c On c.id_cadena = ud.id_cadena 
-                 WHERE week(ud.fecha) = week('{$fecha[0]}') and year(ud.fecha) = year('{$fecha[0]}')
-                 and ud.id_usuario = {$usuario} and c.status = 1";
+        $consultaEstadisticas = "SELECT c.cadena, DAYOFWEEK(ud.created_at),DAYNAME(ud.created_at) 
+                 FROM usuario_detalles ud 
+                 INNER JOIN usuarios u ON u.id = ud.id_usuario 
+                 INNER JOIN cadenas c On c.id = ud.id_cadena 
+                 WHERE  week(ud.created_at) = week('{$fecha[0]}') and 
+                        year(ud.created_at) = year('{$fecha[0]}') and 
+                        ud.id_usuario = {$usuario} and c.status = 0";
 
         $estadisticas = mysqli_query($conexion,$consultaEstadisticas);
 
         if( $estadisticas ){
             $bandera = false;
             $puntosAcumulados = 0;
+            $valor = 0;
             while($renglon = mysqli_fetch_array($estadisticas) ){
-                $semana[$renglon[1] - 1] = new Historico($dias[$renglon[1] - 1],$renglon[0]);
-                $puntosAcumulados += $renglon[0];
+                $valor = intval(divideCadena($renglon[0]));
+                $semana[$renglon[1] - 1] = new Historico($dias[$renglon[1] - 1],$valor);
+                $puntosAcumulados += $valor;
                 $res -> fallo = false;
                 $bandera = true;
             }
@@ -94,5 +97,10 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
 
     mysqli_close($conexion);
     echo json_encode($res);
+
+    function divideCadena($cadena){
+        $lista = explode("T", $cadena);
+        return $lista[0];
+    }
 
 ?>

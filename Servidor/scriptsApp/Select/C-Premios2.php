@@ -1,11 +1,10 @@
 <?php
-$hostname ="localhost";
-$database ="proyectorit";
-$username ="root";
-$password ="";
+$hostname ="bimlwt6nabnfzacy9sgn-mysql.services.clever-cloud.com";
+$database ="bimlwt6nabnfzacy9sgn";
+$username ="uxqi36i7rez3yxs2";
+$password ="Cgh6yIaCCX03eDOFX3Ha";
 
-
-$id = $_GET["usId"];
+$id = $_POST["usId"];
 
 class Respuesta{
     public $puntos;
@@ -106,7 +105,6 @@ $respuesta = new Respuesta();
             $respuesta -> mensaje = "Ningun fallo";
             $respuesta -> codigo = 0;
           }else{
-            echo "Fallo<br><br>";
             $respuesta -> fallo = true;
             $respuesta -> mensaje = "";
             $respuesta -> codigo = $contadorC;

@@ -55,13 +55,7 @@ class SizeConfig {
 
     if( query != null) {
       DPI = query.devicePixelRatio * 160.0;
-      //print("DPI ==========> ${query.devicePixelRatio * 160.0}");
     }
-    /*print("Ancho -> ${_screenWidth}");
-    print("Ancho -> ${_screenHeight}");
-
-    print("Bloc Ancho -> ${_blockWidth}");
-    print("Bloc Alto -> ${_blockHeight}");*/
   }
 
   static double ancho(){

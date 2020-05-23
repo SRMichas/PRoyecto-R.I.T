@@ -268,15 +268,15 @@ class _FormularioState extends State<Formulario> {
   }
 
   Future<Map<String,dynamic>> getEstados() async{
-    var url = "http://${Constantes.HOST+Constantes.RT_SLT}";
+    var url = "${Constantes.HOST+Constantes.RT_SLT}";
     url += "C-Estados.php";
-    http.Response res = await http.get(url);
+    http.Response res = await http.post(url);
     var data = jsonDecode(res.body);
     return data;
   }
 
   Future<Map<String, dynamic>> sube() async{
-    var url = "http://${Constantes.HOST+Constantes.RT_ISR}";
+    var url = "${Constantes.HOST+Constantes.RT_ISR}";
     url += "I-Usuario2.php";
 
     Map parametros = {
@@ -368,13 +368,13 @@ class _FormularioState extends State<Formulario> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
     await prefs.setString("id", data[1]);
-    await prefs.setString("nombre", data[3]);
-    await prefs.setString("apellido", data[4]);
-    await prefs.setString("edad", data[5]);
-    await prefs.setString("correo", data[7]);
-    await prefs.setString("contra", data[8]);
-    await prefs.setInt("puntos", int.parse(data[9].toString()));
-    await prefs.setString("ciudad", data[10]);
-    await prefs.setString("estado", data[11]);
+    await prefs.setString("nombre", data[2]);
+    await prefs.setString("apellido", data[3]);
+    await prefs.setString("edad", data[4]);
+    await prefs.setString("correo", data[5]);
+    await prefs.setString("contra", data[6]);
+    await prefs.setInt("puntos", int.parse(data[7].toString()));
+    await prefs.setString("ciudad", data[8]);
+    await prefs.setString("estado", data[9]);
   }
 }

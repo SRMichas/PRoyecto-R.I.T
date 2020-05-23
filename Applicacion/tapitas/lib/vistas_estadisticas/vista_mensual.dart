@@ -43,12 +43,14 @@ class _VistaMensualState extends State<VistaMensual>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = int.parse(prefs.getString("id"));
-    var url = 'http://${Constantes.HOST + Constantes.RT_SLT}';
+    var id = prefs.getString("id");
+    var url = '${Constantes.HOST + Constantes.RT_SLT}';
     url += 'C-EstadisticasMes.php?usId=$id';
 
+    Map parametros = { "usId" : id };
+
     try{
-      http.Response response = await http.get(url);
+      http.Response response = await http.post(url,body: parametros);
       _status = response.statusCode;
 
       if( _status == 200) {

@@ -9,8 +9,14 @@ class Impresiones{
 
 
     if( dpi >= 320){
-      reducido = puntos / 1000000;
-      aux = "${reducido.round()}";
+      if( puntos < 1000000){
+        aux = "${puntos.toInt()}";
+        excedente = false;
+      }else{
+          reducido = puntos / 1000000;
+          aux = "${reducido.round()}";
+          excedente = true;
+      }
     }else if( dpi >= 240){
       aux = puntos.round().toString();
       if( aux.length > 9){
@@ -40,7 +46,7 @@ class Impresiones{
     for (;i > -1; i--) resp += aux2[i];
 //    display = resp;
     if( dpi >= 320){
-      resp += "M";
+      if( excedente ) resp += "M";
     }else if( dpi >= 240){ if( excedente ) resp += "M";
     }else if( dpi >= 160){
     }else{

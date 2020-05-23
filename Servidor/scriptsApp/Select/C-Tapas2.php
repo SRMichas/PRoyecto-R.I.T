@@ -11,6 +11,7 @@ class Respuesta{
     public $tapasRestantes;
     public $mensaje;
     public $fallo;
+    public $codigo;
 }
 
 $res = new Respuesta();
@@ -25,25 +26,23 @@ $res = new Respuesta();
     }
     
 
-    $consulta = "SELECT cc.cadena 
-                FROM usuario_detalles usd 
-                INNER JOIN usuarios u ON usd.id_usuario = u.id 
-                INNER JOIN cadenas cc ON usd.id_cadena = cc.id 
-                INNER JOIN maquinas m ON cc.id_maquina = m.id_maquina 
-                WHERE u.id = {$usId} and cc.status = 0";
+    $consulta = "CALL sp_puntuacion({$usId})";
 
     $resultado = mysqli_query($conexion,$consulta);
 
     if( $resultado ){
-        $bandera = false;
-        $acumulador = 0;
+        
         $valor = 0;
-        while($us = mysqli_fetch_array($resultado) ){
-            $valor = intval(divideCadena($us[0]));
-            $acumulador += $valor;
-            $res -> fallo = false;
+        $result = mysqli_fetch_row($resultado);
+        if( $result[0] == 0 ){
+            $acumulador = $result[1]; 
             $bandera = true;
+            $res -> codigo = 0;
+            $res -> fallo = false;
+        }else if( $result[0] == 1 ){
+            $bandera = false;
         }
+
         
         if( $bandera ){
             $res -> mensaje = "Se pudo traer las categogiras";
@@ -57,11 +56,11 @@ $res = new Respuesta();
                     $bandera2 = false;
                 }else
                     $acumulador = $dato;
-                
             }
         }else{
-            $res -> mensaje = "No se pudo traer las categorias";
+            $res -> mensaje = $result[1];
             $res -> fallo = true;
+            $res -> codigo = 1;
         }  
     }else{
         $res -> mensaje = "El usuario NO existe";

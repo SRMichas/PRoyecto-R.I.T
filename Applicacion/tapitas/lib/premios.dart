@@ -69,17 +69,18 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
 
   Future<Map<String, dynamic>> getCategorias() async{
     prefs = await SharedPreferences.getInstance();
-    var id = int.parse(prefs.getString("id"));
+    var id = prefs.getString("id");
     var url = '${Constantes.HOST+Constantes.RT_SLT}';
-    url += "C-Premios2.php?usId=$id";
+    url += "C-Premios2.php";
+
+    Map parametros = {"usId" : id};
 
     try{
-      http.Response response = await http.get(url);
+      http.Response response = await http.post(url,body: parametros);
       _status = response.statusCode;
 
       if( _status == 200) {
         var data = jsonDecode(response.body);
-        //print(data.toString());
         bandera = false;
         return data;
       }else{
@@ -87,17 +88,19 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
       }
     } on FormatException catch (e){
       bandera = false;
-      throw MiExcepcion("Error al conectar con el servidor",2,Icons.info,e);
+      throw MiExcepcion("Error al conectar con el servidor \n${e.toString()}",2,Icons.info,e);
     } on Exception catch (e){
       //el servidor esta apagado -> a rechazado la conexion
       bandera = false;
       throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
+    } on TypeError catch (e){
+      bandera = false;
+      throw MiExcepcion(e.toString(),1,Icons.signal_wifi_off,e);
     }
   }
 
   void cambiaPuntos(int nuevosP)async{
     prefs = await SharedPreferences.getInstance();
-//    int pre = await prefs.getInt("puntos");
     if( nuevosP != puntos ) {
       await prefs.setInt("puntos", nuevosP);
       prefs.reload();
@@ -131,15 +134,41 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
 
           if( snapshot.hasData){
             bool error = snapshot.data["fallo"].toString() == "true";
-            int codigo = snapshot.data["codigo"];
+            //int codigo = snapshot.data["codigo"];
 
             if( !error ){
-
               puntos = bandera2 ? puntos : int.parse(snapshot.data["puntos"].toString());
-              //print("ESTOS SON LOS PUNTOS ====================> ${puntos}");
               vista = cuerpoPrincipal(snapshot.data["lista"],snapshot.data["lista"].length);
-            }else switch(codigo){
-
+            }else{
+              vista = Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                        Icons.error,
+                        color: Colors.red,
+                        size:(200 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier),
+                    Text(
+                      snapshot.data["mensaje"].toString(),
+                      textAlign: TextAlign.center,
+                      style: TextStyle( fontSize: SizeConfig.conversionAlto(28, false)),
+                    ),
+                    SizedBox(height:(30 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier),
+                    FlatButton(
+                      onPressed: () => setState(() {
+                        bandera = false;
+                        try {
+                          _futuro = getCategorias();
+                        }catch(e){
+                          print("ESTE EST EL ERROR =====> ${e.toString()}");
+                        }
+                      }),
+                      child: Text("Reintentar",style: estiloPre1,),
+                      textColor: Colors.blue,
+                    )
+                  ],
+                ),
+              );
             }
 
           }else if( snapshot.hasError){
@@ -222,12 +251,10 @@ class ModeloCategoria extends StatelessWidget {
       margin: EdgeInsets.only(left: margen,right: margen),//EdgeInsets.only(left: 20,right: 20)
       child:GestureDetector(
         onTap: ()async{
-          print(puntos);
           var res = await Navigator.push(context,
               MaterialPageRoute(
                 builder: (context) => ListaPremios(premios: categoriaO.premios,puntos: puntos,cate: categoriaO.nombre,),
               ));
-          print("ESTE ES EL RESULTADO $res");
           puntos = res;
           funcion(puntos);
         },

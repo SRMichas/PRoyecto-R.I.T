@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Extras/constantes.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class Prueba extends StatelessWidget {
 

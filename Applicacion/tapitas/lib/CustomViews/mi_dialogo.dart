@@ -29,7 +29,6 @@ class MiDialogo extends StatelessWidget {
     this.context = context;
     defineCabezera();
     return Dialog(
-//      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
       child: contenido(context),
@@ -53,7 +52,6 @@ class MiDialogo extends StatelessWidget {
       data.putIfAbsent("bandera", () => false);
       data.putIfAbsent("llama", () => true);
       Navigator.of(context).pop(data); // To close the dialog
-      //onRun.call();
       _timer.cancel();
     });
   }

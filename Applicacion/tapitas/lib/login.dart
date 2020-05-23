@@ -106,6 +106,9 @@ class CuerpoLogin extends StatelessWidget {
 
                 } else {
                   vista = SimpleDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(SizeConfig.conversionAlto(20, false))
+                    ),
                     children: <Widget>[
                       Center(
                         child: SizedBox(
@@ -250,24 +253,14 @@ class CuerpoLogin extends StatelessWidget {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
     await prefs.setString("id", data[0]);
-    /*String user = Usuario(
-      id: int.parse(data[0].toString()),
-      nombre: "${data[2]} ${data[3]}",
-      edad: int.parse(data[4]),
-      correo: data[6],
-      puntos: int.parse(data[8].toString()),
-      ciudad: data[9],
-      estado: data[10]
-    ).toString();
-    await prefs.setString("usuario", user);*/
-    await prefs.setString("nombre", data[2]);
-    await prefs.setString("apellido", data[3]);
-    await prefs.setString("edad", data[4]);
-    await prefs.setString("correo", data[6]);
-    await prefs.setString("contra", data[7]);
-    await prefs.setInt("puntos", int.parse(data[8].toString()));
-    await prefs.setString("ciudad", data[9]);
-    await prefs.setString("estado", data[10]);
+    await prefs.setString("nombre", data[1]);
+    await prefs.setString("apellido", data[2]);
+    await prefs.setString("edad", data[3]);
+    await prefs.setString("correo", data[4]);
+    await prefs.setString("contra", data[5]);
+    await prefs.setInt("puntos", int.parse(data[6].toString()));
+    await prefs.setString("ciudad", data[7]);
+    await prefs.setString("estado", data[8]);
   }
 
   void iniciaRegistro(BuildContext context) {

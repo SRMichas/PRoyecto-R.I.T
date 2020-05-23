@@ -1,12 +1,12 @@
 
 <?php
-$hostname ="localhost";
-$database ="proyectorit";
-$username ="root";
-$password ="";
+$hostname ="bimlwt6nabnfzacy9sgn-mysql.services.clever-cloud.com";
+$database ="bimlwt6nabnfzacy9sgn";
+$username ="uxqi36i7rez3yxs2";
+$password ="Cgh6yIaCCX03eDOFX3Ha";
 
 $json = array();
-$usuario = $_GET["usId"];
+$usuario = $_POST["usId"];
 
 class Respuesta{
     public $puntos;
@@ -59,24 +59,25 @@ $totales = [];
         
 
         $consultaEstadistica =
-                 "SELECT c.tapas_contadas, ud.fecha, month(ud.fecha),day(ud.fecha) 
-                  FROM usuariodetalle ud 
-                  INNER JOIN usuario u ON u.id_usuario = ud.id_usuario 
-                  INNER JOIN cadena_ctrl c On c.id_cadena = ud.id_cadena 
-                  WHERE   MONTH(ud.fecha) in {$meses} and ud.id_usuario = {$usuario}
-                          and YEAR(ud.fecha) = {$ano} and c.status = 1
-                  ORDER BY ud.fecha";
+                 "SELECT c.cadena, ud.created_at, month(ud.created_at),day(ud.created_at) 
+                  FROM usuario_detalles ud 
+                  INNER JOIN usuarios u ON u.id = ud.id_usuario 
+                  INNER JOIN cadenas c On c.id = ud.id_cadena 
+                  WHERE   MONTH(ud.created_at) in {$meses} and ud.id_usuario = {$usuario}
+                          and YEAR(ud.created_at) = {$ano} and c.status = 0
+                  ORDER BY ud.created_at";
 
         $estadisticas = mysqli_query($conexion,$consultaEstadistica);
         if( $estadisticas ){
             $bandera = false;
             $puntosAcumulados = 0;
+            $valor = 0;
             while($renglon = mysqli_fetch_array($estadisticas) ){
-                
-                $todosLosMeses[$renglon[2] - 1][$renglon[3]-1] = new Historico($renglon[1],$renglon[0]);
-                $totales[$renglon[2] - 1] += $renglon[0];
-                $estadistica[] = new Historico($renglon[1],$renglon[0]);
-                $puntosAcumulados += $renglon[0];
+                $valor = intval(divideCadena($renglon[0]));
+                $todosLosMeses[$renglon[2] - 1][$renglon[3]-1] = new Historico($renglon[1],$valor);
+                $totales[$renglon[2] - 1] += $valor;
+                $estadistica[] = new Historico($renglon[1],$valor);
+                $puntosAcumulados += $valor;
                 $res -> fallo = false;
                 $bandera = true;
             }
@@ -151,6 +152,11 @@ $totales = [];
             $arreglo[] = new Historico($newformat,0);
         }
         $GLOBALS["todosLosMeses"][] = $arreglo;
+    }
+
+    function divideCadena($cadena){
+        $lista = explode("T", $cadena);
+        return $lista[0];
     }
 
 ?>

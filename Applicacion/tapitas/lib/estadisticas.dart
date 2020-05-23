@@ -51,7 +51,6 @@ class Cuerpo extends StatefulWidget {
 }
 
 class _CuerpoState extends State<Cuerpo> {
-
   @override
   Widget build(BuildContext context) {
     return TabBarView(
@@ -60,10 +59,9 @@ class _CuerpoState extends State<Cuerpo> {
           builder: (context, constraint) {
             return SingleChildScrollView(
                 child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: constraint.maxHeight),
-                    child: VistaSemanal(),
-              )
-            );
+              constraints: BoxConstraints(minHeight: constraint.maxHeight),
+              child: VistaSemanal(),
+            ));
           },
         ),
         LayoutBuilder(
@@ -72,15 +70,15 @@ class _CuerpoState extends State<Cuerpo> {
               builder: (context, constraint) {
                 return SingleChildScrollView(
                     child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: (5 * SizeConfig.heightMultiplier) /
+                      children: <Widget>[
+                        SizedBox(
+                        height: (5 * SizeConfig.heightMultiplier) /
                           SizeConfig.heightMultiplier,
-                    ),
-                    ConstrainedBox(
-                      constraints:
-                          BoxConstraints(minHeight: constraint.maxHeight),
-                      child: VistaMensual(),
+                        ),
+                        ConstrainedBox(
+                          constraints:
+                            BoxConstraints(minHeight: constraint.maxHeight),
+                          child: VistaMensual(),
                     )
                   ],
                 ));

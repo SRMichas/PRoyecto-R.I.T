@@ -6,7 +6,6 @@ import 'inicio.dart';
 import 'registro.dart';
 import 'pruebaServicio.dart';
 
-//void main() => runApp(MyApp());
 void main(){
   runApp(MaterialApp(
     title: "Algo",
