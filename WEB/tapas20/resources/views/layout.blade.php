@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
   <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
   <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
@@ -43,7 +45,7 @@
             {{session('usuario')}}</a>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
-              href="{{route('cerrar.index')}}">Introducir Codena</a>
+              href="{{route('cerrar.index')}}">Introducir Cadena</a>
             <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
             <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
           </div>
@@ -52,7 +54,7 @@
             <a class="nav-link" href="{{url('login')}}">Login</a>
           </li>
           <li class="nav-item d-lg-none d-xl-none d-sm-block">
-            <a class="nav-link" href="{{url('Registro')}}">Registro</a>
+            <a class="nav-link" href="{{url('registro')}}">Registro</a>
           </li>
         </div>
         @endif
@@ -68,7 +70,6 @@
             href="{{route('usuario.cadena')}}">Introducir Cadena</a>
           <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
           <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
-
         </div>
       </div>
       @else
@@ -105,8 +106,8 @@
   </div>
   @endif
 
-  <div class="row">
-    <div class="col">
+  <div >
+    <div >
       @yield('content')
 
     </div>
@@ -146,6 +147,11 @@
   <script src="{{asset('js/bootstrap.js')}}"></script>
   <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
   <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
+
   <script src="{{asset('js/inicio.js  ')}}"></script>
 </body>
 </html>

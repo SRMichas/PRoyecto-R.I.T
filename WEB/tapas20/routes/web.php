@@ -26,8 +26,18 @@ Route::get('perfil','usuariosController@perfil')->name('usuario.perfil');
 Route::get('inicio', 'homeController@inicio')->name('home.inicio');
 Route::get('tapaton','homeController@tapaton')->name('home.tapaton');
 Route::get('nosotros','homeController@nosotros')->name('home.nosotros');
-
+Route::post('inicio', 'registroController@comfirmar')->name('registro.comfirmar');
 
 Route::get('registro', 'registroController@vistaRegistrar');
 Route::post('/','registroController@registrar')->name('registro.crear');
 //route::post('/','pruebasController@crear')->name('prueba.crear');
+
+// ruta de formulario
+Route::get('/form', 'ControllerMail@index');
+// ruta al enviar correo
+Route::post('/send', 'ControllerMail@send');
+
+Route::get('tables',function()
+{
+    return view('usuario.tabla');
+});

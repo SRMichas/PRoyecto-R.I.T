@@ -9,6 +9,7 @@ class cadenaController extends Controller
 {
 	public function cadena()
 	{
-		return response()->json(Cadena::get(), 200);
+		$code = 200;
+		return json_encode($code);
 	}
 }

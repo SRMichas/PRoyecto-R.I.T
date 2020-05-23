@@ -25,26 +25,24 @@ class usuariosController extends Controller
     }
     public function cadena(Request $request)
     {
-        $cadena = $request->cadena;
-        $validatedData = $request->validate([
-            'cadena'     => 'required|max:9|min:9'
-            
-        ]);
-        $results =  DB::select('select * from cadenas where cadena = ? and status = 1 ;',[$request->cadena]);
+         $cadena = $request->cadena;
+         $validatedData = $request->validate([
+              'cadena'     => 'required|max:15|min:15'
         
-        if(count($results)>0)
-        {
-            $resultsUs = DB::select('select id from usuarios where email = ?',[$request->session()->get('usuario')]);
-            $usDet = new App\UsuarioDetalle;
-            $usDet->id_usuario = $resultsUs[0]->id;
-            $usDet->id_cadena = $results[0]->id;
-            $usDet->id_maquina = 1;
-            $usDet->save();
-            DB::update('update cadenas set status = 0 where cadena = ?', [$request->cadena]);
-            return back()->with('msj','Se agrego la Cadena Correctamente');
-        }
-
-        return back()->with('msjErr','No es una cadena Valida o Expiro');
+            ]);
+         
+               $users = App\Usuario::where('email',$request->session()->get('usuario'));        
+               $resultsUs = DB::select('select id from usuarios where email = ?',[$request->session()->get('usuario')]);
+               $results =   DB::select('CALL sp_manejo_cadena(? , ?)',[ $resultsUs[0]->id,$request->cadena]);
+               if($results[0]->Bandera == 1 || $results[0]->Bandera == 2 )
+               {
+                 return back()->with('msjErr','No es una cadena Valida o Expiro');
+               }
+               else{
+                return back()->with('msj','Cadena Insertada correctamente xDD te la rifas morro alv perror caile a las guamas');
+               }
+                
+         //return $results;
        
     }
     public function historial(Request $request)

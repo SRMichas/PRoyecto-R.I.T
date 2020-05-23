@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
+use App\Mail\SendMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 
 use App;
 class registroController extends Controller
 {
     //
-
+    public $correo = " ";
     public function vistaRegistrar()
     {
         return view('registro.index'); 
@@ -45,8 +48,21 @@ class registroController extends Controller
         $user->pass = $request->pass;
         $user->tapas = 0;
         $user->puntos = 0;
+        $user->activo = 0;
         $user->save();
+        $data = array(
+            'correo'      => $request->email,
+            'mensaje'   =>  'Gracias por registrarte, porfavor pulsa el boton para validar tu correo xDDDD'
+        );
+        $email = $request->email;
+        Mail::to($email)->send(new SendMail($data));
+
 
         return redirect()->action('homeController@inicio');       
+    }
+    public function comfirmar(Request $request)
+    {
+        $results = DB::update('update usuarios set activo = 1 where email = ?', [$request->correo]);
+        return redirect()->action('homeController@inicio');
     }
 }

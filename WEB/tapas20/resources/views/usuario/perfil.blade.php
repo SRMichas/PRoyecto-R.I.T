@@ -26,13 +26,23 @@
                 </div>
             </div>
             <div class="form-group row">
+                <label for="codigo_postal" class="col-sm-2 col-form-label">Codigo Postal</label>
+                <div class="col-sm-3 col-md-12 col-lg-3">
+                    <input type="text" class="form-control" id="codigo_postal" disabled value="{{$array[1][0]->codigo_postal}}"  placeholder="Codigo Postal"/>
+                </div>
                 <label for="tapas" class="col-sm-2 col-form-label">Tapas</label>
                 <div class="col-sm-3 col-md-12 col-lg-3">
                     <input type="text" class="form-control" id="tapas" disabled value="{{$array[0][0]->tapas}}"  placeholder="Tapas recolectadas "/>
                 </div>
+            </div>
+            <div class="form-group row">
                 <label for="puntos" class="col-sm-2 col-form-label">Puntos</label>
                 <div class="col-md-12 col-sm-3 col-lg-3">
                     <input type="text" class="form-control" id="puntos" disabled value="{{$array[0][0]->puntos}}" placeholder="Puntos"/>
+                </div>
+                <label for="gastados" class="col-sm-2 col-form-label">Puntos Gastados</label>
+                <div class="col-sm-3 col-md-12 col-lg-3">
+                    <input type="text" class="form-control" id="gastados" disabled value="{{$array[0][0]->gastados}}"  placeholder="Puntos Gastados"/>
                 </div>
             </div>
             <div class="col-sm-12 col-lg-12 div-b">  
