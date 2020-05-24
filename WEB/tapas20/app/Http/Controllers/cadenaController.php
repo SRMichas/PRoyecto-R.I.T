@@ -7,9 +7,20 @@ use App\Cadena;
 
 class cadenaController extends Controller
 {
-	public function cadena()
+	public function index()
 	{
-		$code = 200;
-		return json_encode($code);
+		return response()->json("Todo está bien", 200);
+	}
+
+	public function store(Request $request)
+	{
+		$semilla = $request->codigo + $request->maquina + time();
+		$codigo = md5($semilla);	//Sí, el código es un hash.
+		return response()->json(['Codigo' => $codigo]);
+	}
+
+	public function update(Request $request)
+	{
+		//Agregar comportamiento para el reclamo de cadenas.
 	}
 }
