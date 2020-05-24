@@ -14,10 +14,12 @@ class CreateCadenasTable extends Migration
 	public function up()
 	{
 		Schema::create('cadenas', function (Blueprint $table) {
-			$table->bigIncrements('id');
+			$table->id();
 			$table->string('cadena');
 			$table->integer('id_maquina');
 			$table->boolean('status');
+			$table->integer('tapas');
+			$table->integer('puntos');
 			$table->timestamps();
 		});
 	}

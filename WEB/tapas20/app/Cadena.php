@@ -10,6 +10,8 @@ class Cadena extends Model
 	protected $fillable = [
 		'cadena',
 		'id_maquina',
-		'status'
+		'status',
+		'tapas',
+		'puntos'
 	];
 }
