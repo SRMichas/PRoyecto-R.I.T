@@ -23,11 +23,11 @@
    
    <h3 align="center">{{$data['mensaje'] }}</h3>
    
-   <form  action="{{route('registro.comfirmar')}}" method="POST">
-    <input type="text" hidden name="correo" value="{{$data['correo']}}">
-    <button type="submit">Comfirmar</button>
-   </form>
-  </div>
+   
+    <input type="text"  name="correo" value="{{$data['correo']}}" style="display: none">
+    
+   <button><a href="{{url('confirmar/'.$data['correo'])}}"> Confirmar</a></button>
+  </div>    
  </body>
  
 </html> 

@@ -11,16 +11,23 @@ class ControllerMail extends Controller
     //
     public function index()
     {
-     return view('form');
+        return view('form');
     }
-    public function send()
+    public function send(Request $request)
     {
-        $data = array(
-            'mensaje'   =>  'message'
-        );
-
-        $email = 'eliasmisael_@hotmail.com';
-        Mail::to($email)->send(new SendMail($data));
-       //return $data['correo'];
+    //     $reponse = array(
+    //         'respuesta' => 'Que bien que bien'
+    //     );
+        
+        
+         $data = array(
+             'mensaje'   =>  'Gracias por registrarte, porfavor pulsa el boton para validar tu correo xDDDD',
+             'correo' => $request->correo
+         );
+      $email = $request->correo;
+      Mail::to($email)->send(new SendMail($data));
+    //    //return $data['correo'];
+       return $request;
     }
 }
+

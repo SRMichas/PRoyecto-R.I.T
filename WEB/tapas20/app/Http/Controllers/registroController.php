@@ -50,19 +50,20 @@ class registroController extends Controller
         $user->puntos = 0;
         $user->activo = 0;
         $user->save();
-        $data = array(
-            'correo'      => $request->email,
-            'mensaje'   =>  'Gracias por registrarte, porfavor pulsa el boton para validar tu correo xDDDD'
-        );
+         $data = array(
+             'correo'      => $request->email,
+             'mensaje'   =>  'Gracias por registrarte, porfavor pulsa el boton para validar tu correo xDDDD'
+         );
         $email = $request->email;
         Mail::to($email)->send(new SendMail($data));
 
 
-        return redirect()->action('homeController@inicio');       
+        return redirect()->action('homeController@inicio')->with('msj','se ha enviado un correo de confirmacion a '.$email);       
     }
-    public function comfirmar(Request $request)
+    public function confirmar($correo)
     {
-        $results = DB::update('update usuarios set activo = 1 where email = ?', [$request->correo]);
+        $results = DB::update('update usuarios set activo = 1 where email = ?', [$correo]);
+        
         return redirect()->action('homeController@inicio');
     }
 }

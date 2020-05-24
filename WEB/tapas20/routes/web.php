@@ -26,7 +26,8 @@ Route::get('perfil','usuariosController@perfil')->name('usuario.perfil');
 Route::get('inicio', 'homeController@inicio')->name('home.inicio');
 Route::get('tapaton','homeController@tapaton')->name('home.tapaton');
 Route::get('nosotros','homeController@nosotros')->name('home.nosotros');
-Route::post('inicio', 'registroController@comfirmar')->name('registro.comfirmar');
+
+Route::get('confirmar/{correo}', 'registroController@confirmar')->name('registro.confirmar');
 
 Route::get('registro', 'registroController@vistaRegistrar');
 Route::post('/','registroController@registrar')->name('registro.crear');
