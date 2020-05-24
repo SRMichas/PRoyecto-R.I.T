@@ -1,8 +1,12 @@
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <ArduinoJson.h>
 
 const char* ssid = "UbeeD3C5";
 const char* password = "RandomAccesTaco28";
+const int maquina = 1;
+String codigo;
+String conteo;
 
 void setup() {
   Serial.begin(115200);
@@ -10,6 +14,9 @@ void setup() {
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
+  }
+
+  if (Serial.available()) {
     Serial.println("Conectando...");
   }
 }
@@ -19,26 +26,35 @@ void loop() {
 }
 
 void esperarArduino() {
-  String mensaje = "";
-  while (mensaje == "") {
-    mensaje = Serial.readString();
+  conteo = "";
+  while (conteo == "") {
+    conteo = Serial.readString();
+    conexion();
   }
-  Serial.write("Mensaje recibido");
+  Serial.print(codigo);
 }
 
 void conexion() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("http://5c9c6c2e.ngrok.io/api/cadena");
-    int httpCode = http.POST("");
-
+    http.begin("http://f790a17f.ngrok.io/api/cadena");
+    int httpCode = http.POST("conteo=" + conteo + "&maquina=" + maquina);
     if (httpCode > 0) {
-      Serial.print("código de respuesta: " + httpCode);
-      Serial.print("Cuerpo de la respuesta: " + http.getString());
+      String recepcion = http.getString();
+      char json[recepcion.length() + 1];
+      recepcion.toCharArray(json, recepcion.length());
+      parserJson(json);
     } else {
-      Serial.print("No conectó");
+      codigo = "error";
     }
     http.end();
   }
   delay(60000);
+}
+
+void parserJson(char* json) {
+  DynamicJsonDocument documento(1024);
+  deserializeJson(documento, json);
+  String auxiliar = documento["Codigo"];
+  codigo = auxiliar;
 }
