@@ -17,7 +17,7 @@ Repositorio de los archivos necesarios para el proyecto
 - Aplicación.
 	- [x] Hacer pruebas en iOS.<br>
 		_Se eliminaron las dependencias de Flutter que permitían probar en iOS sin una mac, ahora depende de XCode y por lo tanto se necesita una mac_.
-	- [ ] Meter cadena manual
+	- [x] Meter cadena manual
 	- [ ] Hacer un logo
 - <a name ="pagina"></a>Página web.
 	- API
