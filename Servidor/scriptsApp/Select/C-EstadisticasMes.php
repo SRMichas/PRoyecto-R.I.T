@@ -59,7 +59,7 @@ $totales = [];
         
 
         $consultaEstadistica =
-                 "SELECT c.cadena, ud.created_at, month(ud.created_at),day(ud.created_at) 
+                 "SELECT c.tapas, ud.created_at, month(ud.created_at),day(ud.created_at) 
                   FROM usuario_detalles ud 
                   INNER JOIN usuarios u ON u.id = ud.id_usuario 
                   INNER JOIN cadenas c On c.id = ud.id_cadena 
@@ -73,7 +73,7 @@ $totales = [];
             $puntosAcumulados = 0;
             $valor = 0;
             while($renglon = mysqli_fetch_array($estadisticas) ){
-                $valor = intval(divideCadena($renglon[0]));
+                $valor = $renglon[0]; //intval(divideCadena($renglon[0]));
                 $todosLosMeses[$renglon[2] - 1][$renglon[3]-1] = new Historico($renglon[1],$valor);
                 $totales[$renglon[2] - 1] += $valor;
                 $estadistica[] = new Historico($renglon[1],$valor);

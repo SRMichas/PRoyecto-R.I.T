@@ -51,13 +51,15 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
     if( $resultadoFecha ){
         $fecha = mysqli_fetch_row($resultadoFecha);
 
-        $consultaEstadisticas = "SELECT c.cadena, DAYOFWEEK(ud.created_at),DAYNAME(ud.created_at) 
+        $consultaEstadisticas = 
+                "SELECT SUM(c.tapas), DAYOFWEEK(ud.created_at),DAYNAME(ud.created_at) 
                  FROM usuario_detalles ud 
                  INNER JOIN usuarios u ON u.id = ud.id_usuario 
                  INNER JOIN cadenas c On c.id = ud.id_cadena 
                  WHERE  week(ud.created_at) = week('{$fecha[0]}') and 
                         year(ud.created_at) = year('{$fecha[0]}') and 
-                        ud.id_usuario = {$usuario} and c.status = 0";
+                        ud.id_usuario = {$usuario} and c.status = 0
+                 GROUP BY DAYOFWEEK(ud.created_at)";
 
         $estadisticas = mysqli_query($conexion,$consultaEstadisticas);
 
@@ -66,7 +68,7 @@ $dias = ["Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sabado"];
             $puntosAcumulados = 0;
             $valor = 0;
             while($renglon = mysqli_fetch_array($estadisticas) ){
-                $valor = intval(divideCadena($renglon[0]));
+                $valor = $renglon[0];
                 $semana[$renglon[1] - 1] = new Historico($dias[$renglon[1] - 1],$valor);
                 $puntosAcumulados += $valor;
                 $res -> fallo = false;

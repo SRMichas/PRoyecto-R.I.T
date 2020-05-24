@@ -57,7 +57,7 @@ $todosLosMeses = [];
 
         $consultaEstadisticas =     
                 "SELECT 
-                    SUM(CONVERT(SUBSTRING(c.cadena,1,4),UNSIGNED INTEGER)), 
+                    SUM(c.tapas), 
                     ud.created_at, month(ud.created_at) 
                 FROM usuario_detalles ud 
                 INNER JOIN usuarios u ON u.id = ud.id_usuario 

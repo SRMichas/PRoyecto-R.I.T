@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:tapitas/Extras/size_config.dart';
 import 'package:tapitas/Extras/constantes.dart';
 
-
 class Puntuacion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,8 +24,7 @@ class CuerpoEp extends StatefulWidget {
 }
 
 class _CuerpoEpState extends State<CuerpoEp> {
-  double porcentaje = 1, container = SizeConfig.conversionAlto(115, false);
-  int real, faltantes;
+  double container = SizeConfig.conversionAlto(115, false);
   BuildContext context;
   Future<Map<String,dynamic>> _future;
 
@@ -61,7 +59,7 @@ class _CuerpoEpState extends State<CuerpoEp> {
     var id = prefs.getString("id");
     var url = '${Constantes.HOST+Constantes.RT_SLT}';
     url += "C-Tapas2.php";
-    Map parametros ={ "usId" : id};
+    Map parametros ={ "usId" : id };
 
     http.Response response = await http.post(url,body: parametros);
     

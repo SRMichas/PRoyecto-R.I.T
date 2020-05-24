@@ -29,16 +29,38 @@ if( isset($_POST["correo"]) && isset($_POST["contra"]) ){
     $resultado = mysqli_query($conexion,$consulta);
 
     if( $resultado ){
-        if( $us = mysqli_fetch_row($resultado) ){
+        $us = mysqli_fetch_row($resultado);
+        $elFallo;
+        $elCodigo;
+        $elMensaje;
+        switch ($us[0]) {
+            case 0:
+                $res -> usuario = $us;    
+                $elFallo = false;
+                $elCodigo = $us[0];
+                $elMensaje = "El usuario existe";
+                break;
+            case 1: case 2:
+                $elFallo = true;
+                $elCodigo = $us[0];
+                $elMensaje = $us[1];
+                break;
+        }
+
+        $res -> mensaje = $elMensaje;
+        $res -> fallo = $elFallo;
+        $res -> codigo = $elCodigo;
+
+        /*if(  ){
             $res -> usuario = $us;
             $res -> mensaje = "El usuario existe";
             $res -> fallo = false;
             $res -> codigo = 0;
         }else{
-            $res -> mensaje = "No se pudo";
+            $res -> mensaje = "Hay un error con la cuenta";
             $res -> fallo = true;
             $res -> codigo = 1;
-        }   
+        } */  
     }else{
         $res -> mensaje = "El usuario NO existe";
         $res -> fallo = true;

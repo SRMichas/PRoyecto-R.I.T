@@ -29,8 +29,8 @@ class CuerpoE extends StatefulWidget {
 
 class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<CuerpoE>{
 
-  List categorias;
-  int size = 0,_status,puntos;
+
+  int _status,puntos;
   BuildContext context;
   Future<Map<String, dynamic>> _futuro;
   bool bandera = false,bandera2 = false;
@@ -212,7 +212,6 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 2.07 * SizeConfig.heightMultiplier, //16
-            //childAspectRatio: 0.15 * SizeConfig.heightMultiplier //1.15
           ),
           delegate: SliverChildBuilderDelegate((BuildContext context,int idx){
             Categoria cate = cates[idx];
@@ -247,7 +246,6 @@ class ModeloCategoria extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      //width: 10,
       margin: EdgeInsets.only(left: margen,right: margen),//EdgeInsets.only(left: 20,right: 20)
       child:GestureDetector(
         onTap: ()async{

@@ -21,8 +21,7 @@ class Login extends StatelessWidget{
 class CuerpoLogin extends StatelessWidget {
 
   double margenHorizontal = 35.0;
-  bool _valida = false,
-      dialogoVisible = false;
+  bool dialogoVisible = false;
 
   String correo, contra;
   List info;
@@ -252,15 +251,15 @@ class CuerpoLogin extends StatelessWidget {
   void guarda(List data) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool("sesion", true);
-    await prefs.setString("id", data[0]);
-    await prefs.setString("nombre", data[1]);
-    await prefs.setString("apellido", data[2]);
-    await prefs.setString("edad", data[3]);
-    await prefs.setString("correo", data[4]);
-    await prefs.setString("contra", data[5]);
-    await prefs.setInt("puntos", int.parse(data[6].toString()));
-    await prefs.setString("ciudad", data[7]);
-    await prefs.setString("estado", data[8]);
+    await prefs.setString("id", data[1]);
+    await prefs.setString("nombre", data[2]);
+    await prefs.setString("apellido", data[3]);
+    await prefs.setString("edad", data[4]);
+    await prefs.setString("correo", data[5]);
+    await prefs.setString("contra", data[6]);
+    await prefs.setInt("puntos", int.parse(data[7].toString()));
+    await prefs.setString("ciudad", data[8]);
+    await prefs.setString("estado", data[9]);
   }
 
   void iniciaRegistro(BuildContext context) {

@@ -57,11 +57,9 @@ class _ListaPremiosState extends State<ListaPremios> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  //color: Colors.red,
                   width: SizeConfig.ancho() * (SizeConfig.DPI < 320? 0.45 : 0.35),
                   child: Text("$cate"),
                 ),
-                //puntos > 100000 ? Text("simon") : Text("nel")
                 Container(
                   padding: EdgeInsets.symmetric(vertical: SizeConfig.conversionAlto(3, false), horizontal: SizeConfig.conversionAncho(8, false)),
                   decoration: BoxDecoration(
@@ -225,26 +223,21 @@ class ModeloProducto extends StatelessWidget {
                 if (snapshot.hasData) {
                   bool fallo = snapshot.data["fallo"].toString() == "true";
                   int codigoError =
-                          int.parse(snapshot.data["codigo"].toString()),
-                      codigoTitulo;
+                          int.parse(snapshot.data["codigo"].toString());
                   String titulo;
 
                   if (!fallo) {
                     titulo = "Felicidades";
-                    codigoTitulo = Constantes.C_EXITOSA;
                   } else
                     switch (codigoError) {
                       case 1:
                         titulo = Constantes.T_ERROR;
-                        codigoTitulo = Constantes.C_ERROR;
                         break;
                       case 2:
                         titulo = Constantes.T_ADVERTENCIA;
-                        codigoTitulo = Constantes.C_ADVERTENCIA;
                         break;
                       case 3:
                         titulo = Constantes.T_ERROR;
-                        codigoTitulo = Constantes.C_ERROR;
                         break;
                     }
                   vista = MiDialogo(

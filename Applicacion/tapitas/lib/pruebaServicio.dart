@@ -9,7 +9,10 @@ class Prueba extends StatelessWidget {
   Future<String> algo() async{
     var url = Constantes.PruebaCons;
     print(url);
-    http.Response response = await http.post(url,);
+    Map body = {
+      "correo" : "eliasmisael_@hotmail.com"
+    };
+    http.Response response = await http.post(url,body: body);
 
     var data = response.body;
 
@@ -22,6 +25,7 @@ class Prueba extends StatelessWidget {
     return Scaffold(
       body: Container(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
               onPressed: (){ print("si te escuche morro"); algo();},

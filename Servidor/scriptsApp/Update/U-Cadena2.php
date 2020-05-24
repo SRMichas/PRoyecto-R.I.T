@@ -15,6 +15,7 @@ $password ="Cgh6yIaCCX03eDOFX3Ha";
 
     class Respuesta{
         public $mensaje;
+        public $nuevos;
         public $fallo;
         public $codigo;
         public $algo;
@@ -30,17 +31,18 @@ $password ="Cgh6yIaCCX03eDOFX3Ha";
         $respuesta = mysqli_fetch_row($resultado);
         
         switch ($respuesta[0]) {
-            case 0:
-                $res -> mensaje = "Has obtenido {$respuesta[4]} puntos";
+            case 0: //todo correcto
+                $res -> mensaje = "Has obtenido {$respuesta[4]} tapas";
+                $res -> nuevos = $respuesta[5];
                 $res -> fallo = false;
                 $res -> codigo = $respuesta[0];
                 break;
-            case 1:
+            case 1: //la cadena no existe
                 $res -> mensaje = "{$respuesta[1]}";
                 $res -> fallo = true;
                 $res -> codigo = $respuesta[0];
                 break;
-            case 2:
+            case 2: //la cadena ya esta ocupada
                 $res -> mensaje = "{$respuesta[1]}";
                 $res -> fallo = true;
                 $res -> codigo = $respuesta[0];

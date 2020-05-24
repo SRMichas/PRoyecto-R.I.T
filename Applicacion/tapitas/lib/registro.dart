@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tapitas/CustomViews/input_registro.dart';
 import 'package:tapitas/CustomViews/mi_drop_down.dart';
 import 'package:tapitas/Extras/size_config.dart';
@@ -292,12 +291,26 @@ class _FormularioState extends State<Formulario> {
     http.Response response = await http.post(url,body: parametros);
     var data = jsonDecode(response.body);
 
+    if( data["codigo"].toString() == "0"){
+      var url2 = Constantes.PruebaCons;
+      print(url2);
+      Map body = {
+        "correo" : data["usuario"][5]
+      };
+
+
+      http.Response response2 = await http.post(url2,body: body);
+      var data2 = jsonDecode(response2.body);
+
+      print(data2.toString());
+    }
+
     return data;
   }
 
   void _checkDialog() async {
     dialogoVisible = true;
-    Map<String, dynamic> lista;
+    String mensaje = "";
     Map<String, Object> res = await showDialog(
         context: context,
         barrierDismissible: false,
@@ -314,23 +327,25 @@ class _FormularioState extends State<Formulario> {
                   String titulo;
 
                   if (!fallo) {
-                    titulo = "Felicidades";
+                    titulo = "Enhorabuena";
                     codigoTitulo = Constantes.C_EXITOSA_REGISTRO;
-                    lista = snapshot.data;
+                    mensaje = "Se le ha enviado un correo, reviselo para confirmar la cuenta";
                   } else
                     switch (codigoError) {
                       case 1:
                         titulo = Constantes.T_ERROR;
                         codigoTitulo = Constantes.C_ERROR;
+                        mensaje = snapshot.data["mensaje"].toString();
                         break;
                       case 2:
                         titulo = Constantes.T_ADVERTENCIA;
                         codigoTitulo = Constantes.C_ADVERTENCIA;
+                        mensaje = snapshot.data["mensaje"].toString();
                         break;
                     }
                   vista = MiDialogo(
                     titulo: titulo,
-                    descripcion: snapshot.data["mensaje"].toString(),
+                    descripcion: mensaje,
                     tipoTitulo: codigoTitulo,
                     datos: snapshot.data,
                     soloCarga: false,
@@ -358,23 +373,9 @@ class _FormularioState extends State<Formulario> {
     if (!res["bandera"]) {
       dialogoVisible = false;
       if( res["correcto"] ){
-        guarda(lista["usuario"]);
-        Navigator.pushReplacementNamed(context, "/inicio");
+        Navigator.pushReplacementNamed(context, "/login");
       }
     }
   }
 
-  void guarda(List data) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool("sesion", true);
-    await prefs.setString("id", data[1]);
-    await prefs.setString("nombre", data[2]);
-    await prefs.setString("apellido", data[3]);
-    await prefs.setString("edad", data[4]);
-    await prefs.setString("correo", data[5]);
-    await prefs.setString("contra", data[6]);
-    await prefs.setInt("puntos", int.parse(data[7].toString()));
-    await prefs.setString("ciudad", data[8]);
-    await prefs.setString("estado", data[9]);
-  }
 }

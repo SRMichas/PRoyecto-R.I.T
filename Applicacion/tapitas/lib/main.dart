@@ -4,13 +4,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'login.dart';
 import 'inicio.dart';
 import 'registro.dart';
-import 'pruebaServicio.dart';
 
 void main(){
   runApp(MaterialApp(
     title: "Algo",
     home: Principal(),
-    debugShowCheckedModeBanner: true,
+    debugShowCheckedModeBanner: false,
     routes: <String,WidgetBuilder>{
       '/login': (BuildContext context) => new Login(),
       '/inicio': (BuildContext context) => new Inicio(),

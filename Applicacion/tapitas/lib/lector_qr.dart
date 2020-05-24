@@ -2,35 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:qr_code_scanner/qr_scanner_overlay_shape.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/constantes.dart';
 import 'package:tapitas/CustomViews/mi_dialogo.dart';
+import 'package:tapitas/CustomViews/mi_dialogo2.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tapitas/Extras/constantes.dart' as conts;
+import 'dart:convert';
 
-class LectorQR extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Escaner"),
-      ),
-      body: new Pagina(),
-    );
-  }
-}
-
-class Pagina extends StatefulWidget {
+class LectorQR extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _Cuerpo();
 }
 
-class _Cuerpo extends State<Pagina> {
+class _Cuerpo extends State<LectorQR> {
   GlobalKey qrKey = GlobalKey();
   var qrtext = "";
   QRViewController controller;
-  bool bandera = false,dialogoVisible = false;
+  bool dialogoVisible = false;
+  SharedPreferences prefs;
 
   TextStyle estilo = TextStyle(
     fontSize: ( 15 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier,
@@ -39,12 +28,29 @@ class _Cuerpo extends State<Pagina> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Column(
+    inciaShared();
+    double margenHorizontal = SizeConfig.conversionAncho(20, false);
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: conts.Colores.APP_BAR_BACKGROUND_COLOR,
+        title: Text("Escaner",style: conts.Colores.ESTILO_TITULO,),
+        actions: <Widget>[
+          Container(
+            padding: EdgeInsets.only(right: SizeConfig.conversionAlto(10, false)),
+            child: IconButton(
+                onPressed: () => _dialogo(),
+                icon: Icon(Icons.edit,color: conts.Colores.APP_BAR_WIDGET_COLOR,),
+            ),
+          )
+        ],
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back,color: conts.Colores.APP_BAR_WIDGET_COLOR,),
+            onPressed: () => Navigator.of(context).pop(),
+        )
+      ),
+      body: Stack(
       children: <Widget>[
-        Expanded(
-          flex: 5,
-          child: QRView(
+        QRView(
               key: qrKey,
               overlay: QrScannerOverlayShape(
                   borderRadius: 10,
@@ -53,18 +59,36 @@ class _Cuerpo extends State<Pagina> {
                   borderWidth: 10,
                   cutOutSize: 300),
               onQRViewCreated: _onQr),
+        Container(
+          //color: Colors.black,
+          margin: EdgeInsets.only(bottom: 85,left: margenHorizontal,right: margenHorizontal),
+          alignment: Alignment.bottomCenter,
+          child: Text(
+            conts.Constantes.MENSAJE_QR,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            )
+          ),
         )
       ],
+    ),
     );
   }
 
-  Future<Map<String,dynamic>> getInfo(String json) async{
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = int.parse(prefs.getString("id"));
-    var url = 'http://${Constantes.HOST}';
-    url += "${Constantes.RT_UDT}U-Cadena.php?usId=$id&cadena=$json";
+  Future<Map<String,dynamic>> getInfo(String cadena) async{
+    var id = await prefs.getString("id");
+    var url = '${conts.Constantes.HOST+conts.Constantes.RT_UDT}';
+    url += "U-Cadena2.php";
 
-    http.Response response = await http.get(url);
+    Map parametros = {
+      "usId" : id,
+      "cadena" : cadena ?? qrtext
+    };
+
+    http.Response response = await http.post(url,body:parametros);
     var data = jsonDecode(response.body);
 
     return data;
@@ -73,29 +97,27 @@ class _Cuerpo extends State<Pagina> {
   void _onQr(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
 
-          if( !dialogoVisible ){
-            qrtext = scanData;
-            try{
-              var data = jsonDecode(qrtext);
-              _checkDialog(data.toString());
-            }catch(e){
-              _showDialog("El formato proporcionado es incorrecto",Constantes.C_ERROR);
-            }
-          }
-      });
+      if( !dialogoVisible ){
+        qrtext = scanData;
+        try{
+          _checkDialog();
+          
+        }catch(e){
+          //_showDialog("El formato proporcionado es incorrecto",conts.Constantes.C_ERROR);
+        }
+      }
     });
   }
 
-  void _checkDialog(json) async{
+  void _checkDialog() async{
     dialogoVisible = true;
-    var res = await showDialog(
+    Map<String,dynamic> res = await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context){
           return FutureBuilder(
-              future: getInfo(json),
+              future: getInfo(null),
               builder: (context,snapshot){
                 Widget vista;
                 if( snapshot.hasData){
@@ -106,19 +128,26 @@ class _Cuerpo extends State<Pagina> {
 
                   if( !fallo ){
                     titulo = "Felicidades";
-                    codigoTitulo = Constantes.C_EXITOSA;
+                    codigoTitulo = conts.Constantes.C_EXITOSA;
+                    
+                    String numtxt = snapshot.data["nuevos"];
+                    
+                    if( numtxt != null ) {
+                      
+                      prefs.setInt("puntos", int.parse(numtxt.toString()));
+                    }
                   }else switch(codigoError){
                     case 1:
-                      titulo = Constantes.T_ERROR;
-                      codigoTitulo = Constantes.C_ERROR;
+                      titulo = conts.Constantes.T_ERROR;
+                      codigoTitulo = conts.Constantes.C_ERROR;
                       break;
                     case 2:
-                      titulo = Constantes.T_ADVERTENCIA;
-                      codigoTitulo = Constantes.C_ADVERTENCIA;
+                      titulo = conts.Constantes.T_ADVERTENCIA;
+                      codigoTitulo = conts.Constantes.C_ADVERTENCIA;
                       break;
                     case 3:
-                      titulo = Constantes.T_ERROR;
-                      codigoTitulo = Constantes.C_ERROR;
+                      titulo = conts.Constantes.T_ERROR;
+                      codigoTitulo = conts.Constantes.C_ERROR;
                       break;
                   }
                   vista = MiDialogo(titulo: titulo,
@@ -144,24 +173,95 @@ class _Cuerpo extends State<Pagina> {
         }
     );
 
-    if( res )
-      Navigator.of(context).pop();
-    else
-      dialogoVisible = false;
-  }
-  
-  void _showDialog(cuerpo,tipo) async{
-    dialogoVisible = true;
-    Map<String,dynamic> res = await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => MiDialogo(titulo: Constantes.T_ERROR, descripcion: cuerpo, tipoTitulo:tipo,soloCarga: false,)
-    );
-
     if( res["bandera"] )
       Navigator.of(context).pop();
     else
       dialogoVisible = false;
+  }
+
+  void inciaShared() async{
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  void _dialogo() async{
+    dialogoVisible = true;
+    Map<String,dynamic> res = await showDialog(
+        context: context,
+        builder: (context) => MiDialogo2(
+          colorTitulo: conts.Colores.INPUT_DIALOG_TITLE,soloCarga: false,
+          onRun: algoFondo,
+        )
+    );
+    if (res["bandera"]) {
+      if( res["correcto"] ){
+        Navigator.pop(context);
+      }
+    }else{
+      dialogoVisible = false;
+    }
+  }
+
+  Widget algoFondo(String cad,Function metRes){
+    double tamano = SizeConfig.conversionAlto(90, false);
+    return FutureBuilder(
+        future: getInfo(cad),
+        builder: (context, snapshot) {
+          Widget vista;
+
+          if( snapshot.connectionState == ConnectionState.waiting){
+            return Container(
+               height: 200,
+              child: Center(
+                child: SizedBox(
+                  width: tamano,
+                  height: tamano,
+                  child: CircularProgressIndicator(
+
+                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
+                    strokeWidth: 12,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          if( snapshot.hasData){
+            bool fallo = snapshot.data["fallo"].toString() == "true";
+            int codigo = int.parse(snapshot.data["codigo"].toString());
+
+            if (!fallo) {
+              
+              String numtxt = snapshot.data["nuevos"];
+
+              if( numtxt != null )
+                prefs.setInt("puntos", int.parse(numtxt.toString()));
+
+              vista = metRes(
+                  conts.Constantes.T_EXITOSA,
+                  snapshot.data["mensaje"].toString(),
+                  conts.Constantes.C_EXITOSA
+              );
+            }else{
+              String titulo = "";
+              int tipo = 0;
+              switch(codigo){
+                case 1:
+                  titulo = conts.Constantes.T_ERROR;
+                  tipo = conts.Constantes.C_ERROR;
+                  break;
+                case 2:
+                  titulo = conts.Constantes.T_ADVERTENCIA;
+                  tipo = conts.Constantes.C_ADVERTENCIA;
+                  break;
+              }
+              vista = metRes( titulo,snapshot.data["mensaje"].toString(),tipo);
+            }
+          }else if( snapshot.hasError){
+
+          }
+          return vista;
+        },
+    );
   }
 
   @override
