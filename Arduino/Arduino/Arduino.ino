@@ -16,7 +16,7 @@ void setup() {
   lcd.begin(16, 2);
   mostrarMensaje(0);
   pinMode(2, INPUT);
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {
@@ -34,7 +34,7 @@ boolean botonPresionado() {
 void conteoTapas() {
   int lecturaSensor;
   conteo = 0;
-  Serial.println("Se presionó el botón");
+//  Serial.println("Se presionó el botón");
   delay(100);
   while (!botonPresionado()) {
     lecturaSensor = analogRead(A0);
@@ -89,10 +89,10 @@ void mostrarMensaje(int mensaje) {
 void comunicarResultado() { //Aquí va la comunicación con el ESP8266.
   mostrarMensaje(3);
   cadena = "";
-  Serial.write(conteo);
-  while (cadena == "")
+  Serial.print(conteo);
+  while (cadena.equals(""))
     cadena = Serial.readString();
-  Serial.println("Cadena recibida: " + cadena);
+//  Serial.println("Cadena recibida: " + cadena);
   mostrarMensaje(4);
   delay(10000);
 }

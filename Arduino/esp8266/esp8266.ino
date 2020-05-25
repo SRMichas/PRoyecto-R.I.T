@@ -6,18 +6,14 @@ const char* ssid = "UbeeD3C5";
 const char* password = "RandomAccesTaco28";
 const int maquina = 1;
 String codigo;
-String conteo;
+String conteo = "";
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
   WiFi.begin(ssid, password);
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(1000);
-  }
-
-  if (Serial.available()) {
-    Serial.println("Conectando...");
   }
 }
 
@@ -27,29 +23,38 @@ void loop() {
 
 void esperarArduino() {
   conteo = "";
-  while (conteo == "") {
-    conteo = Serial.readString();
-    conexion();
+  while (conteo.equals("")) {
+    if (Serial.available())
+      conteo = Serial.readString();
   }
-  Serial.print(codigo);
+  if (!conteo.equals("")) {
+//    Serial.println("Entró a if. Conteo: " + conteo);
+    conexion();
+    Serial.print(codigo);
+  }
 }
 
 void conexion() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("http://f790a17f.ngrok.io/api/cadena");
-    int httpCode = http.POST("conteo=" + conteo + "&maquina=" + maquina);
+    http.begin("http://9d12bc4d.ngrok.io/api/cadena");
+    http.addHeader("Content-Type", "application/json");
+    String payload = "{\"conteo\": \"" + conteo + "\", \"maquina\": \"" + maquina + "\"}";
+//    Serial.println("Se envía: " + payload);
+    int httpCode = http.POST(payload);
     if (httpCode > 0) {
       String recepcion = http.getString();
+//      Serial.println("Se recibe: " + recepcion);
       char json[recepcion.length() + 1];
       recepcion.toCharArray(json, recepcion.length());
+//      Serial.print("JSON: ");
+//      Serial.println(json);
       parserJson(json);
     } else {
-      codigo = "error";
+      codigo = "error...";
     }
     http.end();
   }
-  delay(60000);
 }
 
 void parserJson(char* json) {
@@ -57,4 +62,5 @@ void parserJson(char* json) {
   deserializeJson(documento, json);
   String auxiliar = documento["Codigo"];
   codigo = auxiliar;
+  //  Serial.println("Código tras el parser: " + codigo);
 }
