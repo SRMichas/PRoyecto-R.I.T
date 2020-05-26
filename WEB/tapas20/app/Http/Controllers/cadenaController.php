@@ -14,9 +14,9 @@ class cadenaController extends Controller
 
 	public function store(Request $request)
 	{
-		$semilla = $request->conteo + $request->maquina + time();
-		$codigo = md5($semilla);	//Sí, el código es un hash.
-		return response()->json(['Codigo' => substr($codigo, 17)]);
+		// $semilla = $request->conteo + $request->maquina + time();
+		// $codigo = md5($semilla);	//Sí, el código es un hash.
+		return response()->json('13');
 	}
 
 	public function update(Request $request)

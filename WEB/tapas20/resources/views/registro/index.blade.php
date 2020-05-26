@@ -31,6 +31,19 @@
             <input type="text" name="apellido"  class="form-control" placeholder="Apellido" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Apellido'" id="inp_apellido">
           </div>
           <div class="input-group lg">
+            <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+            <select name="estado" id="select_estados" class="custom-select mr-sm-2" >
+              <option value="0"selected>Selecciona tu estado</option>
+              @foreach ($array[0] as $item)
+              <option value="{{$item->id_estado}} ">{{$item->nombre}}</option>
+              @endforeach
+            </select>            
+          </div>
+          <div class="input-group lg " id="div_ciudad">
+            <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
+          
+          </div>
+          <div class="input-group lg">
             <span class="input-group-addon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
             <input type="email" name="email" class="form-control" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" id="inp_email">
           </div> 
@@ -46,6 +59,7 @@
             <span class="input-group-addon"><i class="fa fa-lock" aria-hidden="true"></i></span>
             <input type="password" name="pass_confirmation" class="form-control" placeholder="Confirmar contraseña" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirmar contraseña'" id="inp_conf_contraseña">
           </div>  
+          
           <div class="form-group in">
           <input type="submit" name="reg" class="btn btn-info btn-block" value="Registrar" id="btn_entrar"><br>
           <button type="button" name="back" class="btn btn-danger btn-block" id="back"><a href="{{url('index')}}">INICIO</a></button>

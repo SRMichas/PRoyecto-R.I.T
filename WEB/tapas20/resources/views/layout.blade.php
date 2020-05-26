@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="{{ asset('css/index.css') }}">
   <link rel="stylesheet" href="{{ asset('css/perfil.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/premios.css') }}">
   <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
   <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
   
@@ -46,6 +47,7 @@
           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
               href="{{route('cerrar.index')}}">Introducir Cadena</a>
+            <a class="dropdown-item" href="{{route('home.premios')}}">Premios</a>
             <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
             <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
           </div>
@@ -68,6 +70,7 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
           <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"
             href="{{route('usuario.cadena')}}">Introducir Cadena</a>
+          <a class="dropdown-item" href="{{route('home.premios')}}">Premios</a>
           <a class="dropdown-item" href="{{route('usuario.perfil')}}">Perfil</a>
           <a class="dropdown-item" href="{{route('cerrar.index')}}">cerrar sesion</a>
         </div>
@@ -107,9 +110,8 @@
   @endif
 
   <div >
-    <div >
+    <div>
       @yield('content')
-
     </div>
   </div>
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -152,7 +154,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
-
+    <script src="{{asset('js/premios.js')}}"></script>
   <script src="{{asset('js/inicio.js  ')}}"></script>
 </body>
 </html>

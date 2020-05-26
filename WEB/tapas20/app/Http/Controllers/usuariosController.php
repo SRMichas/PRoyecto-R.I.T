@@ -39,7 +39,7 @@ class usuariosController extends Controller
                  return back()->with('msjErr','No es una cadena Valida o Expiro');
                }
                else{
-                return back()->with('msj','Cadena Insertada correctamente xDD te la rifas morro alv perror caile a las guamas');
+                return back()->with('msj','Cadena Insertada correctamente');
                }
                 
          //return $results;

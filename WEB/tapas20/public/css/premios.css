@@ -1,0 +1,55 @@
+.imgc{
+    width: 80%;
+    height: 25vh;
+    margin: auto;
+}
+.cardp
+    {
+        margin-bottom: 10px;
+        border-radius: 15px;
+    }
+
+@media (max-width: 767px) {
+    .imgc{
+        width: 50%;
+        height: 25vh;
+        margin: auto;
+    }
+    }
+    @media (min-width: 1024px) {
+        .imgc{
+            width: 50%;
+            height: 15vh;
+            margin: auto;
+        }
+    }    
+
+@media (max-width: 420px) {
+    .cardp
+    {
+        margin-top: 10px;
+        width: 100%;
+        margin-left:5px;
+        margin-right: 0px;
+        margin-left: 2px;
+        margin-bottom: 10px;
+        height: 40vh;
+    }
+    .imgc
+    {
+        height: 15vh;
+        width: 80%;
+        
+    }
+    .col-a
+    {
+        padding-left: 0px;
+        padding-right:5px;
+    }
+    
+} 
+.rowp
+{
+    margin: 0;
+    padding: 0;
+} 

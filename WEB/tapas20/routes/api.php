@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('cadena', 'cadenaController');
+Route::apiResource('ciudades', 'registroController');
+

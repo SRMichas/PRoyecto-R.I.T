@@ -1,54 +1,24 @@
 $( document ).ready(function() {
     console.log( "ready!" );
-    var token =  $('input[name="csrfToken"]').attr('value'); 
-    $('#btn_entrar').click(function()
-    {
-        let registro = new Object()
-        registro.nombre = $('#inp_nombre').val()
-        registro.email = $('#inp_email').val()
-        registro.contrasena = $('#inp_contraseña').val()
-        registro.confirmacion = $('#inp_conf_contraseña').val()
-        console.log(registro)
+    $("#select_estados").change(function(){
+        $('#div_ciudad').html('<div class="loading"><img src="https://i.kinja-img.com/gawker-media/image/upload/s--LytxZcab--/c_fit,fl_progressive,q_80,w_636/1481054780733836946.gif" width="50px" alt="loading" /><br/>Un momento, por favor...</div>');
+        console.log($('select[id=select_estados]').val()); 
         
-        $.each(registro, function( index, value ) {
-            if(value === "")
-            {
-                alert("Debes de completar todos los campos")
-                return false
-            }
-          });
-         
-         if(confirmar(registro.contrasena,registro.confirmacion))
-         {
-            $.ajax({
-                url: 'http://localhost:8000/prueba2'
-                , method: 'POST'
-                ,headers: {
-                    'X-CSRF-Token': token 
-               },
-               data: registro
-            }).done(function (response) {
-                console.log(response);
-            }).fail(function (jqXhr, textStatus) {
-        
-            });
-         }
-         else{
-             
-            $('#inp_contraseña').val("")
-            $('#inp_conf_contraseña').val("")   
-         }
-    })
-    function confirmar(contrasena,confCont)
-    {
-        if(contrasena == confCont)
-        {
-            return true
-        }
-        else{
-            alert("Los campos de contraseña no coinsiden")
-            return false
-        }
+        $.ajax({
+            url: 'http://localhost:8000/ciudades',
+            dataType: "json"
+            , method: 'POST'
+        }).done(function (response) {
+            console.log(response);
+            $('#div_ciudad').html('<select name="ciudad" class="custom-select mr-sm-2" id="select_ciudades"></select>');
+            $('#select_ciudades').html("");
+            $.each(response, function(i, value) {
+                console.log(value);
+             $('#select_ciudades').html($('#select_ciudades').html()+'<option value="'+value.id_ciudad+'">'+value.nombre+'</option>');     
+            }); 
+        }).fail(function (jqXhr, textStatus) {
+    
+        });
 
-    }
+    });
 });

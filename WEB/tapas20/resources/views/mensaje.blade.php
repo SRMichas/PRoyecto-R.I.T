@@ -20,7 +20,7 @@
  <body>
   <br />
   <div class="container box" style="width: 970px;">
-   
+   <img src="./" alt="">
    <h3 align="center">{{$data['mensaje'] }}</h3>
    
    

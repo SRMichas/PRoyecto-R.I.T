@@ -37,5 +37,6 @@
 <script src="{{asset('js/bootstrap.js')}}"></script>
 <script src="{{asset('js/bootstrap.bundle.js')}}"></script>
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('js/register.js')}}"></script>
 </body>
 </html>

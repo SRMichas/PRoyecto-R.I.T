@@ -19,20 +19,23 @@ Route::post('login','loginController@acceder')->name('login.index');
 
 Route::post('cadena','usuariosController@cadena')->name('usuario.cadena');
 Route::get('cerrar','loginController@cerrar')->name('cerrar.index');
-Route::get('login','loginController@vistaLogin');
+Route::get('login','loginController@vistaLogin')->name('usuario.login');
 Route::get('user','usuariosController@vistaPrincipal');
 Route::get('perfil','usuariosController@perfil')->name('usuario.perfil');
 
 Route::get('inicio', 'homeController@inicio')->name('home.inicio');
+Route::get('premios', 'homeController@premios')->name('home.premios');
 Route::get('tapaton','homeController@tapaton')->name('home.tapaton');
 Route::get('nosotros','homeController@nosotros')->name('home.nosotros');
 
 Route::get('confirmar/{correo}', 'registroController@confirmar')->name('registro.confirmar');
 
 Route::get('registro', 'registroController@vistaRegistrar');
+Route::post('gastar', 'homeController@gastarPuntos');
+
 Route::post('/','registroController@registrar')->name('registro.crear');
 //route::post('/','pruebasController@crear')->name('prueba.crear');
-
+Route::post('ciudades', 'registroController@getCiudades');
 // ruta de formulario
 Route::get('/form', 'ControllerMail@index');
 // ruta al enviar correo
