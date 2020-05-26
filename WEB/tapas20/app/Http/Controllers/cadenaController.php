@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Cadena;
+use Illuminate\Support\Facades\Log;
 
 class cadenaController extends Controller
 {
@@ -14,9 +15,18 @@ class cadenaController extends Controller
 
 	public function store(Request $request)
 	{
-		// $semilla = $request->conteo + $request->maquina + time();
-		// $codigo = md5($semilla);	//Sí, el código es un hash.
-		return response()->json('13');
+		$puntos = $request->conteo * 3;
+		$semilla = $request->conteo + $request->maquina + time();
+		$codigo = substr(md5($semilla), 17);	//Sí, el código es un hash.
+		$objetoCadena = [
+			"cadena" => $codigo,
+			"id_maquina" => $request->maquina,
+			"status" => 1,
+			"tapas" => $request->conteo,
+			"puntos" => $puntos
+		];
+		Cadena::create($objetoCadena);
+		return json_encode(['Codigo' => $codigo]);
 	}
 
 	public function update(Request $request)
