@@ -21,7 +21,6 @@
 
     </p>
     <hr>
-    <img src="{{asset('img/valentin.jpg')}}" alt="">
 
 
 </div>

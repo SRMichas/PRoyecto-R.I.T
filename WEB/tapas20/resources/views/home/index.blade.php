@@ -17,13 +17,7 @@
             <font size="5px"><p>Con la iniciativa del apoyo, el tecnologico de culiacan decide apoyar de manera altruista</p></font>
           </div>
       </div>
-      <div class="carousel-item">
-        <img class="d-block w-100 img-c" src="{{asset('img/valeCoca.png')}}" alt="Third slide">
-        <div class="carousel-caption  d-md-block">
-            <h4>Unnn Lobooo Domesticadoo!!</h3>
-            <font size="5px"><p>Nuestro señor director apoyando desde lo alto, puro Guasave alv ajuaa.</p></font>
-          </div>
-      </div>
+
       <div class="carousel-item">
         <img class="d-block w-100 img-c" src="{{asset('img/reca.png')}}" alt="First slide">
         <div class="carousel-caption d-md-block">

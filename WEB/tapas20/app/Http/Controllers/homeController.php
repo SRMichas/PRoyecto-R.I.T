@@ -38,10 +38,10 @@ class homeController extends Controller
          $p = $puntos[0]->puntos - $request->costo;
          if($p < 0)
          {
-              return json_encode("no tienes fondos suficientes");
+              return json_encode([1,"no tienes fondos suficientes"]);
          }
          $results =   DB::select('CALL sp_compra(?,?,?,?)',[ $id[0]->id,$request->id,$p,$request->costo]);
-         return json_encode('Se a aquirido el premio correctamente');//return $usuario->get('puntos');
+         return json_encode([0,'Se a aquirido el premio correctamente']);//return $usuario->get('puntos');
        // return json_encode($user);
     }
 }

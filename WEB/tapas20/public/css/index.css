@@ -2,7 +2,7 @@ body
 {
     background-image: url("../img/back.png");
     background-repeat: no-repeat;
-    background-size: 100% 100vh; 
+    background-size: 100% 150vh; 
     
 }
 
@@ -11,6 +11,11 @@ body
     width: 50px;
     height: 50px;
    
+}
+#img_RIT
+{
+    width: 300px;
+    height: 50px;
 }
 .col-nav
 {
@@ -42,14 +47,23 @@ body
     {
        font-size: 15px;
     }
+    #img_RIT
+{
+    width: 200px;
+    height: 50px;
+}
     .div-c
     {
         height: 40vh;
     }
     .img-c
-{
-    height: 38vh;
-}
+    {
+        height: 38vh;
+    }
+    body
+    {
+        background-size: 100% 1500px;      
+    }
     
 }
 .div-b
