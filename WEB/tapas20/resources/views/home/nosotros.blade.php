@@ -12,16 +12,21 @@
     <div class="card-body "></div>
 
     <p>
-        La fundacion Gold Rost, <b>nuestro director , Lic. Valentin Elizalde</b>
-        apoyando siendo el patrocinador principal con sus contribuciones artisticas, nos comprometemos 
+        El progrma, <b>TAPATON</b>
+        apoyado por los alumnos responsables de realizar el desarrollo del proyecto R.I.T.    </p>
+    <p>
+        Nos comprometemos 
         apoyar a este programa haciendo nuestro esfuerzo como estudiantes de inovacion tecnologica 
         y asi poder hacer crecer la conciencia y el apoyo antes generado por todo aquel que se concientiza
         en el problema que nos asecha desde mucho tiempo y hoy tenemos la capacidad de combatirlo de igual manera
         combatir el otro problema mundial que es la contaminacion.
-
     </p>
     <hr>
-
-
+        <i>“Ustedes piensan que son los únicos que importan. Piensan que pueden evitar la muerte, pero esa paz es una tontería  
+            desconsiderada. Si matas a alguien, alguien más vendrá a matarte. Este es el odio que nos une. Quiero que sientas el dolor, que pienses en el dolor, que conozcas el dolor. ¡Quienes no conocen el dolor verdadero nunca conocerán la paz verdadera! 
+            Shinra Tenseiii!!
+            <b>” Pain”</b>
+            </i>
+    <hr>
 </div>
 @endsection

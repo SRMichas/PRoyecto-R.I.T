@@ -1,7 +1,8 @@
 $( document ).ready(function() {
     console.log( "ready! premios" );
+    
     $(".bb").click(function(){
-        $('#div_mensaje').html('<div class="loading alert alert-info" style="text-align: center;"><img  src="https://i.kinja-img.com/gawker-media/image/upload/s--LytxZcab--/c_fit,fl_progressive,q_80,w_636/1481054780733836946.gif" width="50px" alt="loading" /><br/>Un momento, por favor...</div>');
+        $(".loader").show();
         var button = this;
         var costo = $(this).parent().parent().children().eq(2)
         var id = $(this).parent().parent().children().eq(0)
@@ -17,10 +18,20 @@ $( document ).ready(function() {
          }).done(function (response) {
             if(response[0] == 0)
             {
-                $('#div_mensaje').html('<div class="alert alert-success" style="text-align: center;">'+response[1]+' . . .  Guapo </div>');
+                $(".loader").hide();
+                $('#div_mensaje').html('<div class="alert alert-success" style="text-align: center;">'+response[1]+'</div>');
+                $('#div_mensaje').show(1000);
+                setTimeout(function() {
+                    $("#div_mensaje").hide(1500);
+                },3000);
             }
             else{
-                $('#div_mensaje').html('<div class="alert alert-danger" style="text-align: center;">'+response[1]+' . . .  Guapo </div>');
+                $(".loader").hide();
+                $('#div_mensaje').html('<div class="alert alert-danger" style="text-align: center;">'+response[1]+'</div>');
+                $('#div_mensaje').show(1000);
+                setTimeout(function() {
+                    $("#div_mensaje").hide(1500);
+                },3000);
             }
            
             

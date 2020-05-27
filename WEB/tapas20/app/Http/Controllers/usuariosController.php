@@ -58,4 +58,21 @@ class usuariosController extends Controller
          return view('usuario.historial',compact('cadenas'));
         // return $cadenas;
     }
+    public function compras(Request $request)
+    {
+         $email = $request->session()->get('usuario');
+         $usuario = App\Usuario::where('email',$email);
+         $id = $usuario->get('id');
+
+        $servicio = App\Usuario_servicio::select('premios.id_premio as id','premios.nombre','premios.costo', 'categoria_premios.nombre as categoria')
+                                  ->join('servicios', 'usuario_servicios.id_servicio', '=', 'servicios.id_servicio')
+                                  ->join('premios', 'servicios.id_premio', '=', 'premios.id_premio')
+                                  ->join('categoria_premios', 'premios.id_categoria', '=', 'categoria_premios.id_categoria')
+                                  ->where('usuario_servicios.id_usuario',$id[0]->id)
+                                  ->get();
+    
+        //return $servicio;
+        return view('usuario.compras',compact('servicio'));
+        // return $cadenas;
+    }
 }

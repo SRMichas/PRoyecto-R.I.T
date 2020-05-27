@@ -17,6 +17,8 @@
   
 </head>
 <body>
+  <div class="loader" style="display: none;">
+  </div>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand col-4" href="#">
       <img src="{{ asset('img/tapaton.png') }}" id="img_nav" alt="">
@@ -38,7 +40,7 @@
           <a class="nav-link" href="{{route('home.tapaton')}}">Tapaton</a>
         </li>
         <li class="nav-item nav-i active">
-          <a class="nav-link" href="{{route('home.tapaton')}}">Proyecto R.I.T</a>
+          <a class="nav-link" href="{{route('home.rit')}}">Proyecto R.I.T</a>
         </li>
         @if (session('usuario'))
         <div class="dropdown d-lg-none d-xl-none li-1 d-sm-block">

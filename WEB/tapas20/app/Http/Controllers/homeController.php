@@ -20,6 +20,10 @@ class homeController extends Controller
     {
         return view('home.nosotros');
     }
+    public function rit()
+    {
+        return view('home.rit');
+    }
     public function premios()
     { 
         $categorias = App\categoriaPremio::get();

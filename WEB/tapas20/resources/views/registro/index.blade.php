@@ -2,7 +2,7 @@
 
 @section('content')
 @if(Session('usuario'))
-<h1>Deslogueate primero Men no seas gacho con la paginta esa culey :c</h1>
+<h1>Debes desloguearte primero </h1>
 <a class="btn button-primary" href="{{route('usuario.perfil')}}"><input type="button" class="btn btn-primary" value="Perfil"></a>
 <a class="btn button-primary" href="{{route('cerrar.index')}}"><input type="button" class="btn btn-primary" value="Cerrar Sesion"></a>
 @else

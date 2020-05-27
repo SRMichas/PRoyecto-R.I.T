@@ -2,8 +2,7 @@
 
 @section('content')
 @if(session('usuario')) 
-<div id="div_mensaje">
-  
+<div id="div_mensaje" style="display:none">
 </div>
 <div class="row rowp">
     @foreach ($arreglo[0] as $item)
@@ -13,11 +12,10 @@
             <div class="card-body">
               <h5 class="card-title">{{$item->nombre}}</h5>
               <p class="card-text">{{$item->descripcion}}</p>
-              <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#M{{$item->id_categoria}}">Ver 7u7</a>
+              <a href="#" class="btn btn-primary col-12" data-toggle="modal" data-target="#M{{$item->id_categoria}}">Ver</a>
             </div>
           </div>
     </div>
-
 <div class="modal fade" id="M{{$item->id_categoria}}" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">

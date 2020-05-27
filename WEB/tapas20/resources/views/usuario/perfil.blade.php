@@ -46,18 +46,20 @@
                 </div>
             </div>
             <div class="col-sm-12 col-lg-12 div-b">  
-                    <input type="button" class="btn btn-primary col-lg-4 col-sm-12" 
+                    <input type="button" class="btn btn-primary col-lg-2 col-sm-12" 
                        id="btn_add" value="Actualizar Informacion" />
                        
-                    <a href="{{route('usuario.historial')}}"><input type="button" class="btn-his btn btn-info col-lg-4 col-sm-12" 
+                    <a href="{{route('usuario.historial')}}"><input type="button" class="btn-his btn btn-info col-lg-2 col-sm-12" 
                        id="btn_his" value="Historial de Ingresos"  /></a>
+                    <a href="{{route('usuario.compras')}}"><input type="button" class="btn-his btn btn-warning col-lg-2 col-sm-12" 
+                        id="btn_his" value="Historial de Canjes"  /></a>
             </div>            
         </form>
     </div>
 </div>
 @else
 <h1>
-    Area Restringida Maldito intruso
+    Area Restringida necesitas estar logueado
 </h1>
 @endif
 @endsection
