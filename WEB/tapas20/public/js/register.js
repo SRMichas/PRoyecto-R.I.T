@@ -5,7 +5,7 @@ $( document ).ready(function() {
         console.log($('select[id=select_estados]').val()); 
         
         $.ajax({
-            url: 'http://localhost:8000/ciudades',
+            url: 'http://9f384f460fee.ngrok.io/ciudades',
             dataType: "json"
             , method: 'POST'
         }).done(function (response) {

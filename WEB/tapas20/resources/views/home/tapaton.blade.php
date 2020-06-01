@@ -23,11 +23,11 @@ Tapatón es un proyecto scout nacido a partir de una idea interamericana, que co
 </ol>
 </p>
 <hr>    
-<i align="justify"><p>
+ <i align="justify"><p>
     "En el mundo de los ninjas, aquellos que rompen las reglas son escoria. Pero aquellos que abandonan a sus amigos, son peor que la escoria." 
 </p></i>
-<i><b>"Obito"</b></i>
-        {{-- <p>
+<i><b>"Obito"</b></i> --}}
+     <p>
             En Sinaloa, la cultura de reciclaje ha empezado a subir poco a poco pero aun así, se ha
 notado que alrededor del 95% de la población estudiantil del Instituto Tecnológico de
 Culiacán no muestran interés para donar las tapaderas PET de sus alimentos lo cual se
@@ -43,7 +43,7 @@ máquina recolectora, se desarrollará una aplicación móvil, dónde las person
 hacer válidos sus puntos por dinero electrónico y llevar un registro del impacto que han
 logrado en el ambiente, esto último con la intención de brindar al usuario una sensación
 de logro, e incentivar a la persona a continuar reciclando.
-        </p> --}}
+        </p> 
 
     </div>
     

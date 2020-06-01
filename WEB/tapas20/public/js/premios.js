@@ -11,7 +11,7 @@ $( document ).ready(function() {
         json.costo = costo.text();
         json.id = id.text();
         $.ajax({
-             url:'http://localhost:8000/gastar',
+             url:'http://9f384f460fee.ngrok.io/gastar',
              dataType: "json"
              , method: 'POST'
              , data : json
