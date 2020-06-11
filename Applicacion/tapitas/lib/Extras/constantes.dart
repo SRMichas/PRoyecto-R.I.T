@@ -68,6 +68,13 @@ class Colores{
     fontSize: SizeConfig.conversionAlto(24, false)
   );
 
+  // Drawer
+  static const Color DRAWER_ITEM = Colors.blueAccent;
+  static const Color DRAWER_HEADER_BACKGROUND = Colors.blueAccent;
+  static const Color DRAWER_USER_BACKGROUND = Colors.white;
+  static const Color DRAWER_USER_COLOR = Colors.blueAccent;
+  static Color DRAWER_SECTION = Colors.grey[600];
+
   //titulo dialog
   static const Color COL_EXITOSA = Color.fromRGBO(25, 191, 48, 1);
   static const Color COL_ADVERTENCIA = Color.fromRGBO(243, 172, 30, 1);

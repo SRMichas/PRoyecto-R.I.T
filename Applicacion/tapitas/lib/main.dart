@@ -1,9 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tapitas/Extras/size_config.dart';
 import 'login.dart';
 import 'inicio.dart';
 import 'registro.dart';
+import 'estadisticas.dart';
+import 'lector_qr.dart';
+import 'puntuacion.dart';
+import 'premios.dart';
+import 'perfil.dart';
 
 void main(){
   runApp(MaterialApp(
@@ -13,7 +19,12 @@ void main(){
     routes: <String,WidgetBuilder>{
       '/login': (BuildContext context) => new Login(),
       '/inicio': (BuildContext context) => new Inicio(),
-      '/registro' : (BuildContext context) => new Registro()
+      '/registro' : (BuildContext context) => new Registro(),
+      '/estadistica' : (BuildContext context) => new Historial(),
+      '/lector' : (BuildContext context) => new LectorQR(),
+      '/puntuacion' : (BuildContext context) => new Puntuacion(),
+      '/premios' : (BuildContext context) => new Premios(),
+      '/perfil' : (BuildContext context) => new Perfil()
     },
   ));
 }
@@ -45,7 +56,7 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    Scaffold scaffold = Scaffold(
       body: new Center(
           child: new Column(
             children: <Widget>[
@@ -61,6 +72,12 @@ class _PrincipalState extends State<Principal> {
           )
       ),
       backgroundColor: Colors.white,
+    );
+    return LayoutBuilder(
+      builder: (context,constraints){
+        SizeConfig().iniciar(constraints,MediaQuery.of(context));
+        return scaffold;
+      },
     );
   }
 
