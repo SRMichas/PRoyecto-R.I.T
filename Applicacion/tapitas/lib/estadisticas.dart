@@ -4,17 +4,40 @@ import 'package:tapitas/Extras/size_config.dart';
 import 'package:tapitas/vistas_estadisticas/vista_semanal.dart';
 import 'package:tapitas/vistas_estadisticas/vista_mensual.dart';
 import 'package:tapitas/vistas_estadisticas/vista_anual.dart';
+import 'package:tapitas/Extras/constantes.dart' as conts;
 
 class Historial extends StatelessWidget {
   TextStyle estilo = TextStyle(
-      fontSize: (22 * SizeConfig.textMultiplier) / SizeConfig.textMultiplier);
+      fontSize: (22 * SizeConfig.textMultiplier) / SizeConfig.textMultiplier,
+      color: Colors.red
+  );
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 3,
         child: Scaffold(
-          appBar: AppBar(
+          appBar: PreferredSize(
+              child: Container(
+                color: conts.Colores.APP_BAR_BACKGROUND_COLOR,
+                child: TabBar(
+                  //labelColor: conts.Colores.APP_BAR_BACKGROUND_COLOR,
+                  indicatorColor: Colors.white,
+                  labelStyle: estilo,
+                  tabs: <Widget>[
+                    Tab(
+                      text: "Semanal",
+                    ),
+                    Tab(
+                      text: "Mensual",
+                    ),
+                    Tab(
+                      text: "Anual",
+                    ),
+                  ],
+                ),
+              ),
+              preferredSize: Size(double.infinity, SizeConfig.conversionAlto(80, false)))/*AppBar(
               bottom: TabBar(
                 labelStyle: estilo,
                 tabs: <Widget>[
@@ -39,7 +62,7 @@ class Historial extends StatelessWidget {
                     SystemNavigator.pop();
                   }
                 },
-              )),
+              ))*/,
           body: new Cuerpo(),
         ));
   }

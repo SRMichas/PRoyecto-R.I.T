@@ -4,17 +4,17 @@ import 'size_config.dart';
 
 class Constantes{
   //Local
-  /*static const String HOST = "http://192.168.1.111";
-  static const String RT_SLT = "/RIT/Select/";
-  static const String RT_ISR = "/RIT/Insert/";
-  static const String RT_UDT = "/RIT/Update/";*/
+  static const String HOST = "http://192.168.1.111";
+  static const String RT_SLT = "/RIT/Local/Select/";
+  static const String RT_ISR = "/RIT/Local/Insert/";
+  static const String RT_UDT = "/RIT/Local/Update/";
   static const PruebaCons = "http://e77bf9f9.ngrok.io/send";
 
   //Remoto
-  static const String HOST = "https://burronator.000webhostapp.com";
+ /*static const String HOST = "https://burronator.000webhostapp.com";
   static const String RT_SLT = "/RIT/scripts/Select/";
   static const String RT_ISR = "/RIT/scripts/Insert/";
-  static const String RT_UDT = "/RIT/scripts/Update/";
+  static const String RT_UDT = "/RIT/scripts/Update/";*/
 
   //Menu Inicio
   static const String cerrarSesion = "Cerrar Sesion";
@@ -79,4 +79,11 @@ class Colores{
   static const Color COL_EXITOSA = Color.fromRGBO(25, 191, 48, 1);
   static const Color COL_ADVERTENCIA = Color.fromRGBO(243, 172, 30, 1);
   static const Color COL_ERROR = Color.fromRGBO(236, 8, 8, 1);
+}
+
+class Estilo{
+  static TextStyle estiloPre1 = TextStyle(
+      fontSize:(22 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier);
+  static TextStyle estiloError = TextStyle(
+          fontSize: (24 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier);
 }

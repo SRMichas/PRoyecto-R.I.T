@@ -10,16 +10,28 @@ import 'package:tapitas/Extras/constantes.dart' as conts;
 import 'dart:convert';
 
 class LectorQR extends StatefulWidget {
+
+  Function fun;
+  Function fun2;
+  int valor = 1;
+
+
+  LectorQR({this.fun});
+
   @override
-  State<StatefulWidget> createState() => _Cuerpo();
+  State<StatefulWidget> createState() => CuerpoLector();
+
+
+
 }
 
-class _Cuerpo extends State<LectorQR> {
+class CuerpoLector extends State<LectorQR> {
   GlobalKey qrKey = GlobalKey();
   var qrtext = "";
   QRViewController controller;
   bool dialogoVisible = false;
   SharedPreferences prefs;
+  BuildContext context;
 
   TextStyle estilo = TextStyle(
     fontSize: ( 15 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier,
@@ -27,10 +39,43 @@ class _Cuerpo extends State<LectorQR> {
   );
 
   @override
+  void initState() {
+    widget.fun = dialogo;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    this.context = context;
     inciaShared();
     double margenHorizontal = SizeConfig.conversionAncho(20, false);
-    return Scaffold(
+    return Stack(
+      children: <Widget>[
+        QRView(
+            key: qrKey,
+            overlay: QrScannerOverlayShape(
+                borderRadius: 10,
+                borderColor: Colors.red,
+                borderLength: 30,
+                borderWidth: 10,
+                cutOutSize: 300),
+            onQRViewCreated: _onQr),
+        Container(
+          //color: Colors.black,
+          margin: EdgeInsets.only(bottom: 85,left: margenHorizontal,right: margenHorizontal),
+          alignment: Alignment.bottomCenter,
+          child: Text(
+              conts.Constantes.MENSAJE_QR,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              )
+          ),
+        )
+      ],
+    );/*Scaffold(
       appBar: AppBar(
         backgroundColor: conts.Colores.APP_BAR_BACKGROUND_COLOR,
         title: Text("Escaner",style: conts.Colores.ESTILO_TITULO,),
@@ -38,7 +83,7 @@ class _Cuerpo extends State<LectorQR> {
           Container(
             padding: EdgeInsets.only(right: SizeConfig.conversionAlto(10, false)),
             child: IconButton(
-                onPressed: () => _dialogo(),
+                onPressed: () => dialogo(),
                 icon: Icon(Icons.edit,color: conts.Colores.APP_BAR_WIDGET_COLOR,),
             ),
           )
@@ -75,7 +120,7 @@ class _Cuerpo extends State<LectorQR> {
         )
       ],
     ),
-    );
+    );*/
   }
 
   Future<Map<String,dynamic>> getInfo(String cadena) async{
@@ -183,7 +228,7 @@ class _Cuerpo extends State<LectorQR> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  void _dialogo() async{
+  void dialogo() async{
     dialogoVisible = true;
     Map<String,dynamic> res = await showDialog(
         context: context,

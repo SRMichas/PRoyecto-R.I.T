@@ -19,19 +19,20 @@ class _MyDrawerHeaderState extends State<MyDrawerHeader> {
 
   @override
   Widget build(BuildContext context) {
-    double tamano = SizeConfig.conversionAlto(60, false),
+    double tamano = SizeConfig.conversionAlto(74, false),
         borde = SizeConfig.conversionAlto(7,false);
     return Container(
-      height: 120,
+      height: SizeConfig.conversionAlto(150, false),
       child: DrawerHeader(
           margin: EdgeInsets.zero,
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
             color: conts.Colores.DRAWER_HEADER_BACKGROUND,
           ),
-          child: ListTile(
+          child: Container(
             //color: conts.Colores.DRAWER_HEADER_BACKGROUND,
-            title: InkWell(
+            padding: EdgeInsets.zero,
+            child: InkWell(
               splashColor: Colors.green,
               //onLongPress: () => print("largo"),
               onTap: () => print("que show"),
@@ -59,14 +60,14 @@ class _MyDrawerHeaderState extends State<MyDrawerHeader> {
                       Text(
                         nombreCompleto,
                         style: TextStyle(
-                            fontSize: SizeConfig.conversionAlto(18, false),
+                            fontSize: SizeConfig.conversionAlto(21, false),
                             color: conts.Colores.DRAWER_USER_BACKGROUND
                         ),
                       ),
                       Text(
                         correo,
                         style: TextStyle(
-                            fontSize: SizeConfig.conversionAlto(14, false),
+                            fontSize: SizeConfig.conversionAlto(16, false),
                             color: conts.Colores.DRAWER_USER_BACKGROUND,
                             fontStyle: FontStyle.italic
                         ),

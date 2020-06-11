@@ -13,12 +13,12 @@ class Premios extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return new CuerpoE()/*Scaffold(
+      /*appBar: AppBar(
         title: Text("Premios"),
-      ),
-      body: new CuerpoE(),
-    );
+      ),*/
+      body: ,
+    )*/;
   }
 }
 
@@ -69,7 +69,7 @@ class _CuerpoEState extends State<CuerpoE> with AutomaticKeepAliveClientMixin<Cu
 
   Future<Map<String, dynamic>> getCategorias() async{
     prefs = await SharedPreferences.getInstance();
-    var id = prefs.getString("id");
+    var id = "1";//prefs.getString("id");
     var url = '${Constantes.HOST+Constantes.RT_SLT}';
     url += "C-Premios2.php";
 

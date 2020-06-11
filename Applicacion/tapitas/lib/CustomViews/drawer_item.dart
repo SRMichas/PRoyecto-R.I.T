@@ -3,11 +3,12 @@ import 'package:tapitas/Extras/constantes.dart' as conts;
 
 class DrawerItem extends StatelessWidget {
 
-  String titulo;
-  IconData icono;
-  GestureTapCallback onTap;
+  final String titulo;
+  final IconData icono;
+  final GestureTapCallback onTap;
+  final bool seleccionado;
 
-  DrawerItem({this.titulo,this.icono,this.onTap});
+  DrawerItem({this.titulo,this.icono,this.seleccionado,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class DrawerItem extends StatelessWidget {
       child: ListTile(
         leading: Icon(icono ?? Icons.ac_unit),
         title: Text(titulo ?? ""),
+        selected: seleccionado ?? false,
       ),
     );
   }

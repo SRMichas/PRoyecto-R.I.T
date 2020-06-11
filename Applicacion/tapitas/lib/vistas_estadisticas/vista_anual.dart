@@ -36,7 +36,7 @@ class _VistaAnualState extends State<VistaAnual>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = prefs.getString("id");
+    var id = "1";//prefs.getString("id");
     var url = '${Constantes.HOST + Constantes.RT_SLT}';
     url += 'C-EstadisticasAno.php';
 
