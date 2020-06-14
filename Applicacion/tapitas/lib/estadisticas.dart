@@ -23,6 +23,7 @@ class Historial extends StatelessWidget {
                 child: TabBar(
                   //labelColor: conts.Colores.APP_BAR_BACKGROUND_COLOR,
                   indicatorColor: Colors.white,
+                  indicatorWeight: SizeConfig.conversionAlto(3, false),
                   labelStyle: estilo,
                   tabs: <Widget>[
                     Tab(

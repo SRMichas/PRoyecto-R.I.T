@@ -58,7 +58,7 @@ class _PerfilState extends State<Perfil> {
       onWillPop: () => cierra(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text("INICIO"),
+          title: Text("Perfil"),
           leading: IconButton(
               icon: Icon(Icons.close),
               onPressed: ()=> cierra()),

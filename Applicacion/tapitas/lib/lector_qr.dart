@@ -18,14 +18,17 @@ class LectorQR extends StatefulWidget {
 
   LectorQR({this.fun});
 
+  _CuerpoLector lector = new _CuerpoLector();
+
   @override
-  State<StatefulWidget> createState() => CuerpoLector();
+  State<StatefulWidget> createState() => lector;
 
-
-
+  void muestraDialogo(){
+    lector.dialogo();
+  }
 }
 
-class CuerpoLector extends State<LectorQR> {
+class _CuerpoLector extends State<LectorQR> {
   GlobalKey qrKey = GlobalKey();
   var qrtext = "";
   QRViewController controller;
@@ -134,7 +137,18 @@ class CuerpoLector extends State<LectorQR> {
     };
 
     http.Response response = await http.post(url,body:parametros);
-    var data = jsonDecode(response.body);
+    var data;
+    try{
+        data = jsonDecode(response.body);
+    }on Exception catch (e){
+      print(e.toString());
+      Map temp = {
+        "usId" : id,
+        "cadena" : cadena ?? qrtext
+      };
+      data = temp;
+    }
+
 
     return data;
   }

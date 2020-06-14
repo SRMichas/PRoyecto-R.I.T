@@ -78,21 +78,23 @@ class _VistaSemanalState extends State<VistaSemanal>
 
   _onSelectionChanged(charts.SelectionModel model) {
     final selectedDatum = model.selectedDatum;
-    String algo = "", algoAntes = "";
+    String tapas = "", mensaje = "",dia="";
 
     if (selectedDatum.isNotEmpty) {
-      algo = selectedDatum.first.datum.tapas.toString();
-      if (algo == "0") {
-        algo = "";
-        algoAntes = "";
+      tapas = selectedDatum.first.datum.tapas.toString();
+      dia = selectedDatum.first.datum.dia.toString();
+      if (tapas == "0") {
+        tapas = "";
+        mensaje = "";
+        dia = "";
       } else {
-        algoAntes = "Tapas seleccionadas: ";
+        mensaje = "Tapas depositadas el $dia: ";
       }
     }
 
     setState(() {
-      _preMensaje = algoAntes;
-      _seleccionado = algo;
+      _preMensaje = mensaje;
+      _seleccionado = tapas;
     });
   }
 

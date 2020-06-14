@@ -36,7 +36,7 @@ class _VistaAnualState extends State<VistaAnual>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = "1";//prefs.getString("id");
+    var id = prefs.getString("id");
     var url = '${Constantes.HOST + Constantes.RT_SLT}';
     url += 'C-EstadisticasAno.php';
 
@@ -83,21 +83,23 @@ class _VistaAnualState extends State<VistaAnual>
 
   _onSelectionChanged(charts.SelectionModel model) {
     final selectedDatum = model.selectedDatum;
-    String algo = "", algoAntes = "";
+    String tapas = "", mensaje = "",mes="";
 
     if (selectedDatum.isNotEmpty) {
-      algo = selectedDatum.first.datum.tapas.toString();
-      if (algo == "0") {
-        algo = "";
-        algoAntes = "";
+      tapas = selectedDatum.first.datum.tapas.toString();
+      mes = selectedDatum.first.datum.mes.toString();
+      if (tapas == "0") {
+        tapas = "";
+        mensaje = "";
+        mes = "";
       } else {
-        algoAntes = "Tapas seleccionadas: ";
+        mensaje = "Tapas depositadas en $mes: ";
       }
     }
 
     setState(() {
-      _preMensaje = algoAntes;
-      _seleccionado = algo;
+      _preMensaje = mensaje;
+      _seleccionado = tapas;
     });
   }
 

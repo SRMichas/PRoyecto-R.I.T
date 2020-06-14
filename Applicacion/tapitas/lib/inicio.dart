@@ -9,6 +9,8 @@ import 'lector_qr.dart';
 import 'puntuacion.dart';
 import 'premios.dart';
 
+//GlobalKey<Lector> globalKey = GlobalKey();
+
 class Inicio extends StatefulWidget {
   @override
   _InicioState createState() => _InicioState();
@@ -84,10 +86,9 @@ class _InicioState extends State<Inicio> {
                   setState(() {
                     _idx = 2;
                     LectorQR lector = new LectorQR();
-                    CuerpoLector cuerpo = lector.createState();
                     _titulo = "Lector";
                     _vista = lector;
-                    _mainAppBar = retApp(false,null);
+                    _mainAppBar = retApp(false,lector.muestraDialogo);
                   });
                 },
               ),
@@ -128,11 +129,11 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               seccion("app"),
-              DrawerItem(
+              /*DrawerItem(
                 titulo: "Configuracion",
                 icono: Icons.settings,
                 //onTap: () => Navigator.pushNamed(context, '/lector'),
-              ),
+              ),*/
               DrawerItem(
                 titulo: "Cerrar Sesion",
                 icono: Icons.exit_to_app,
@@ -190,7 +191,7 @@ class _InicioState extends State<Inicio> {
             Container(
               padding: EdgeInsets.only(right: SizeConfig.conversionAlto(10, false)),
               child: IconButton(
-                onPressed: () => print("hola")/*_dialogo()*/,
+                onPressed: () => f.call()/*_dialogo()*/,
                 icon: Icon(Icons.edit,color: conts.Colores.APP_BAR_WIDGET_COLOR,),
               ),
             )

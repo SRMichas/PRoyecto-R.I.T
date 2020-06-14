@@ -58,7 +58,7 @@ class _PuntuacionState extends State<Puntuacion> {
 
   Future<Map<String, dynamic>> tapasInfo() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = "1";//prefs.getString("id");
+    var id = prefs.getString("id");
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Tapas2.php";
     Map parametros ={ "usId" : id };

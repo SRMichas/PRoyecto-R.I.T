@@ -43,7 +43,7 @@ class _VistaMensualState extends State<VistaMensual>
 
   Future<Map<String, dynamic>> getInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = "1";//prefs.getString("id");
+    var id = prefs.getString("id");
     var url = '${Constantes.HOST + Constantes.RT_SLT}';
     //url += 'C-EstadisticasMes.php?usId=$id';
     url += 'C-EstadisticasMes.php';
@@ -59,7 +59,7 @@ class _VistaMensualState extends State<VistaMensual>
         bandera2 = false;
         return data;
       }else{
-        throw MiExcepcion("algo paso aqui",3,Icons.print);
+        throw MiExcepcion("tapas paso aqui",3,Icons.print);
       }
     } on FormatException catch (e){
       //no se puede conectar con la base de datos -> a rechazado la conexion
@@ -74,22 +74,26 @@ class _VistaMensualState extends State<VistaMensual>
 
   _onSelectionChanged(charts.SelectionModel model) {
     final selectedDatum = model.selectedDatum;
-    String algo = "", algoAntes = "";
+    String tapas = "", mensaje = "";
+    DateTime fecha;
 
     if (selectedDatum.isNotEmpty) {
-      algo = selectedDatum.first.datum.tapas.toString();
-      if (algo == "0") {
-        algo = "";
-        algoAntes = "";
+      tapas = selectedDatum.first.datum.tapas.toString();
+      fecha = selectedDatum.first.datum.fecha;
+      if (tapas == "0") {
+        tapas = "";
+        mensaje = "";
+        fecha = null;
       } else {
-        algoAntes = "Tapas seleccionadas: ";
+        String fechaString = "${fecha.day}/${fecha.month}/${fecha.year}";
+        mensaje = "Tapas depositadas el $fechaString: ";
       }
     }
 
     // Request a build.
     setState(() {
-      _preMensaje = algoAntes;
-      _seleccionado = algo;
+      _preMensaje = mensaje;
+      _seleccionado = tapas;
     });
   }
 
