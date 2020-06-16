@@ -8,6 +8,7 @@ import 'estadisticas.dart';
 import 'lector_qr.dart';
 import 'puntuacion.dart';
 import 'premios.dart';
+import 'compras.dart';
 
 //GlobalKey<Lector> globalKey = GlobalKey();
 
@@ -63,14 +64,29 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
-                titulo: "Estadisticas",
-                icono: Icons.history,
+                titulo: "Compras",
+                icono: Icons.shopping_cart,
                 seleccionado: _idx == 1 ? true : false,
                 onTap: (){
                   Navigator.pop(context);
                   //Navigator.pushNamed(context, '/estadistica');
                   setState(() {
                     _idx = 1;
+                    _titulo = "Compras";
+                    _mainAppBar = retApp(true,null);
+                    _vista = Compras();
+                  });
+                },
+              ),
+              DrawerItem(
+                titulo: "Estadisticas",
+                icono: Icons.history,
+                seleccionado: _idx == 2 ? true : false,
+                onTap: (){
+                  Navigator.pop(context);
+                  //Navigator.pushNamed(context, '/estadistica');
+                  setState(() {
+                    _idx = 2;
                     _titulo = "Estadisticas";
                     _mainAppBar = retApp(true,null);
                     _vista = Historial();
@@ -80,11 +96,11 @@ class _InicioState extends State<Inicio> {
               DrawerItem(
                 titulo: "Lector",
                 icono: Icons.camera_alt,
-                seleccionado: _idx == 2 ? true : false,
+                seleccionado: _idx == 3 ? true : false,
                 onTap: (){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 2;
+                    _idx = 3;
                     LectorQR lector = new LectorQR();
                     _titulo = "Lector";
                     _vista = lector;
@@ -95,11 +111,11 @@ class _InicioState extends State<Inicio> {
               DrawerItem(
                 titulo: "Premios",
                 icono: Icons.card_giftcard,
-                seleccionado: _idx == 3 ? true : false,
+                seleccionado: _idx == 4 ? true : false,
                 onTap: (){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 3;
+                    _idx = 4;
                     _titulo = "Premios";
                     _mainAppBar = retApp(true,null);
                     _vista = Premios();
@@ -117,11 +133,11 @@ class _InicioState extends State<Inicio> {
               DrawerItem(
                 titulo: "Puntuacion",
                 icono: Icons.score,
-                seleccionado: _idx == 5 ? true : false,
+                seleccionado: _idx == 6 ? true : false,
                 onTap: (){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 5;
+                    _idx = 6;
                     _titulo = "Puntuacion";
                     _mainAppBar = retApp(true,null);
                     _vista = Puntuacion();

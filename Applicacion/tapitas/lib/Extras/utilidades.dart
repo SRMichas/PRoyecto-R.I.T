@@ -53,5 +53,10 @@ class Impresiones{
     }
     return resp;
   }
+
+  static String reacomodaFecha(String fechaPre){
+    List<String> dividida = fechaPre.split("-");
+    return "${dividida[2]}/${dividida[1]}/${dividida[0]}";
+  }
 }
 

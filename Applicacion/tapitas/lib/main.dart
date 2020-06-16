@@ -10,6 +10,7 @@ import 'lector_qr.dart';
 import 'puntuacion.dart';
 import 'premios.dart';
 import 'perfil.dart';
+import 'compras.dart';
 
 void main(){
   runApp(MaterialApp(
@@ -24,7 +25,8 @@ void main(){
       '/lector' : (BuildContext context) => new LectorQR(),
       '/puntuacion' : (BuildContext context) => new Puntuacion(),
       '/premios' : (BuildContext context) => new Premios(),
-      '/perfil' : (BuildContext context) => new Perfil()
+      '/perfil' : (BuildContext context) => new Perfil(),
+      '/compras' : (BuildContext context) => new Compras()
     },
   ));
 }
@@ -56,28 +58,38 @@ class _PrincipalState extends State<Principal> {
 
   @override
   Widget build(BuildContext context) {
-    Scaffold scaffold = Scaffold(
+    return LayoutBuilder(
+      builder: (context,constraints){
+        SizeConfig().iniciar(constraints,MediaQuery.of(context));
+        return cuerpo();
+      },
+    );
+  }
+
+  Widget cuerpo(){
+    double alto = SizeConfig.conversionAlto(300, false),
+      ancho = alto/*SizeConfig.conversionAncho(400, false)*/;
+    return Scaffold(
       body: new Center(
           child: new Column(
             children: <Widget>[
-              FlutterLogo(
+              /*FlutterLogo(
                 size: 400,
+              )*/
+              Image.asset(
+                'assets/img/logo.png',
+                width: ancho,
+                height: alto,
               ),
               Container(
                 child: CircularProgressIndicator(),
-                margin: EdgeInsets.only(top: 25),
+                margin: EdgeInsets.only(top: SizeConfig.conversionAlto(25, false)),
               )
             ],
             mainAxisAlignment: MainAxisAlignment.center,
           )
       ),
       backgroundColor: Colors.white,
-    );
-    return LayoutBuilder(
-      builder: (context,constraints){
-        SizeConfig().iniciar(constraints,MediaQuery.of(context));
-        return scaffold;
-      },
     );
   }
 

@@ -155,6 +155,9 @@ class MiDialogo extends StatelessWidget {
                         res = false;
                         data.putIfAbsent("correcto", ()=> false);
                         break;
+                      case Constantes.C_EXITOSA_COMPRA:
+                        res = false;
+                        break;
                       default:
                         res = false;
                         break;
@@ -179,7 +182,7 @@ class MiDialogo extends StatelessWidget {
 
   void defineCabezera(){
     switch(tipoTitulo){
-      case Constantes.C_EXITOSA: case 0:case Constantes.C_EXITOSA_REGISTRO:
+      case Constantes.C_EXITOSA: case 0:case Constantes.C_EXITOSA_REGISTRO: case Constantes.C_EXITOSA_COMPRA:
         fondoTitulo = COL_EXITOSA;
         colorLetra = Colors.white;
         break;

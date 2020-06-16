@@ -53,6 +53,8 @@ class Constantes{
   //Seccion Login
   static const int C_EXITOSA_LOGIN = 7;
 
+  //Seccion Compras;
+  static const int C_EXITOSA_COMPRA = 8;
 }
 
 class Colores{
@@ -79,11 +81,40 @@ class Colores{
   static const Color COL_EXITOSA = Color.fromRGBO(25, 191, 48, 1);
   static const Color COL_ADVERTENCIA = Color.fromRGBO(243, 172, 30, 1);
   static const Color COL_ERROR = Color.fromRGBO(236, 8, 8, 1);
+
+  //Historial de compras
+  static const Color BOTON = Colors.blue;
 }
 
 class Estilo{
   static TextStyle estiloPre1 = TextStyle(
-      fontSize:(22 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier);
+      fontSize:SizeConfig.conversionAlto(22, false));
   static TextStyle estiloError = TextStyle(
-          fontSize: (24 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier);
+          fontSize: SizeConfig.conversionAlto(24, false));
+
+  //Modelo compras
+  static TextStyle estiloFecha = TextStyle(
+      fontSize: SizeConfig.conversionAlto(18, false),
+      color: Colors.blueAccent,
+      letterSpacing: SizeConfig.conversionAncho(1.5, false)
+  );
+
+  static TextStyle estiloDescripcion = TextStyle(
+    fontSize: SizeConfig.conversionAlto(20, false)
+  );
+
+  static TextStyle estiloTitulo = TextStyle(
+      fontSize: SizeConfig.conversionAlto(20, false),
+      fontWeight: FontWeight.bold
+  );
+
+  static TextStyle ESTILO_TEXTO_BOTON= TextStyle(
+      fontSize: SizeConfig.conversionAlto(16, false),
+      color: Colors.white,
+      letterSpacing: SizeConfig.conversionAncho(1.2, false)
+  );
+
+  static TextStyle estiloUsado = TextStyle(
+      fontSize: 18,
+  );
 }
