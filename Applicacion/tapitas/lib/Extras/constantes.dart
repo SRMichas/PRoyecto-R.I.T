@@ -105,7 +105,8 @@ class Estilo{
 
   static TextStyle estiloTitulo = TextStyle(
       fontSize: SizeConfig.conversionAlto(20, false),
-      fontWeight: FontWeight.bold
+      fontWeight: FontWeight.bold,
+      color: Colors.blueAccent
   );
 
   static TextStyle ESTILO_TEXTO_BOTON= TextStyle(

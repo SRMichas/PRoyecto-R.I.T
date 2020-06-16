@@ -10,8 +10,6 @@ import 'puntuacion.dart';
 import 'premios.dart';
 import 'compras.dart';
 
-//GlobalKey<Lector> globalKey = GlobalKey();
-
 class Inicio extends StatefulWidget {
   @override
   _InicioState createState() => _InicioState();

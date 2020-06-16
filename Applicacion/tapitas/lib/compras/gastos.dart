@@ -40,11 +40,6 @@ class _GastoState extends State<Gasto> {
     return Container(
       child: _vista,
     );
-    /*return Container(
-      child: Center(
-        child: _vista,
-      ),
-    );*/
   }
 
   Future<Map<String, dynamic>> getCategorias() async{
@@ -102,9 +97,6 @@ class _GastoState extends State<Gasto> {
           }
 
           if( snapshot.hasData){
-            /* vista = Center(
-                child: Icon(Icons.whatshot,size: 300,color: Colors.red)
-            );*/
             bool error = snapshot.data["fallo"].toString() == "true";
             //int codigo = snapshot.data["codigo"];
 
@@ -201,8 +193,6 @@ class _ModeloGasto extends StatelessWidget {
 
 
   String url="http://192.168.1.111/RIT/img/telcel_icon.png";
-  /*String nombre,descripcion,fecha;
-  int cantidad;*/
   final Gastado gastado;
   _ModeloGasto({this.gastado});
 
@@ -214,54 +204,6 @@ class _ModeloGasto extends StatelessWidget {
     cache = 1000;
     return Column(
       children: <Widget>[
-        /*Container(
-          //color: Colors.red,
-          margin: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 5
-          ),
-          child: Column(
-            children: <Widget>[
-              Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.only(right: 30),
-                child: Text("00/00/0000",style: conts.Estilo.estiloFecha,),
-              ),
-              Row(
-                children: <Widget>[
-                  Image.network(
-                    url,
-                    width: tamano,
-                    height: tamano,
-                    cacheHeight: tamano.toInt(),
-                    cacheWidth: tamano.toInt(),
-                  ),
-                  SizedBox(width: 20,),
-                  Expanded(
-                    child: Container(
-                      color: Colors.green,
-                      child: Text("Descripcion",style:conts.Estilo.estiloDescripcion,),
-                    ),
-                  )
-                ],
-              ),
-              Container(
-                alignment: Alignment.centerRight,
-                margin: EdgeInsets.only(right: 10),
-                child: RaisedButton(
-                  onPressed: () => print("hola"),
-                  elevation: 0.0,
-                  color: conts.Colores.BOTON,
-                  shape: RoundedRectangleBorder(
-                      borderRadius:BorderRadius.circular(20),
-                      side: BorderSide(color: Colors.blue)
-                  ),
-                  child: Text("Canjear",style: conts.Estilo.ESTILO_TEXTO_BOTON,),
-                ),
-              )
-            ],
-          ),
-        ),*/
         Container(
           //color: Colors.red ,
           margin: EdgeInsets.symmetric(

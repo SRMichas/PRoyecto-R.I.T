@@ -44,12 +44,6 @@ class _ActivoState extends State<Activo> {
     return Container(
       child: _vista,
     );
-
-    /*return Container(
-      child: Center(
-        child: _vista,
-      ),
-    );*/
   }
 
   Future<Map<String, dynamic>> getCategorias() async{
@@ -119,9 +113,6 @@ class _ActivoState extends State<Activo> {
           }
 
           if( snapshot.hasData){
-           /* vista = Center(
-                child: Icon(Icons.whatshot,size: 300,color: Colors.red)
-            );*/
             bool error = snapshot.data["fallo"].toString() == "true";
             //int codigo = snapshot.data["codigo"];
 
@@ -274,7 +265,6 @@ class _ActivoState extends State<Activo> {
     if (!res["bandera"]) {
       dialogoVisible = false;
       print("llega aqui estoy chido");
-      //funcion(res["nuevosPuntos"]);
       setState(() {
         bandera = false;
         _futuro = getCategorias();
