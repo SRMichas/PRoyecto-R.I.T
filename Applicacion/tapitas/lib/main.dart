@@ -16,7 +16,7 @@ import 'maquinas.dart';
 void main(){
   runApp(MaterialApp(
     title: "Algo",
-    home: Maquinas(),//Principal(),
+    home: Principal(),
     debugShowCheckedModeBanner: false,
     routes: <String,WidgetBuilder>{
       '/login': (BuildContext context) => new Login(),
@@ -27,7 +27,8 @@ void main(){
       '/puntuacion' : (BuildContext context) => new Puntuacion(),
       '/premios' : (BuildContext context) => new Premios(),
       '/perfil' : (BuildContext context) => new Perfil(),
-      '/compras' : (BuildContext context) => new Compras()
+      '/compras' : (BuildContext context) => new Compras(),
+      '/maquinas' : (BuildContext context) => new Maquinas(),
     },
   ));
 }

@@ -40,4 +40,10 @@ class EstadoMin{
         nombre: parsedJson["nombre"].toString(),
     );
   }
+
+  @override
+  String toString() {
+    //return super.toString();
+    return "$nombre";
+  }
 }

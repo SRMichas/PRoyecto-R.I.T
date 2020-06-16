@@ -49,12 +49,16 @@ class Constantes{
 
   //Seccion Registro
   static const int C_EXITOSA_REGISTRO = 6;
+  static const int REGISTRO_ROUTE = 1;
 
   //Seccion Login
   static const int C_EXITOSA_LOGIN = 7;
 
   //Seccion Compras;
   static const int C_EXITOSA_COMPRA = 8;
+
+  //Seccion Maquina
+  static const int MAQUINA_ROUTE = 2;
 }
 
 class Colores{
@@ -98,7 +102,7 @@ class Estilo{
       color: Colors.blueAccent,
       letterSpacing: SizeConfig.conversionAncho(1.5, false)
   );
-
+  //Seccion de compras
   static TextStyle estiloDescripcion = TextStyle(
     fontSize: SizeConfig.conversionAlto(20, false)
   );
@@ -119,7 +123,20 @@ class Estilo{
       fontSize: SizeConfig.conversionAlto(18, false),
   );
 
+  //Seccion Maquinas
   static TextStyle ESTILO_TITULO_MAQUINA = TextStyle(
-    fontSize: 40,//SizeConfig.conversionAlto(20, false)
+    fontSize: SizeConfig.conversionAlto(28, false)
+  );
+  static TextStyle HOLDER = TextStyle(
+    fontSize: SizeConfig.conversionAlto(36, false)
+  );
+
+  static TextStyle CITY_CAPITAL_LETTER = TextStyle(
+    fontSize: SizeConfig.conversionAlto(40, false),
+    fontWeight: FontWeight.bold
+  );
+
+  static TextStyle CITY_NAME = TextStyle(
+      fontSize: SizeConfig.conversionAlto(28, false)
   );
 }

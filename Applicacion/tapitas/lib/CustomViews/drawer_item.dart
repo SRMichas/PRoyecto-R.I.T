@@ -5,20 +5,29 @@ class DrawerItem extends StatelessWidget {
 
   final String titulo;
   final IconData icono;
-  final GestureTapCallback onTap;
-  final bool seleccionado;
+  final Function(int) onTap;
+  final int id,currentIndex;
 
-  DrawerItem({this.titulo,this.icono,this.seleccionado,this.onTap});
+  DrawerItem({@required this.id,@required this.currentIndex,this.titulo,this.icono,this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       splashColor: conts.Colores.DRAWER_ITEM,
-      onTap: onTap ?? () => print("hola"),
+      onTap: (){
+        if( onTap != null ){
+          onTap(id);
+        }/*else if( onTap2 != null){
+
+        }*/else{
+          print("hola");
+        }
+
+      },
       child: ListTile(
         leading: Icon(icono ?? Icons.ac_unit),
         title: Text(titulo ?? ""),
-        selected: seleccionado ?? false,
+        selected: id == currentIndex ? true : false,
       ),
     );
   }

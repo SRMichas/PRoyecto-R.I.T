@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:tapitas/CustomViews/input_registro.dart';
 import 'package:tapitas/CustomViews/mi_drop_down.dart';
 import 'package:tapitas/Extras/size_config.dart';
-import 'package:tapitas/Extras/constantes.dart';
+import 'package:tapitas/Extras/constantes.dart' as conts;
 import 'package:tapitas/Entidades/estados.dart';
 import 'package:tapitas/Entidades/ciudad.dart';
 import 'package:tapitas/CustomViews/mi_dialogo.dart';
@@ -168,6 +168,7 @@ class _FormularioState extends State<Formulario> {
                     labelValue: "Estado",
                     expandido: true,
                     route: 1,
+                    widgetRoute: conts.Constantes.REGISTRO_ROUTE,
                     function: cambiaDatos,
                     estado: field,
                     icono: Icons.location_city,
@@ -187,6 +188,7 @@ class _FormularioState extends State<Formulario> {
                   labelValue: "Ciudad",
                   expandido: true,
                   route: 0,
+                  widgetRoute: conts.Constantes.REGISTRO_ROUTE,
                   function: cambiaDatos,
                   estado: field,
                   icono: Icons.home,
@@ -267,7 +269,7 @@ class _FormularioState extends State<Formulario> {
   }
 
   Future<Map<String,dynamic>> getEstados() async{
-    var url = "${Constantes.HOST+Constantes.RT_SLT}";
+    var url = "${conts.Constantes.HOST+conts.Constantes.RT_SLT}";
     url += "C-Estados.php";
     http.Response res = await http.post(url);
     var data = jsonDecode(res.body);
@@ -275,7 +277,7 @@ class _FormularioState extends State<Formulario> {
   }
 
   Future<Map<String, dynamic>> sube() async{
-    var url = "${Constantes.HOST+Constantes.RT_ISR}";
+    var url = "${conts.Constantes.HOST+conts.Constantes.RT_ISR}";
     url += "I-Usuario2.php";
 
     Map parametros = {
@@ -292,7 +294,7 @@ class _FormularioState extends State<Formulario> {
     var data = jsonDecode(response.body);
 
     if( data["codigo"].toString() == "0"){
-      var url2 = Constantes.PruebaCons;
+      var url2 = conts.Constantes.PruebaCons;
       print(url2);
       Map body = {
         "correo" : data["usuario"][5]
@@ -328,18 +330,18 @@ class _FormularioState extends State<Formulario> {
 
                   if (!fallo) {
                     titulo = "Enhorabuena";
-                    codigoTitulo = Constantes.C_EXITOSA_REGISTRO;
+                    codigoTitulo = conts.Constantes.C_EXITOSA_REGISTRO;
                     mensaje = "Se le ha enviado un correo, reviselo para confirmar la cuenta";
                   } else
                     switch (codigoError) {
                       case 1:
-                        titulo = Constantes.T_ERROR;
-                        codigoTitulo = Constantes.C_ERROR;
+                        titulo = conts.Constantes.T_ERROR;
+                        codigoTitulo = conts.Constantes.C_ERROR;
                         mensaje = snapshot.data["mensaje"].toString();
                         break;
                       case 2:
-                        titulo = Constantes.T_ADVERTENCIA;
-                        codigoTitulo = Constantes.C_ADVERTENCIA;
+                        titulo = conts.Constantes.T_ADVERTENCIA;
+                        codigoTitulo = conts.Constantes.C_ADVERTENCIA;
                         mensaje = snapshot.data["mensaje"].toString();
                         break;
                     }

@@ -4,8 +4,12 @@ import 'package:tapitas/Extras/size_config.dart';
 import 'package:tapitas/Extras/constantes.dart' as conts;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:tapitas/Entidades/estados.dart';
 import 'Entidades/mi_excepcion.dart';
+import 'package:tapitas/CustomViews/machine_list_model.dart';
+import 'package:tapitas/Entidades/maquina.dart';
+import 'package:tapitas/CustomViews/machine_list_model.dart';
+import 'package:tapitas/Extras/utilidades.dart' as util;
 
 class Maquinas extends StatefulWidget {
   @override
@@ -14,16 +18,19 @@ class Maquinas extends StatefulWidget {
 
 class _MaquinasState extends State<Maquinas> {
 
-  double divisor = 2;//SizeConfig.conversionAlto(2, false);
+  double divisor = SizeConfig.conversionAlto(2, false);
   Widget _vistaHolder;
-  Future<Map<String, dynamic>> _futuro;
+  Future<Map<String, dynamic>> _futuro,_futuro2;
+  List<Object> _estados;
+  String _dropTextHolder = "Nada Seleccionado";
 
   bool bandera = false;
   int _status;
   
   @override
   void initState() {
-    _futuro = getEstados();
+    estadosAsincronico();
+    _vistaHolder = holder();
     super.initState();
   }
 
@@ -35,28 +42,36 @@ class _MaquinasState extends State<Maquinas> {
         child: Column(
           children: <Widget>[
             Container(
-              color: Colors.red,
-              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+              //color: Colors.red,
+              padding: EdgeInsets.symmetric(
+                  horizontal: SizeConfig.conversionAncho(15, false),
+                  vertical: SizeConfig.conversionAlto(20, false)
+              ),
               child: Column(
                 children: <Widget>[
-                  SizedBox(height: 0,),
+                  SizedBox(height: SizeConfig.conversionAlto(0, false),),
                   Container(
                     alignment: Alignment.centerLeft,
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: EdgeInsets.only(bottom: SizeConfig.conversionAlto(20,false)),
                     child: Text("Seleccione un estado: ",style: conts.Estilo.ESTILO_TITULO_MAQUINA,),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 0),
-                    child: MiDrop(hintValue: "Nada Seleccionado",),
+                    margin: EdgeInsets.symmetric(horizontal: SizeConfig.conversionAncho(0, false)),
+                    child: MiDrop(
+                      hintValue: _dropTextHolder,
+                      listValues: _estados,
+                      function: cambiaDatos,
+                      widgetRoute: conts.Constantes.MAQUINA_ROUTE,
+                    ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: SizeConfig.conversionAlto(10, false),),
                 ],
               ),
             ),
             Divider(height: divisor,thickness: divisor,),
             Expanded(
               child: Container(
-                color: Colors.green,
+                //color: Colors.green,
                 child: _vistaHolder,
               ),
             )
@@ -66,10 +81,68 @@ class _MaquinasState extends State<Maquinas> {
     );
   }
 
+  void cambiaDatos(EstadoMin nombre){
+    setState(() {
+      _dropTextHolder = nombre.nombre;
+      _futuro = getEstados();
+      _vistaHolder = futureBuilder();
+    });
+  }
+
+  Widget holder(){
+    return Container(
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Icon(Icons.accessibility,size: SizeConfig.conversionAlto(200, false),),
+            Text("Nada que cargar",style: conts.Estilo.HOLDER,),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget loadingHolder(){
+    double size = SizeConfig.conversionAlto(55, false);
+    return Container(
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              color: Colors.yellow,
+              margin: EdgeInsets.only(bottom: SizeConfig.conversionAlto(20, false)),
+              child: Icon(Icons.airplay,size: SizeConfig.conversionAlto(220, false),),
+            ),
+            SizedBox(
+              height: size,
+              width: size,
+              child: CircularProgressIndicator(
+                strokeWidth: SizeConfig.conversionAncho(8, false),
+              ),
+            ),
+          ],
+        ),
+    );
+  }
+  
+  Widget listView(List lista,{int size}){
+    //List<Maquina> compras = lista.map((valor) => Maquina.fromJson(valor)).toList();
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverList(
+          delegate:SliverChildBuilderDelegate((context, index){
+
+            return MachineModel(testvalue: lista[index],);
+          },childCount:lista.length ?? size),
+        ),
+      ],
+    );
+  }
+
   Future<Map<String, dynamic>> getEstados() async{
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Estados2.php";
-
+    await Future.delayed(Duration(seconds: 3));
     try{
       http.Response response = await http.post(url,);
       _status = response.statusCode;
@@ -101,18 +174,7 @@ class _MaquinasState extends State<Maquinas> {
           Widget vista;
 
           if( snapshot.connectionState == ConnectionState.waiting){
-            return Container(
-              child: Center(
-                child: SizedBox(
-                  width: SizeConfig.conversionAncho(190, false),
-                  height: SizeConfig.conversionAncho(190, false),
-                  child: CircularProgressIndicator(
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.green),
-                    strokeWidth: SizeConfig.conversionAncho(4, false) ,
-                  ),
-                ),
-              ),
-            );
+            return loadingHolder();
           }
 
           if( snapshot.hasData){
@@ -121,9 +183,8 @@ class _MaquinasState extends State<Maquinas> {
 
             if( !error ){
               //vista = _Lista(lista: snapshot.data["lista"],);
-              vista = Center(
-                child: Text("Aqui esta lo bueno"),
-              );
+//              vista = listView(snapshot.data["lista"],size: 25);
+              vista = listView(util.DataGenerator.stringList,size: 25);
             }else{
               vista = Container(
                 child: Column(
@@ -186,5 +247,12 @@ class _MaquinasState extends State<Maquinas> {
           return vista;
         }
     );
+  }
+
+  void estadosAsincronico() async{
+    var data = await getEstados();
+    List lista = data["lista"];
+    _estados = lista.map((valor) => EstadoMin.fromJson(valor)).toList();
+    setState(() {});
   }
 }

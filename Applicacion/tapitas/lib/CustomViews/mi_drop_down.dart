@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tapitas/Extras/size_config.dart';
+import 'package:tapitas/Extras/constantes.dart' as conts;
 
 class MiDrop extends StatelessWidget {
 
@@ -7,11 +8,12 @@ class MiDrop extends StatelessWidget {
   final List<Object> listValues;
   final Function function;
   final bool expandido;
-  final int route;
+  final int route,widgetRoute;
   final FormFieldState<Object> estado;
   final IconData icono;
+
   MiDrop({this.hintValue,this.listValues,this.function,
-          this.expandido,this.route,this.estado,this.labelValue,this.icono});
+          this.expandido,this.route,this.estado,this.labelValue,this.icono,this.widgetRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,23 @@ class MiDrop extends StatelessWidget {
               );
             }).toList() : null,
             onChanged: (newVal){
-              function(newVal,route,estado);
+              //print(newVal);
+              switch(widgetRoute){
+                case conts.Constantes.REGISTRO_ROUTE:
+                  function(newVal,route,estado);
+                  break;
+                case conts.Constantes.MAQUINA_ROUTE:
+                  function(newVal);
+                  break;
+                default:
+                  print("no hay funcion asociada");
+                  break;
+              }
+              /*if( function != null ){
+                function(newVal,route,estado);
+              }else{
+                print("no hay funcion asociada");
+              }*/
             },
           )
       ),

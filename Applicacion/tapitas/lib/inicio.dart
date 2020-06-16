@@ -9,6 +9,7 @@ import 'lector_qr.dart';
 import 'puntuacion.dart';
 import 'premios.dart';
 import 'compras.dart';
+import 'maquinas.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -48,13 +49,14 @@ class _InicioState extends State<Inicio> {
               MyDrawerHeader(),
               seccion("usuario"),
               DrawerItem(
+                id: 1,
                 titulo: "Inicio",
                 icono: Icons.home,
-                seleccionado: _idx == 0 ? true : false,
-                onTap: (){
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 0;
+                    _idx = value;
                     _titulo = "Home";
                     _mainAppBar = retApp(true,null);
                     _vista = Cuerpo();
@@ -62,14 +64,15 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
+                id: 2,
                 titulo: "Compras",
                 icono: Icons.shopping_cart,
-                seleccionado: _idx == 1 ? true : false,
-                onTap: (){
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   //Navigator.pushNamed(context, '/estadistica');
                   setState(() {
-                    _idx = 1;
+                    _idx = value;
                     _titulo = "Compras";
                     _mainAppBar = retApp(true,null);
                     _vista = Compras();
@@ -77,14 +80,15 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
+                id: 3,
                 titulo: "Estadisticas",
                 icono: Icons.history,
-                seleccionado: _idx == 2 ? true : false,
-                onTap: (){
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   //Navigator.pushNamed(context, '/estadistica');
                   setState(() {
-                    _idx = 2;
+                    _idx = value;
                     _titulo = "Estadisticas";
                     _mainAppBar = retApp(true,null);
                     _vista = Historial();
@@ -92,13 +96,14 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
+                id: 4,
                 titulo: "Lector",
                 icono: Icons.camera_alt,
-                seleccionado: _idx == 3 ? true : false,
-                onTap: (){
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 3;
+                    _idx = value;
                     LectorQR lector = new LectorQR();
                     _titulo = "Lector";
                     _vista = lector;
@@ -107,13 +112,30 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
-                titulo: "Premios",
-                icono: Icons.card_giftcard,
-                seleccionado: _idx == 4 ? true : false,
-                onTap: (){
+                id: 5,
+                titulo: "Maquinas",
+                icono: Icons.print,
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 4;
+                    _idx = value;
+                    print("$_idx");
+                    _titulo = "Maquinas";
+                    _mainAppBar = retApp(true,null);
+                    _vista = Maquinas();
+                  });
+                },
+              ),
+              DrawerItem(
+                id: 6,
+                titulo: "Premios",
+                icono: Icons.card_giftcard,
+                currentIndex: _idx,
+                onTap: (value){
+                  Navigator.pop(context);
+                  setState(() {
+                    _idx = value;
                     _titulo = "Premios";
                     _mainAppBar = retApp(true,null);
                     _vista = Premios();
@@ -121,21 +143,23 @@ class _InicioState extends State<Inicio> {
                 },
               ),
               DrawerItem(
+                id: 7,
                 titulo: "Perfil",
                 icono: Icons.account_circle,
-                onTap: (){
+                onTap: (value){
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/perfil');
                 },
               ),
               DrawerItem(
+                id: 8,
                 titulo: "Puntuacion",
                 icono: Icons.score,
-                seleccionado: _idx == 6 ? true : false,
-                onTap: (){
+                currentIndex: _idx,
+                onTap: (value){
                   Navigator.pop(context);
                   setState(() {
-                    _idx = 6;
+                    _idx = value;
                     _titulo = "Puntuacion";
                     _mainAppBar = retApp(true,null);
                     _vista = Puntuacion();
@@ -149,14 +173,15 @@ class _InicioState extends State<Inicio> {
                 //onTap: () => Navigator.pushNamed(context, '/lector'),
               ),*/
               DrawerItem(
+                id: 9,
                 titulo: "Cerrar Sesion",
                 icono: Icons.exit_to_app,
-                onTap: (){
+                onTap: (value){
                   resetShaPref();
                   Navigator.pop(context);
                   Navigator.pushReplacementNamed(context, "/login");
                 },
-              )
+              ),
             ],
           ),
         ),
