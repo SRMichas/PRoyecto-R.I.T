@@ -11,11 +11,12 @@ import 'puntuacion.dart';
 import 'premios.dart';
 import 'perfil.dart';
 import 'compras.dart';
+import 'maquinas.dart';
 
 void main(){
   runApp(MaterialApp(
     title: "Algo",
-    home: Principal(),
+    home: Maquinas(),//Principal(),
     debugShowCheckedModeBanner: false,
     routes: <String,WidgetBuilder>{
       '/login': (BuildContext context) => new Login(),

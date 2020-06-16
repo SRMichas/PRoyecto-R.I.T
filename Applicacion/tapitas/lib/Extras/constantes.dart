@@ -116,6 +116,10 @@ class Estilo{
   );
 
   static TextStyle estiloUsado = TextStyle(
-      fontSize: 18,
+      fontSize: SizeConfig.conversionAlto(18, false),
+  );
+
+  static TextStyle ESTILO_TITULO_MAQUINA = TextStyle(
+    fontSize: 40,//SizeConfig.conversionAlto(20, false)
   );
 }

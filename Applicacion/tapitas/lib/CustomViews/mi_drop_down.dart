@@ -3,23 +3,23 @@ import 'package:tapitas/Extras/size_config.dart';
 
 class MiDrop extends StatelessWidget {
 
-  final String singleValue,hintValue;
+  final String hintValue,labelValue;
   final List<Object> listValues;
   final Function function;
   final bool expandido;
   final int route;
   final FormFieldState<Object> estado;
   final IconData icono;
-  MiDrop({this.singleValue,this.listValues,this.function,
-          this.expandido,this.route,this.estado,this.hintValue,this.icono});
+  MiDrop({this.hintValue,this.listValues,this.function,
+          this.expandido,this.route,this.estado,this.labelValue,this.icono});
 
   @override
   Widget build(BuildContext context) {
     return InputDecorator(
       decoration: InputDecoration(
-        labelText: hintValue ?? "no",
+        labelText: labelValue ?? "",
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(SizeConfig.conversionAlto(36, false)))
+            borderRadius: BorderRadius.all(Radius.circular(/*SizeConfig.conversionAlto(36, false)*/36))
         ),
         isDense: true,
         alignLabelWithHint: true,
@@ -30,13 +30,13 @@ class MiDrop extends StatelessWidget {
             icon: Icon(icono ?? Icons.color_lens),
             isExpanded: expandido ?? false,
             isDense: true,
-            hint: Text(singleValue ?? ""),
-            items: listValues.map((Object val){
+            hint: Text(hintValue ?? "Holder"),
+            items: listValues != null ?listValues.map((Object val){
               return DropdownMenuItem<Object>(
                 value: val,
                 child: Text(val.toString()),
               );
-            }).toList(),
+            }).toList() : null,
             onChanged: (newVal){
               function(newVal,route,estado);
             },

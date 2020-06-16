@@ -27,3 +27,17 @@ class Estado{
     return "$nombre";
   }
 }
+
+class EstadoMin{
+  final int id;
+  final String nombre;
+
+  EstadoMin({this.id,this.nombre});
+
+  factory EstadoMin.fromJson(Map<String, dynamic> parsedJson){
+    return EstadoMin(
+        id: int.parse(parsedJson["id"].toString()),
+        nombre: parsedJson["nombre"].toString(),
+    );
+  }
+}

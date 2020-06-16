@@ -163,9 +163,9 @@ class _FormularioState extends State<Formulario> {
             FormField(
                 builder: (field) {
                   return MiDrop(
-                    singleValue: _estado,
+                    hintValue: _estado,
                     listValues: _estados,
-                    hintValue: "Estado",
+                    labelValue: "Estado",
                     expandido: true,
                     route: 1,
                     function: cambiaDatos,
@@ -182,9 +182,9 @@ class _FormularioState extends State<Formulario> {
             child: FormField(
               builder: (field){
                 return MiDrop(
-                  singleValue: _ciudad,
+                  hintValue: _ciudad,
                   listValues: _ciudades,
-                  hintValue: "Ciudad",
+                  labelValue: "Ciudad",
                   expandido: true,
                   route: 0,
                   function: cambiaDatos,
