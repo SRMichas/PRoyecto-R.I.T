@@ -120,7 +120,6 @@ class _InicioState extends State<Inicio> {
                   Navigator.pop(context);
                   setState(() {
                     _idx = value;
-                    print("$_idx");
                     _titulo = "Maquinas";
                     _mainAppBar = retApp(true,null);
                     _vista = Maquinas();

@@ -24,6 +24,7 @@ class _MaquinasState extends State<Maquinas> {
   List<Object> _estados;
   String _dropTextHolder = "Nada Seleccionado";
 
+
   bool bandera = false;
   int _status;
   
@@ -37,8 +38,7 @@ class _MaquinasState extends State<Maquinas> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: Container(
+    return Container(
         child: Column(
           children: <Widget>[
             Container(
@@ -77,7 +77,6 @@ class _MaquinasState extends State<Maquinas> {
             )
           ],
         ),
-      ),
     );
   }
 
@@ -132,7 +131,7 @@ class _MaquinasState extends State<Maquinas> {
         SliverList(
           delegate:SliverChildBuilderDelegate((context, index){
 
-            return MachineModel(testvalue: lista[index],);
+            return MachineModel(testvalue: lista[index],listSample: util.DataGenerator.sample,);
           },childCount:lista.length ?? size),
         ),
       ],
@@ -142,7 +141,7 @@ class _MaquinasState extends State<Maquinas> {
   Future<Map<String, dynamic>> getEstados() async{
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Estados2.php";
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     try{
       http.Response response = await http.post(url,);
       _status = response.statusCode;

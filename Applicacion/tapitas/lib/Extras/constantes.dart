@@ -139,4 +139,18 @@ class Estilo{
   static TextStyle CITY_NAME = TextStyle(
       fontSize: SizeConfig.conversionAlto(28, false)
   );
+
+  static TextStyle DIRECCION = TextStyle(
+      fontSize: SizeConfig.conversionAlto(20, false)
+  );
+
+  static TextStyle TEXT_BUTTON = TextStyle(
+      fontSize: SizeConfig.conversionAlto(12, false),
+      color: Colors.white
+  );
+
+  static TextStyle TEXT_BUTTON_BOTTOM = TextStyle(
+      fontSize: SizeConfig.conversionAlto(18, false),
+      color: Colors.blueAccent
+  );
 }

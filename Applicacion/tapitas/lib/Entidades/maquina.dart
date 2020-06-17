@@ -14,4 +14,8 @@ class Maquina{
         direccion: Direccion.fromJson(parsedJson),
     );
   }
+
+  String getDireccion(){
+    return "";
+  }
 }
