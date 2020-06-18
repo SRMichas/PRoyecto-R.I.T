@@ -8,7 +8,7 @@ class Direccion{
   factory Direccion.fromJson(Map<String, dynamic> parsedJson){
 
     return Direccion(
-        id: int.parse(parsedJson["id"].toString()),
+        id: int.parse(parsedJson["id_direccion"].toString()),
         calle: parsedJson["calle"].toString(),
         colonia: parsedJson["colonia"].toString(),
         localizacion: parsedJson["loca"].toString()
@@ -16,7 +16,7 @@ class Direccion{
   }
 
   String direccionBonita(){
-    String mensaje = "$calle, $colonia, ,";
+    String mensaje = "$calle, $colonia";
     return mensaje;
   }
 }

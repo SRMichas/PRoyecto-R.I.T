@@ -7,9 +7,8 @@ import 'dart:convert';
 import 'package:tapitas/Entidades/estados.dart';
 import 'Entidades/mi_excepcion.dart';
 import 'package:tapitas/CustomViews/machine_list_model.dart';
-import 'package:tapitas/Entidades/maquina.dart';
-import 'package:tapitas/CustomViews/machine_list_model.dart';
 import 'package:tapitas/Extras/utilidades.dart' as util;
+import 'package:tapitas/Entidades/ciudad.dart';
 
 class Maquinas extends StatefulWidget {
   @override
@@ -20,13 +19,13 @@ class _MaquinasState extends State<Maquinas> {
 
   double divisor = SizeConfig.conversionAlto(2, false);
   Widget _vistaHolder;
-  Future<Map<String, dynamic>> _futuro,_futuro2;
+  Future<Map<String, dynamic>> _futuro;
   List<Object> _estados;
   String _dropTextHolder = "Nada Seleccionado";
 
 
   bool bandera = false;
-  int _status;
+  int _status,_id;
   
   @override
   void initState() {
@@ -82,8 +81,9 @@ class _MaquinasState extends State<Maquinas> {
 
   void cambiaDatos(EstadoMin nombre){
     setState(() {
+      _id = nombre.id;
       _dropTextHolder = nombre.nombre;
-      _futuro = getEstados();
+      _futuro = getMachines();
       _vistaHolder = futureBuilder();
     });
   }
@@ -108,7 +108,7 @@ class _MaquinasState extends State<Maquinas> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-              color: Colors.yellow,
+              //color: Colors.yellow,
               margin: EdgeInsets.only(bottom: SizeConfig.conversionAlto(20, false)),
               child: Icon(Icons.airplay,size: SizeConfig.conversionAlto(220, false),),
             ),
@@ -125,13 +125,13 @@ class _MaquinasState extends State<Maquinas> {
   }
   
   Widget listView(List lista,{int size}){
-    //List<Maquina> compras = lista.map((valor) => Maquina.fromJson(valor)).toList();
+    List<CiudadMin> cities = lista.map((valor) =>CiudadMin.fromJson(valor)).toList();
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate:SliverChildBuilderDelegate((context, index){
-
-            return MachineModel(testvalue: lista[index],listSample: util.DataGenerator.sample,);
+            CiudadMin city = cities[index];
+            return MachineModel(city: city,machines: city.machines,);
           },childCount:lista.length ?? size),
         ),
       ],
@@ -141,9 +141,40 @@ class _MaquinasState extends State<Maquinas> {
   Future<Map<String, dynamic>> getEstados() async{
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Estados2.php";
-    await Future.delayed(Duration(seconds: 1));
+    //await Future.delayed(Duration(seconds: 1));
     try{
       http.Response response = await http.post(url,);
+      _status = response.statusCode;
+
+      if( _status == 200) {
+        var data = jsonDecode(response.body);
+        bandera = false;
+        return data;
+      }else{
+        throw MiExcepcion("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",0,Icons.print);
+      }
+    } on FormatException catch (e){
+      bandera = false;
+      throw MiExcepcion("Error al conectar con el servidor \n${e.toString()}",2,Icons.info,e);
+    } on Exception catch (e){
+      //el servidor esta apagado -> a rechazado la conexion
+      bandera = false;
+      throw MiExcepcion("Se ha rechazado la conexión",1,Icons.signal_wifi_off,e);
+    } on TypeError catch (e){
+      bandera = false;
+      throw MiExcepcion(e.toString(),1,Icons.signal_wifi_off,e);
+    }
+  }
+
+  Future<Map<String, dynamic>> getMachines() async{
+    var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
+    url += "C-Maquinas.php";
+
+    Map parametros = {"edo" : "$_id"};
+
+    await Future.delayed(Duration(seconds: 1));
+    try{
+      http.Response response = await http.post(url,body: parametros);
       _status = response.statusCode;
 
       if( _status == 200) {
@@ -182,8 +213,8 @@ class _MaquinasState extends State<Maquinas> {
 
             if( !error ){
               //vista = _Lista(lista: snapshot.data["lista"],);
-//              vista = listView(snapshot.data["lista"],size: 25);
-              vista = listView(util.DataGenerator.stringList,size: 25);
+              vista = listView(snapshot.data["lista"],size: 25);
+              //vista = listView(util.DataGenerator.stringList,size: 25);
             }else{
               vista = Container(
                 child: Column(
@@ -203,7 +234,8 @@ class _MaquinasState extends State<Maquinas> {
                       onPressed: () => setState(() {
                         bandera = false;
                         try {
-                          _futuro = getEstados();
+                          _futuro = getMachines();
+                          _vistaHolder = futureBuilder();
                         }catch(e){
                           print("ESTE EST EL ERROR =====> ${e.toString()}");
                         }

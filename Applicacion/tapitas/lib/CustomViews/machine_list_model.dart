@@ -6,7 +6,7 @@ import 'package:tapitas/Extras/size_config.dart';
 
 class MachineModel extends StatefulWidget {
 
-  final Ciudad city;
+  final CiudadMin city;
   final List<Maquina> machines;
   final List listSample;
   final String testvalue;
@@ -35,7 +35,7 @@ class _MachineModelState extends State<MachineModel> {
   }
 
   Widget compress(){
-    Ciudad city = widget.city;
+    CiudadMin city = widget.city;
     double size = SizeConfig.conversionAlto(50, false);
     return Container(
       child: Column(
@@ -103,7 +103,7 @@ class _MachineModelState extends State<MachineModel> {
   }
 
   Widget expended(){
-    Ciudad city = widget.city;
+    CiudadMin city = widget.city;
     double size = SizeConfig.conversionAlto(50, false),
         divider = SizeConfig.conversionAlto(2, false);
     return Container(
@@ -165,13 +165,16 @@ class _MachineModelState extends State<MachineModel> {
                 ),
                 Divider(height: divider,thickness: divider,),
                 Container(
-                  height: SizeConfig.conversionAlto(68 * (widget.listSample.length).toDouble(), false),
+                  height: SizeConfig.conversionAlto(91.5 * (widget.machines != null ? widget.machines.length : 0).toDouble(), false),
                   child: CustomScrollView(
                     slivers: <Widget>[
                       SliverList(
                         delegate:SliverChildBuilderDelegate((context, index){
-                          return _MachineSubModel();
-                        },childCount:widget.listSample.length ?? size),
+                          if( widget.machines != null)
+                            return _MachineSubModel(maquina: widget.machines[index]);
+                          else
+                            return _MachineSubModel();
+                        },childCount: widget.machines != null ? widget.machines.length: widget.listSample.length ?? 0),
                       ),
                     ],
                   ),
