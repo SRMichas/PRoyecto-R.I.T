@@ -1,16 +1,20 @@
-# tapitas
+# Tapitas
+La aplicación **Tapitas** es una herramienta de apoyo para la administración de la información que es recabada por la [maquina](https://scontent.fcul2-1.fna.fbcdn.net/v/t1.0-9/42716220_1807380446006136_3318668036449239040_o.jpg?_nc_cat=102&_nc_sid=8bfeb9&_nc_ohc=Csf7qUl91ZkAX_a4jt1&_nc_ht=scontent.fcul2-1.fna&oh=032122aea135cf0ec87dbedab88dc1fd&oe=5EF11BE4), en esta aplicación se le permitirá al usuario realizar distintas acciones pero báscias, las cuales comprende:
 
-A new Flutter application.
+- Revisar estadisticas de las tapas que se donan
+  - 
+    |Semanal|Mensual|Anual|
+    |:-:|:-:|:-:|
+    |<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_sem.png" height = "550">|<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_man.png" height = "550">|<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_anual.png" height = "550">|
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Leer Codigos QR desde la app
+  - |   Lector QR   |   Manual   |
+    |:---:|:---:|
+    |<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_sem.png" height = "550">|<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_man.png" height = "550">|
+    
+- Visualizar las tapas faltantes
+  - <img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/est_sem.png" height = "550">
+ -Adquirir Premios con los puntos obtenidos
+  - |Categorias|Premios|
+    |:-:|:-:|
+    |<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/lst_cate.png" height = "550">|<img src = "https://github.com/SRMichas/Proyecto-R.I.T/blob/master/Applicacion/capturas/lst_pr.png" height = "550">|
