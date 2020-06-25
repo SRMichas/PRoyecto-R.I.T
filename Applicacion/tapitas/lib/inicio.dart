@@ -10,7 +10,8 @@ import 'puntuacion.dart';
 import 'premios.dart';
 import 'compras.dart';
 import 'maquinas.dart';
-import 'package:tapitas/Extras/my_flutter_app_icons.dart';
+//import 'package:tapitas/Extras/my_flutter_app_icons.dart';
+import 'noticias.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -30,7 +31,7 @@ class _InicioState extends State<Inicio> {
 
   @override
   void initState() {
-    _vista = Cuerpo();
+    _vista = Noticias();
     _mainAppBar = retApp(true,null);
     super.initState();
   }
@@ -60,7 +61,7 @@ class _InicioState extends State<Inicio> {
                     _idx = value;
                     _titulo = "Home";
                     _mainAppBar = retApp(true,null);
-                    _vista = Cuerpo();
+                    _vista = Noticias();
                   });
                 },
               ),
@@ -144,6 +145,7 @@ class _InicioState extends State<Inicio> {
               ),
               DrawerItem(
                 id: 7,
+                currentIndex: _idx,
                 titulo: "Perfil",
                 icono: Icons.account_circle,
                 onTap: (value){
@@ -174,6 +176,7 @@ class _InicioState extends State<Inicio> {
               ),*/
               DrawerItem(
                 id: 9,
+                currentIndex: _idx,
                 titulo: "Cerrar Sesion",
                 icono: Icons.exit_to_app,
                 onTap: (value){
@@ -220,7 +223,6 @@ class _InicioState extends State<Inicio> {
         elevation: 0,
         title: Text(_titulo),
       );
-    appbar2;
     }else{
       return AppBar(
         backgroundColor: conts.Colores.APP_BAR_BACKGROUND_COLOR,
@@ -261,8 +263,8 @@ class _CuerpoState extends State<Cuerpo> {
         Align(
           alignment: Alignment.center,
           child: Container(
-            color: Colors.red,
-            child: Icon(EstadosIcon.maquina_8,size: SizeConfig.conversionAlto(250, false),),
+            //color: Colors.red,
+            child: Icon(Icons.home,size: SizeConfig.conversionAlto(250, false),),
           ),
         ),
         Container(

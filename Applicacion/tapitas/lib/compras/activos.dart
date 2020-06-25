@@ -79,7 +79,7 @@ class _ActivoState extends State<Activo> {
   }
   Future<Map<String, dynamic>> _dialogoTransaccion(int s) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var id = await prefs.getString("id");
+    var id = prefs.getString("id");
     var url = '${conts.Constantes.HOST + conts.Constantes.RT_UDT}';
     url += "U-Premio.php";
 
@@ -124,9 +124,9 @@ class _ActivoState extends State<Activo> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                        Icons.error,
-                        color: Colors.red,
-                        size:SizeConfig.conversionAlto(200, false),/*(200 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier*/),
+                      Icons.error,
+                      color: Colors.red,
+                      size:SizeConfig.conversionAlto(200, false),/*(200 * SizeConfig.heightMultiplier) / SizeConfig.heightMultiplier*/),
                     Text(
                       snapshot.data["mensaje"].toString(),
                       textAlign: TextAlign.center,
@@ -194,8 +194,8 @@ class _ActivoState extends State<Activo> {
                   child: Text("Cancelar")),
               FlatButton(
                   onPressed: () {
-                      Navigator.of(context).pop();
-                      _checkDialog(srv);
+                    Navigator.of(context).pop();
+                    _checkDialog(srv);
                   },
                   child: Text("Aceptar"))
             ],
@@ -287,10 +287,10 @@ class _Lista extends StatelessWidget {
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
-            delegate:SliverChildBuilderDelegate((context, index){
+          delegate:SliverChildBuilderDelegate((context, index){
 
-                return _ModeloActivo(activo: compras[index],funcion: funcion,);
-              },childCount:lista.length ?? size),
+            return _ModeloActivo(activo: compras[index],funcion: funcion,);
+          },childCount:lista.length ?? size),
         ),
       ],
     );
@@ -309,16 +309,16 @@ class _ModeloActivo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double tamano = SizeConfig.conversionAlto(70, false),
-      divisor = SizeConfig.conversionAlto(2, false),
-      cache = 2000;
+        divisor = SizeConfig.conversionAlto(2, false),
+        cache = 2000;
     return Column(
       children: <Widget>[
         Container(
           //color: Colors.red,
-            margin: EdgeInsets.symmetric(
-                horizontal: SizeConfig.conversionAncho(10, false),
-                vertical: SizeConfig.conversionAlto(5, false)
-            ),
+          margin: EdgeInsets.symmetric(
+              horizontal: SizeConfig.conversionAncho(10, false),
+              vertical: SizeConfig.conversionAlto(5, false)
+          ),
           child: Column(
             children: <Widget>[
               Container(

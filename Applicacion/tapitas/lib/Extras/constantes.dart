@@ -156,6 +156,18 @@ class Estilo{
       fontSize: SizeConfig.conversionAlto(18, false),
       color: Colors.blueAccent
   );
+
+  //Seccion de las noticias
+  static TextStyle NEWS_TITLE = TextStyle(
+      fontSize: SizeConfig.conversionAlto(22, false),
+      //color: Colors.white,
+      fontWeight: FontWeight.bold
+  );
+
+  static TextStyle NEWS_DESC = TextStyle(
+      fontSize: SizeConfig.conversionAlto(18, false),
+      //color: Colors.white,
+  );
 }
 
 class Otro{

@@ -127,7 +127,7 @@ class _CuerpoLector extends State<LectorQR> {
   }
 
   Future<Map<String,dynamic>> getInfo(String cadena) async{
-    var id = await prefs.getString("id");
+    var id = prefs.getString("id");
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_UDT}';
     url += "U-Cadena2.php";
 
@@ -161,7 +161,7 @@ class _CuerpoLector extends State<LectorQR> {
         qrtext = scanData;
         try{
           _checkDialog();
-          
+
         }catch(e){
           //_showDialog("El formato proporcionado es incorrecto",conts.Constantes.C_ERROR);
         }
@@ -188,11 +188,11 @@ class _CuerpoLector extends State<LectorQR> {
                   if( !fallo ){
                     titulo = "Felicidades";
                     codigoTitulo = conts.Constantes.C_EXITOSA;
-                    
+
                     String numtxt = snapshot.data["nuevos"];
-                    
+
                     if( numtxt != null ) {
-                      
+
                       prefs.setInt("puntos", int.parse(numtxt.toString()));
                     }
                   }else switch(codigoError){
@@ -289,7 +289,7 @@ class _CuerpoLector extends State<LectorQR> {
             int codigo = int.parse(snapshot.data["codigo"].toString());
 
             if (!fallo) {
-              
+
               String numtxt = snapshot.data["nuevos"];
 
               if( numtxt != null )

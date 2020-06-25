@@ -21,7 +21,7 @@ class MiDrop extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelValue ?? "",
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.all(Radius.circular(/*SizeConfig.conversionAlto(36, false)*/36))
+            borderRadius: BorderRadius.all(Radius.circular(SizeConfig.conversionAlto(36, false)))
         ),
         isDense: true,
         alignLabelWithHint: true,

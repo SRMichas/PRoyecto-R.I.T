@@ -80,4 +80,16 @@ class SizeConfig {
     else
       return res;
   }
+
+  static proporcionAncho(double pro){
+    double propor = pro / 100;
+    propor *= _screenWidth;
+    return propor;
+  }
+
+  static proporcionAlto(double pro){
+    double propor = pro / 100;
+    propor *= _screenHeight;
+    return propor;
+  }
 }

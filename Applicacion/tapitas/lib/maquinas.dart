@@ -160,7 +160,7 @@ class _MaquinasState extends State<Maquinas> {
   Future<Map<String, dynamic>> getEstados() async{
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Estados2.php";
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(Duration(seconds: 1));
     try{
       http.Response response = await http.post(url,);
       _status = response.statusCode;

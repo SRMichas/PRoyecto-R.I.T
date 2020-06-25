@@ -192,7 +192,7 @@ class _MachineModelState extends State<MachineModel> {
                 Container(
                   alignment: Alignment.center,
                   child: FlatButton(
-                      onPressed: () => setState((){ _viewExpanded = compress();}),
+                      onPressed: () => setState((){widget.funcion(widget.idx,widget.expanded);}),
                       child: Text("Cerrar",style: conts.Estilo.TEXT_BUTTON_BOTTOM,)),
                 )
               ],
