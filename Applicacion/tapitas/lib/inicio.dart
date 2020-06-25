@@ -10,6 +10,7 @@ import 'puntuacion.dart';
 import 'premios.dart';
 import 'compras.dart';
 import 'maquinas.dart';
+import 'package:tapitas/Extras/my_flutter_app_icons.dart';
 
 class Inicio extends StatefulWidget {
   @override
@@ -259,7 +260,10 @@ class _CuerpoState extends State<Cuerpo> {
         SizedBox(height: SizeConfig.conversionAlto(30, false),),
         Align(
           alignment: Alignment.center,
-          child: Icon(Icons.home,size: SizeConfig.conversionAlto(250, false),),
+          child: Container(
+            color: Colors.red,
+            child: Icon(EstadosIcon.maquina_8,size: SizeConfig.conversionAlto(250, false),),
+          ),
         ),
         Container(
           margin: EdgeInsets.only(top: SizeConfig.conversionAlto(50, false)),

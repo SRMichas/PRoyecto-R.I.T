@@ -1,6 +1,8 @@
+import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:tapitas/Entidades/item.dart';
 import 'size_config.dart';
+import 'package:tapitas/Extras/my_flutter_app_icons.dart';
 
 class Constantes{
   //Local
@@ -133,7 +135,8 @@ class Estilo{
 
   static TextStyle CITY_CAPITAL_LETTER = TextStyle(
     fontSize: SizeConfig.conversionAlto(40, false),
-    fontWeight: FontWeight.bold
+    fontWeight: FontWeight.bold,
+    color: Colors.white
   );
 
   static TextStyle CITY_NAME = TextStyle(
@@ -153,4 +156,47 @@ class Estilo{
       fontSize: SizeConfig.conversionAlto(18, false),
       color: Colors.blueAccent
   );
+}
+
+class Otro{
+  static Map<String,IconData> data(){
+    HashMap<String,IconData> ret = new HashMap();
+
+    return ret;
+  }
+
+  static Map<String,IconData> dato = {
+    "Aguascalientes" : 	EstadosIcon.aguascalientes,
+    "Baja California" : 	EstadosIcon.baja_california,
+    "Baja California Sur" : 	EstadosIcon.baja_california_sur,
+    "Campeche" : 	EstadosIcon.campeche,
+    "Chiapas" : 	EstadosIcon.chiapas,
+    "Chihuahua" : 	EstadosIcon.chihuahua,
+    "Ciudad de Mexico" : 	EstadosIcon.ciudad_de_mexico,
+    "Coahuila" : 	EstadosIcon.cuahuila,
+    "Colima" : 	EstadosIcon.colima,
+    "Durango" : 	EstadosIcon.durango,
+    "Guanajuato" : 	EstadosIcon.guanajuato,
+    "Guerrero" : 	EstadosIcon.gerrero,
+    "Hidalgo" : 	EstadosIcon.hidalgo,
+    "Jalisco" : 	EstadosIcon.jalisco,
+    "Estado de Mexico" : 	EstadosIcon.estado_de_mexico,
+    "Michoacan" : 	EstadosIcon.michoacan,
+    "Morelos" : 	EstadosIcon.morelos,
+    "Nayarit" : 	EstadosIcon.nayarit,
+    "Nuevo Leon" : 	EstadosIcon.nuevo_leon,
+    "Oaxaca" : 	EstadosIcon.oaxaca,
+    "Puebla" : 	EstadosIcon.puebla,
+    "Queretaro" : 	EstadosIcon.queretaro,
+    "Quintana Roo" : 	EstadosIcon.quintana_roo,
+    "San Luis Potosi" : 	EstadosIcon.san_luis_potosi,
+    "Sinaloa" : 	EstadosIcon.sinaloa,
+    "Sonora" : 	EstadosIcon.sonora,
+    "Tabasco" : 	EstadosIcon.tabasco,
+    "Tamaulipas" : 	EstadosIcon.tamaulipas,
+    "Tlaxcala" : 	EstadosIcon.tlaxcala,
+    "Veracruz" : 	EstadosIcon.veracruz,
+    "Yucatan" : 	EstadosIcon.yucatan,
+    "Zacatecas" :  EstadosIcon.zacatecas ,
+  };
 }

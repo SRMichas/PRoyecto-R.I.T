@@ -16,7 +16,7 @@ class Direccion{
   }
 
   String direccionBonita(){
-    String mensaje = "$calle, $colonia";
+    String mensaje = "calle $calle, col. $colonia";
     return mensaje;
   }
 }

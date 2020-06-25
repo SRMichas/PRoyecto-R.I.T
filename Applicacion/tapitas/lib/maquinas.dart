@@ -9,6 +9,7 @@ import 'Entidades/mi_excepcion.dart';
 import 'package:tapitas/CustomViews/machine_list_model.dart';
 import 'package:tapitas/Extras/utilidades.dart' as util;
 import 'package:tapitas/Entidades/ciudad.dart';
+import 'package:tapitas/Extras/my_flutter_app_icons.dart';
 
 class Maquinas extends StatefulWidget {
   @override
@@ -22,9 +23,10 @@ class _MaquinasState extends State<Maquinas> {
   Future<Map<String, dynamic>> _futuro;
   List<Object> _estados;
   String _dropTextHolder = "Nada Seleccionado";
+  int _indice = -1;
 
 
-  bool bandera = false;
+  bool bandera = false,_indice2;
   int _status,_id;
   
   @override
@@ -36,7 +38,6 @@ class _MaquinasState extends State<Maquinas> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
         child: Column(
           children: <Widget>[
@@ -110,7 +111,7 @@ class _MaquinasState extends State<Maquinas> {
             Container(
               //color: Colors.yellow,
               margin: EdgeInsets.only(bottom: SizeConfig.conversionAlto(20, false)),
-              child: Icon(Icons.airplay,size: SizeConfig.conversionAlto(220, false),),
+              child: Icon(conts.Otro.dato[_dropTextHolder],size: SizeConfig.conversionAlto(220, false),),
             ),
             SizedBox(
               height: size,
@@ -126,12 +127,30 @@ class _MaquinasState extends State<Maquinas> {
   
   Widget listView(List lista,{int size}){
     List<CiudadMin> cities = lista.map((valor) =>CiudadMin.fromJson(valor)).toList();
+    bool expido;
+    int algo;
+
     return CustomScrollView(
       slivers: <Widget>[
         SliverList(
           delegate:SliverChildBuilderDelegate((context, index){
             CiudadMin city = cities[index];
-            return MachineModel(city: city,machines: city.machines,);
+            if( _indice == index){
+              /*if( _indice == _indice2) {
+                expido = false;
+                algo = -1;
+              }else{
+                expido = true;
+                algo = _indice;
+              }*/
+              expido = !_indice2;
+            }else{
+              expido = false;
+              algo = _indice;
+            }
+            return MachineModel(city: city,machines: city.machines,idx: index,expanded: expido,funcion:(value,value2){
+              cambiaLista(value,lista,value2);
+            },);
           },childCount:lista.length ?? size),
         ),
       ],
@@ -141,7 +160,7 @@ class _MaquinasState extends State<Maquinas> {
   Future<Map<String, dynamic>> getEstados() async{
     var url = '${conts.Constantes.HOST+conts.Constantes.RT_SLT}';
     url += "C-Estados2.php";
-    //await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 3));
     try{
       http.Response response = await http.post(url,);
       _status = response.statusCode;
@@ -285,5 +304,14 @@ class _MaquinasState extends State<Maquinas> {
     List lista = data["lista"];
     _estados = lista.map((valor) => EstadoMin.fromJson(valor)).toList();
     setState(() {});
+  }
+
+  void cambiaLista(int idx,List lista,bool xp){
+    setState(() {
+      _indice2 = xp;
+      _indice = idx;
+      _vistaHolder = listView(lista);
+      //listView(lista);
+    });
   }
 }

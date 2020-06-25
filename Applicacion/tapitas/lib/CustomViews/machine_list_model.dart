@@ -3,6 +3,8 @@ import 'package:tapitas/Entidades/maquina.dart';
 import 'package:tapitas/Entidades/ciudad.dart';
 import 'package:tapitas/Extras/constantes.dart' as conts;
 import 'package:tapitas/Extras/size_config.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:tapitas/Extras/my_flutter_app_icons.dart';
 
 class MachineModel extends StatefulWidget {
 
@@ -10,8 +12,11 @@ class MachineModel extends StatefulWidget {
   final List<Maquina> machines;
   final List listSample;
   final String testvalue;
+  final int idx;
+  final Function(int,bool) funcion;
+  bool expanded = false;
 
-  MachineModel({this.city,this.machines,this.testvalue,this.listSample});
+  MachineModel({this.city,this.machines,this.testvalue,this.listSample,this.idx,this.expanded,this.funcion});
 
   @override
   _MachineModelState createState() => _MachineModelState();
@@ -23,12 +28,15 @@ class _MachineModelState extends State<MachineModel> {
 
   @override
   void initState() {
-    _viewExpanded = compress();
+    //_viewExpanded = compress();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+
+    _viewExpanded = widget.expanded ? expended() : compress();
+
     return Container(
       child: _viewExpanded,
     );
@@ -85,10 +93,10 @@ class _MachineModelState extends State<MachineModel> {
                         child: Center(
                           child: Icon(Icons.expand_more,size: SizeConfig.conversionAlto(35, false),),
                         ),
-                        onTap: (){
-                          setState((){
+                        onTap: (){ widget.funcion(widget.idx,widget.expanded);
+                          /*setState((){
                             _viewExpanded = expended();
-                          });
+                          });*/
                         },
                       ),
                     ),
@@ -156,7 +164,7 @@ class _MachineModelState extends State<MachineModel> {
                             child: Center(
                               child: Icon(Icons.expand_less,size: SizeConfig.conversionAlto(35, false),),
                             ),
-                            onTap: () => setState((){ _viewExpanded = compress();}),
+                            onTap: () => setState((){widget.funcion(widget.idx,widget.expanded); /*_viewExpanded = compress();*/}),
                           ),
                         ),
                       )
@@ -165,8 +173,10 @@ class _MachineModelState extends State<MachineModel> {
                 ),
                 Divider(height: divider,thickness: divider,),
                 Container(
-                  height: SizeConfig.conversionAlto(91.5 * (widget.machines != null ? widget.machines.length : 0).toDouble(), false),
-                  child: CustomScrollView(
+                  //height: SizeConfig.conversionAlto(91.5 * (widget.machines != null ? widget.machines.length : 0).toDouble(), false),
+                  child: Column(
+                    children: widget.machines.map((valor) => _MachineSubModel(maquina: valor,)).toList(),
+                  )/*CustomScrollView(
                     slivers: <Widget>[
                       SliverList(
                         delegate:SliverChildBuilderDelegate((context, index){
@@ -177,7 +187,7 @@ class _MachineModelState extends State<MachineModel> {
                         },childCount: widget.machines != null ? widget.machines.length: widget.listSample.length ?? 0),
                       ),
                     ],
-                  ),
+                  )*/,
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -215,7 +225,7 @@ class _MachineSubModel extends StatelessWidget {
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.only(right: SizeConfig.conversionAncho(10, false)),
-                  child: Icon(Icons.print,size: SizeConfig.conversionAlto(35, false),),
+                  child: Icon(EstadosIcon.maquina_8,size: SizeConfig.conversionAlto(35, false),),
                 ),
                 Expanded(
                   flex: 2,
@@ -236,6 +246,9 @@ class _MachineSubModel extends StatelessWidget {
                     width: SizeConfig.conversionAncho(85, false),
                     child: RaisedButton(
                       onPressed: (){
+
+                        _navegador(maquina.getLocation()/*"https://www.google.com.mx/maps/@24.7889898,-107.3978129,19.54z"*/);
+                      }/*(){
                         scaffold.showSnackBar(
                           SnackBar(
                             content: const Text("Se abrió el navegador"),
@@ -243,7 +256,7 @@ class _MachineSubModel extends StatelessWidget {
                                 label: "cerrar", onPressed: scaffold.hideCurrentSnackBar),
                           )
                         );
-                      },
+                      }*/,
                       elevation: 0.0,
                       color: conts.Colores.BOTON,
                       shape: RoundedRectangleBorder(
@@ -261,6 +274,33 @@ class _MachineSubModel extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _navegador(String url) async{
+    if( await canLaunch(url)){
+      await launch(
+          url,
+          forceSafariVC: false,
+          forceWebView: false,
+          headers: <String,String>{"header" : "cabezera"}
+      );
+    }else{
+      throw "No se puede abrir: $url";
+    }
+  }
+
+  Future<void> _webView(String url) async{
+    if( await canLaunch(url)){
+      await launch(
+          url,
+          forceSafariVC: true,
+          forceWebView: true,
+          enableJavaScript: true,
+          headers: <String,String>{"header" : "cabezera"}
+      );
+    }else{
+      throw "No se puede abrir: $url";
+    }
   }
 }
 
