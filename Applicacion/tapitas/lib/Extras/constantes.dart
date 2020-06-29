@@ -90,6 +90,11 @@ class Colores{
 
   //Historial de compras
   static const Color BOTON = Colors.blue;
+  
+  //Noticias
+  static const Color INDICATOR_ON = Colors.white;//Color.fromRGBO(81, 151, 198, 1); // #5197C6
+  static const Color INDICATOR_OFF = Colors.white;//Color.fromRGBO(136, 193,231, 1);//Color.fromRGBO(100,174,223,1); // #64AEDF
+  static const Color NEWS_BTN_BCK = Color.fromRGBO(199, 31, 31, 1);
 }
 
 class Estilo{
@@ -158,15 +163,28 @@ class Estilo{
   );
 
   //Seccion de las noticias
+
+  static TextStyle NEWS_TITLE_CARR = TextStyle(
+      fontSize: SizeConfig.conversionAlto(20, false),
+      color: Colors.white,
+      fontWeight: FontWeight.bold
+  );
+
   static TextStyle NEWS_TITLE = TextStyle(
-      fontSize: SizeConfig.conversionAlto(22, false),
-      //color: Colors.white,
+      fontSize: SizeConfig.conversionAlto(16, false),
+      //color: Colors.blueAccent,
       fontWeight: FontWeight.bold
   );
 
   static TextStyle NEWS_DESC = TextStyle(
-      fontSize: SizeConfig.conversionAlto(18, false),
+      fontSize: SizeConfig.conversionAlto(11, false),
       //color: Colors.white,
+  );
+
+  static TextStyle NEWS_BTN = TextStyle(
+    fontSize: SizeConfig.conversionAlto(16, false),
+    color: Colors.white,
+
   );
 }
 
