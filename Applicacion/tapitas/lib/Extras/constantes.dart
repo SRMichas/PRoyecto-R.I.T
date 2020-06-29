@@ -171,13 +171,13 @@ class Estilo{
   );
 
   static TextStyle NEWS_TITLE = TextStyle(
-      fontSize: SizeConfig.conversionAlto(16, false),
+      fontSize: SizeConfig.conversionAlto(18, false),
       //color: Colors.blueAccent,
       fontWeight: FontWeight.bold
   );
 
   static TextStyle NEWS_DESC = TextStyle(
-      fontSize: SizeConfig.conversionAlto(11, false),
+      fontSize: SizeConfig.conversionAlto(14, false),
       //color: Colors.white,
   );
 

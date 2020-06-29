@@ -458,7 +458,7 @@ class _ModeloNoticia2 extends StatelessWidget {
           onTap: () => function(news != null? news.urlArticle : "http://192.168.1.111/index.html"),
           child: Container(
             //padding: null,
-            height: SizeConfig.conversionAlto(150, false),
+            height: SizeConfig.conversionAlto(190, false),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -504,87 +504,15 @@ class _ModeloNoticia2 extends StatelessWidget {
                         style:conts.Estilo.NEWS_DESC,
                         softWrap: true,
                         maxLines: 1,
-                      ) : Container() : Container()
+                      ) : Container() : Container(),
+                      SizedBox(height: SizeConfig.conversionAlto(5, false),)
                     ],
                   ),
                 )
               ],
             ),
           ),
-        )/*Container(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(
-                  flex: 3,
-                  child: Container(
-                    color: Colors.blue,
-                    //width: SizeConfig.proporcionAncho(40),
-                    child: Image.network(
-                      news != null? news.urlImage : "http://192.168.1.111/RIT/img/noticias/cul.png",
-                      height: size,
-                      width: size,
-                      fit: BoxFit.fill,
-                    ),
-                  )
-              ),
-              Expanded(
-                flex: 4,
-                child: Container(
-                  //color: Colors.green,
-                  padding: EdgeInsets.only(left: SizeConfig.conversionAncho(5, false)),
-                  //width: SizeConfig.proporcionAncho(60),
-                  margin: EdgeInsets.only(top: SizeConfig.conversionAlto(7, false)),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        child: Text(
-                          news != null? text() : "Encabezado",
-                          textAlign: TextAlign.start,
-                          style:conts.Estilo.NEWS_TITLE,
-                          softWrap: true,
-                        ),
-                      ),
-                      SizedBox(height: SizeConfig.conversionAlto(15, false),),
-                      /*Container(
-                        child: Text(
-                            news != null ? news.subHeadLine : "Descripcion breve",
-                            textAlign: TextAlign.start,
-                            style:conts.Estilo.NEWS_DESC ),
-                      ),*/
-                      Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: SizeConfig.conversionAncho(5, false)),
-                        child: RaisedButton(
-                          color: conts.Colores.NEWS_BTN_BCK,
-                          shape: RoundedRectangleBorder(
-                            borderRadius:BorderRadius.circular(SizeConfig.conversionAncho(7, false)),
-                            //side: BorderSide(color: Colors.blue)
-                          ),
-                          child: Text("ver más",style: conts.Estilo.NEWS_BTN,),
-                          onPressed: (){
-
-                            function(news != null? news.urlArticle : "http://192.168.1.111/index.html");
-
-                            scaffold.showSnackBar(
-                                SnackBar(
-                                  content: const Text("Se abrió el navegador"),
-                                  action: SnackBarAction(
-                                      label: "cerrar", onPressed: scaffold.hideCurrentSnackBar),
-                                )
-                            );
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        )*/,
+        ),
       ),
     );
   }
@@ -640,7 +568,7 @@ class CarouselPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             SizedBox(
-              height: SizeConfig.conversionAlto(150, false),
+              height: SizeConfig.conversionAlto(220, false),
               width: SizeConfig.ancho(),
               child: newsList != null ? Carousel(
                 boxFit: BoxFit.cover,
